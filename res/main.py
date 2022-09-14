@@ -874,9 +874,9 @@ def main_menu():
     bricks = "{}"
 
     if user['name'] == '':
-        print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey, Whatcha wanna do?{c.END}")
+        print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey, Whatcha wanna do?!{c.END}")
     else:
-        print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey {x.GREEN}{user['name']}{x.VIOLET}, Whatcha wanna do?{c.END}")
+        print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey {x.GREEN}{user['name']}{x.VIOLET}, Whatcha wanna do?!{c.END}")
     output.note1()
     print(f"1: {x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}]"      + f" Repeat{c.END}")
     print(f"2: {x.GRAY}[{x.LETTUCE}π*{x.GRAY}]"      + f" Basic Math{c.END}")
