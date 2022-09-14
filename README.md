@@ -1,5 +1,4 @@
-<style>
-g{
+<style>g{
 color: lightgreen;
 text-decoration: underline;
 }
@@ -21,8 +20,7 @@ font-weight: 700;
 small{
 opacity: 0.6;
 font-size: 10px
-}
-</style>
+}</style>
 
 # Goals:
 - [x] A logo maybe
