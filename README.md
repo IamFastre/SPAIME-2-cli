@@ -1,5 +1,5 @@
 <head>
-    <style>
+<style>
         g{
             color: lightgreen;
             text-decoration: underline;
@@ -23,7 +23,7 @@
             opacity: 0.6;
             font-size: 10px
         }
-    </style>
+</style>
 </head>
 
 # Goals:
