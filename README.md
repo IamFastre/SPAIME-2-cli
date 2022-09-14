@@ -33,3 +33,7 @@ Very very amazing if i might say, c'est juste parfait.
 <summary>Guys, It's evolving, just backwards...</summary>
 <div align="center"><img width="200" src="https://i.kym-cdn.com/entries/icons/mobile/000/032/479/Screen_Shot_2020-01-17_at_1.25.27_PM.jpg"/></div>
 </details>
+
+---
+
+### Commands:
