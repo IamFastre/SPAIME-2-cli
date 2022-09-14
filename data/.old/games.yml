@@ -1,0 +1,23 @@
+ttt:
+  last-board: '—————————'
+  last-winner: '—'
+
+  x-wins: 0
+  o-wins: 0
+  
+  ties: 0
+
+rps:
+  p1:
+    wins: 0
+    last-choice: '—'
+
+  p2:
+    wins: 0
+    last-choice: '—'
+
+  cpu:
+    wins: 0
+    last-choice: '—'
+
+  ties: 0
