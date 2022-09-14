@@ -1,2 +1,2 @@
-# <p align="center">>>> SPAIME-2‌ ‌ ‌ ‌</p>
-<p align="center"><sup>(Shitty Python App I Made Entirely)</sup></p>
+# <div align="center">>>><br>SPAIME-2‌</div>
+<div align="center"><sup>(Shitty Python App I Made Entirely)</sup></div>
