@@ -1,2 +1,2 @@
-# <p align="center">>>> SPAIME-2   </p>
-_^(Shitty^ ^Python^ ^App^ ^I^ ^Made^ ^Entirely)^_
+# <p align="center">>>> SPAIME-2‌ ‌ ‌ ‌</p>
+<p align="center"><sup>(Shitty Python App I Made Entirely)</sup></p>
