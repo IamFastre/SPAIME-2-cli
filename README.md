@@ -1,4 +1,3 @@
-<head>
 <style>
 g{
 color: lightgreen;
@@ -24,7 +23,6 @@ opacity: 0.6;
 font-size: 10px
 }
 </style>
-</head>
 
 # Goals:
 - [x] A logo maybe
