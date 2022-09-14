@@ -13,11 +13,11 @@
 ### Interface:
 <br/>
 
-> #### Hey {User}, Whatcha wanna do?!
+>  #### Hey {User}, Whatcha wanna do?!
 
 That's what the app asks you, and then It goes on being the most boring thing to ever exist.
 
-> #### 1: Repeat
+>  #### 1: Repeat
 
 The f*ck?!
 People reached the moon in 1969 and you're here doing:
@@ -29,5 +29,7 @@ os.system('cls')
 print(inp)
 ```
 Very very amazing if i might say, c'est juste parfait.
-Guys, It's evolving, just backwards...
+<details>
+<summary>Guys, It's evolving, just backwards...</summary>
 <div align="center"><img width="200" src="https://i.kym-cdn.com/entries/icons/mobile/000/032/479/Screen_Shot_2020-01-17_at_1.25.27_PM.jpg"/></div>
+</details>
