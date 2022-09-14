@@ -1,28 +1,28 @@
 <head>
 <style>
-        g{
-            color: lightgreen;
-            text-decoration: underline;
-        }
-        g:hover{
-            text-decoration: none;
-        }
-        .center{
-            align-items: center;
-            align-self: center;
-            align-content: center;
-            text-align: center;
-            margin: auto;
-            display: block;
-        }
-        ms{
-            font-family: Helvetica;
-            font-weight: 700;
-        }
-        small{
-            opacity: 0.6;
-            font-size: 10px
-        }
+g{
+color: lightgreen;
+text-decoration: underline;
+}
+g:hover{
+text-decoration: none;
+}
+.center{
+align-items: center;
+align-self: center;
+align-content: center;
+text-align: center;
+margin: auto;
+display: block;
+}
+ms{
+font-family: Helvetica;
+font-weight: 700;
+}
+small{
+opacity: 0.6;
+font-size: 10px
+}
 </style>
 </head>
 
