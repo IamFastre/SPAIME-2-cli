@@ -21,3 +21,4 @@ rps:
     last-choice: '—'
 
   ties: 0
+  last-winner: '—'

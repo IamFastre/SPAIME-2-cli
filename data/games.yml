@@ -1,23 +1,27 @@
-ttt:
-  last-board: '—————————'
-  last-winner: '—'
-
-  x-wins: 0
-  o-wins: 0
-  
-  ties: 0
-
 rps:
-  p1:
-    wins: 0
-    last-choice: '—'
-
-  p2:
-    wins: 0
-    last-choice: '—'
-
   cpu:
+    last-choice: "\e[38;2;251;80;83mScissors\e[0m"
+    wins: 1
+  last-winner: "\e[38;2;251;80;83mCPU\e[0m"
+  p1:
+    last-choice: "\e[38;2;255;255;255mPaper\e[0m"
     wins: 0
-    last-choice: '—'
-
+  p2:
+    last-choice: "\u2014"
+    wins: 0
   ties: 0
+ttt:
+  last-board:
+  - "\e[38;2;145;145;145m\e[2m\e[3m\e[5m1\e[0m"
+  - "\e[38;2;251;80;83m\e[1mx\e[0m"
+  - "\e[38;2;145;145;145m\e[2m\e[3m\e[5m3\e[0m"
+  - "\e[38;2;166;226;46m\e[1mo\e[0m"
+  - "\e[38;2;251;80;83m\e[1mx\e[0m"
+  - "\e[38;2;166;226;46m\e[1mo\e[0m"
+  - "\e[38;2;145;145;145m\e[2m\e[3m\e[5m7\e[0m"
+  - "\e[38;2;251;80;83m\e[1mx\e[0m"
+  - "\e[38;2;145;145;145m\e[2m\e[3m\e[5m9\e[0m"
+  last-winner: "\e[38;2;251;80;83m\e[1mx\e[0m"
+  o-wins: 0
+  ties: 0
+  x-wins: 1

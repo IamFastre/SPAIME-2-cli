@@ -75,6 +75,16 @@ def games_reset():
 
     with open('./data/games.yml', 'rb') as games_yaml:
         games = yaml.safe_load(games_yaml)
+        
+def ttt_reset():
+    global games
+    games['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0}
+    games_update()
+    
+def rps_reset():
+    global games
+    games['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
+    games_update()
 
 # Resting all files by copying the .old ones.
 def all_reset():
@@ -184,6 +194,15 @@ placeholders = {
     'tau'           : '{' + 'tau' + '}',
     'phi'           : '{' + 'phi' + '}',
     
+    'p1Last'   : '{' + 'p1Last' + '}',
+    'p1Wins'   : '{' + 'p1Wins' + '}',
+    'p2Last'   : '{' + 'p2Last' + '}',
+    'p2Wins'   : '{' + 'p2Wins' + '}',
+    'cpuLast'   : '{' + 'cpuLast' + '}',
+    'cpuWins'   : '{' + 'cpuWins' + '}',
+    'lastRPSWinner'   : '{' + 'lastRPSWinner' + '}',
+    'rpsTies'   : '{' + 'rpsTies' + '}',
+    
     ''   : '{' + '' + '}'
 }
 def is_command(thing):
@@ -236,6 +255,23 @@ def choice_check(thing):
     if placeholders['lastTTTBoard'] in thing:
         thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(games['ttt']['last-board'], True, left=f'{x.YELLOW}>>{c.END} ')}{x.YELLOW}>>{x.VIOLET} ")
     
+    if placeholders['p1Last'] in thing:
+        thing = thing.replace(placeholders['p1Last'], str(games['rps']['p1']['last-choice']))
+    if placeholders['p2Last'] in thing:
+        thing = thing.replace(placeholders['p2Last'], str(games['rps']['p2']['last-choice']))
+    if placeholders['cpuLast'] in thing:
+        thing = thing.replace(placeholders['cpuLast'], str(games['rps']['cpu']['last-choice']))
+    if placeholders['p1Wins'] in thing:
+        thing = thing.replace(placeholders['p1Wins'], str(games['rps']['p1']['wins']))
+    if placeholders['p2Wins'] in thing:
+        thing = thing.replace(placeholders['p2Wins'], str(games['rps']['p2']['wins']))
+    if placeholders['cpuWins'] in thing:
+        thing = thing.replace(placeholders['cpuWins'], str(games['rps']['cpu']['wins']))
+    if placeholders['rpsTies'] in thing:
+        thing = thing.replace(placeholders['rpsTies'], str(games['rps']['ties']))
+    if placeholders['lastRPSWinner'] in thing:
+        thing = thing.replace(placeholders['lastRPSWinner'], str(games['rps']['last-winner']))
+
     if placeholders['g'] in thing:
         thing = thing.replace(placeholders['g'], "9.8")
     if placeholders['e'] in thing:
@@ -341,7 +377,7 @@ def choice_check(thing):
     return thing
 
 def last_check(choice):
-    if not choice in commands:
+    if not is_command(choice):
         output.invalid()
     woosh_back()
 
@@ -444,7 +480,7 @@ def rps_menu():
 
     def stats_reset():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
-            games_reset()
+            rps_reset()
             clear()
             print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
             rps_menu()
@@ -455,7 +491,7 @@ def rps_menu():
     print(f"1: {x.GRAY}Solo{c.END}")
     print(f"2: {x.GRAY}Duo{c.END}")
     print(f"3: {x.GRAY}Game Stats{c.END}")
-    print(f"9: {x.GRAY}Reset ALL Statistics{c.END}")
+    print(f"9: {x.GRAY}Reset RPS Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
     choice = input(intake.prompt)
@@ -470,6 +506,7 @@ def rps_menu():
         
         games['rps']['p1']['last-choice']  = p1['input']
         games['rps']['cpu']['last-choice'] = cpu['input']
+        games['rps']['last-winner']        = winner['name']
         games_update()
 
         if winner == p1:
@@ -491,6 +528,7 @@ def rps_menu():
         
         games['rps']['p1']['last-choice'] = p1['input']
         games['rps']['p2']['last-choice'] = p2['input']
+        games['rps']['last-winner']       = winner['name']
         games_update()
     
         if winner == p1:
@@ -535,7 +573,7 @@ def ttt_menu():
         enter_continue()
     def stats_reset():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
-            games_reset()
+            ttt_reset()
             clear()
             print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
             ttt_menu()
@@ -549,7 +587,7 @@ def ttt_menu():
     output.note(1)
     print(f"1: {x.GRAY}Start Game{c.END}")
     print(f"2: {x.GRAY}Game Stats{c.END}")
-    print(f"9: {x.GRAY}Reset ALL Statistics{c.END}")
+    print(f"9: {x.GRAY}Reset TTT Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
     
     choice = input(intake.prompt)
@@ -602,19 +640,31 @@ def help_menu():
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Placeholders: {c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['nl']}: " + f"           {x.GRAY}Makes a lovely line separator, not useful.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['br']}: " + f"           {x.GRAY}Makes a new line, useful in repeat, I guess.{c.END}")
+    print("")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['e']}: " + f"            {x.GRAY}Returns Euler's number's value.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['g']}: " + f"            {x.GRAY}Returns gravitational acceleration constant's value.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['pi']}: " + f"           {x.GRAY}Returns pi's value.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['tau']}: " + f"          {x.GRAY}Returns tau's value.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['phi']}: " + f"          {x.GRAY}Returns the golden ratio's value.{c.END}")
+    print("")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['name']}: " + f"         {x.GRAY}Returns your name.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['age']}: " + f"          {x.GRAY}Returns your age.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['prefix']}: " + f"       {x.GRAY}Returns set prefix{c.END}")
+    print("")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastTTTWinner']}: " + f"{x.GRAY}Returns the last TTT winner.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastTTTBoard']}: " + f" {x.GRAY}Returns the last TTT board.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['xWins']}: " + f"        {x.GRAY}Returns how many times x won.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['oWins']}: " + f"        {x.GRAY}Returns how many times o won.{c.END}")
-    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['tttTies']}: " + f"      {x.GRAY}Returns how many times ties happened.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['tttTies']}: " + f"      {x.GRAY}Returns how many TTT ties happened.{c.END}")
+    print("")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['p1Last']}: " + f"       {x.GRAY}Returns {rps.p1['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['p2Last']}: " + f"       {x.GRAY}Returns {rps.p2['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['cpuLast']}: " + f"      {x.GRAY}Returns {rps.cpu['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['p1Wins']}: " + f"       {x.GRAY}Returns how many times {rps.p1['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['p2Wins']}: " + f"       {x.GRAY}Returns how many times {rps.p2['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['cpuWins']}: " + f"      {x.GRAY}Returns how many times {rps.cpu['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['rpsTies']}: " + f"      {x.GRAY}Returns how many times RPS ties happened.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastRPSWinner']}: " + f"{x.GRAY}Returns the last RPS winner.{c.END}")
 
     enter_continue()
 
@@ -671,9 +721,10 @@ def options_menu():
 
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Options: {c.END}")
     output.note(1)
-    print(f"1: {x.GRAY}Name: {x.LETTUCE}{user['name']}{c.END}")
+    print(f"1: {x.GRAY}Name: {x.LETTUCE}{user['name'] if user['name'] != '' else None}{c.END}")
     print(f"2: {x.GRAY}Age: {x.LETTUCE}{user['age']}{c.END}")
     print(f"3: {x.GRAY}Prefix: {x.LETTUCE}{settings['prefix']}{c.END}")
+    print(f"8: {x.GRAY}Rest Games' Stats{c.END}")
     print(f"9: {x.GRAY}Rest Application{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
@@ -685,7 +736,7 @@ def options_menu():
         clear()
         print(f"\n{x.YELLOW}>>>{x.VIOLET} What do you wanna be called? {c.END}")
         output.note(1)
-        print(f"!!: {x.GRAY}Current is {x.GREEN}{user['name']}{c.END}")
+        print(f"!!: {x.GRAY}Current is {x.GREEN}{user['name'] if user['name'] != '' else None}{c.END}")
 
         choice = input(intake.prompt)
         choice = choice_check(choice)
@@ -720,7 +771,31 @@ def options_menu():
         prefix_change(choice)
 
         options_menu()
-    elif choice == "9" or choice.casefold() == "reset" or choice.casefold() == "reset app" or choice.casefold() == "reset application" :
+    elif choice == "8" or choice.casefold() == "reset stats":
+        
+        clear()
+        print(f"\n{x.YELLOW}>>>{x.VIOLET} Continuing would mean you want to reset statistics to default.{c.END}")
+        if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
+            print(f"\n{x.YELLOW}>>{x.VIOLET} Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.{c.END}")
+
+            choice = input(intake.prompt)
+            choice = choice_check(choice)
+
+            if choice == f"{settings['prefix']}reset":
+                games_reset()
+                clear()
+                print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
+                main_menu()
+            else:
+                clear()
+                print(f"{x.RED}>>{x.GRAY} I'll take that as a \"no\".{c.END}")
+                options_menu()
+        else:
+            clear()
+            print(f"{x.RED}>>{x.GRAY} Ready when you're sure.{c.END}")
+            options_menu()
+
+    elif choice == "9" or choice.casefold() == "reset all" or choice.casefold() == "reset app" or choice.casefold() == "reset application" :
 
         clear()
         print(f"\n{x.YELLOW}>>>{x.VIOLET} Continuing would mean you want to reset everything to default values.{c.END}")
@@ -741,7 +816,7 @@ def options_menu():
                 options_menu()
         else:
             clear()
-            print(f"{x.RED}>>{x.GRAY} Okay then.{c.END}")
+            print(f"{x.RED}>>{x.GRAY} Ready when you're sure.{c.END}")
             options_menu()
     elif choice == "0":
         clear()
