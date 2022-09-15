@@ -365,10 +365,13 @@ class output():
         else:
             print(f"{x.RED}>>{x.GRAY} {string}{c.END}")
 
-    def note1():
-        print(f'''{x.WHITE}!!: {x.GRAY}Type {c.ITALIC}"{commands['help']}"{c.END}{x.GRAY} to get a list of available commands.{c.END}''')
-        if is_admin():
-            print(f'''{x.WHITE}!!: {x.GRAY}You're in dev mode.{c.END}''')
+    def note(num):
+        if num == 1:
+            print(f'''{x.WHITE}!!: {x.GRAY}Type {c.ITALIC}"{commands['help']}"{c.END}{x.GRAY} to get a list of available commands.{c.END}''')
+            if is_admin():
+                print(f'''{x.WHITE}!!: {x.GRAY}You're in dev mode.{c.END}''')
+        else:
+            print(f'''{x.WHITE}!!: {x.GRAY}{num}{c.END}''')    
         print(c.END)
 
 # Decoding encoded messages.
@@ -448,7 +451,7 @@ def rps_menu():
             
             
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to RockPaperScissors!")
-    output.note1()
+    output.note(1)
     print(f"1: {x.GRAY}Solo{c.END}")
     print(f"2: {x.GRAY}Duo{c.END}")
     print(f"3: {x.GRAY}Game Stats{c.END}")
@@ -543,7 +546,7 @@ def ttt_menu():
 
         
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to TicTacToe!")
-    output.note1()
+    output.note(1)
     print(f"1: {x.GRAY}Start Game{c.END}")
     print(f"2: {x.GRAY}Game Stats{c.END}")
     print(f"9: {x.GRAY}Reset ALL Statistics{c.END}")
@@ -667,7 +670,7 @@ def options_menu():
 
 
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Options: {c.END}")
-    output.note1()
+    output.note(1)
     print(f"1: {x.GRAY}Name: {x.LETTUCE}{user['name']}{c.END}")
     print(f"2: {x.GRAY}Age: {x.LETTUCE}{user['age']}{c.END}")
     print(f"3: {x.GRAY}Prefix: {x.LETTUCE}{settings['prefix']}{c.END}")
@@ -681,7 +684,7 @@ def options_menu():
 
         clear()
         print(f"\n{x.YELLOW}>>>{x.VIOLET} What do you wanna be called? {c.END}")
-        output.note1()
+        output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{user['name']}{c.END}")
 
         choice = input(intake.prompt)
@@ -695,7 +698,7 @@ def options_menu():
 
         clear()
         print(f"\n{x.YELLOW}>>>{x.VIOLET} How old are you? {c.END}")
-        output.note1()
+        output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{user['age']}{c.END}")
 
         choice = input(intake.prompt)
@@ -708,7 +711,7 @@ def options_menu():
 
         clear()
         print(f"\n{x.YELLOW}>>>{x.VIOLET} Set prefix to what? {c.END}")
-        output.note1()
+        output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{settings['prefix']}{c.END}")
         
         choice = input(intake.prompt)
@@ -751,7 +754,7 @@ def options_menu():
 def repeat():
 
     print(f"\n{x.YELLOW}>>>{x.VIOLET} What do you want me to repeat?{c.END}")
-    output.note1()
+    output.note(1)
 
     choice = input(intake.prompt)
     choice = choice_check(choice)
@@ -773,7 +776,7 @@ def repeat():
 def do_math():
     allowed = "0123456789+-*/.,() "
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Oh wanna do some math'ing?{c.END}")
-    output.note1()
+    output.note(1)
 
     choice = input(intake.prompt)
     choice = choice_check(choice)
@@ -877,7 +880,7 @@ def main_menu():
         print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey, Whatcha wanna do?!{c.END}")
     else:
         print(f"\n{x.YELLOW}>>>{x.VIOLET}{c.BOLD} Hey {x.GREEN}{user['name']}{x.VIOLET}, Whatcha wanna do?!{c.END}")
-    output.note1()
+    output.note(1)
     print(f"1: {x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}]"      + f" Repeat{c.END}")
     print(f"2: {x.GRAY}[{x.LETTUCE}π*{x.GRAY}]"      + f" Basic Math{c.END}")
     print(f"3: {x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}]" + f" TicTacToe{c.END}")
