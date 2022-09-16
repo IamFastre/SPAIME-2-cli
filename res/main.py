@@ -14,6 +14,7 @@ from time import *
 
 import applets.ttt as ttt
 import applets.rps as rps
+import applets.rnd as rnd
 
 import os, atexit, shutil
 
@@ -203,7 +204,16 @@ placeholders = {
     'lastRPSWinner'   : '{' + 'lastRPSWinner' + '}',
     'rpsTies'   : '{' + 'rpsTies' + '}',
     
-    ''   : '{' + '' + '}'
+    'heads'   : '{' + 'heads' + '}',
+    'tails'   : '{' + 'tails' + '}',
+    'flips'   : '{' + 'flips' + '}',
+    'rndTies'   : '{' + 'rndTies' + '}',
+    'lastHeads'   : '{' + 'lastHeads' + '}',
+    'lastTails'   : '{' + 'lastTails' + '}',
+    'lastFlips'   : '{' + 'lastFlips' + '}',
+    'lastRNDWinner'   : '{' + 'lastRNDWinner' + '}',
+    
+    ''   : '{' + '' + '}',
 }
 def is_command(thing):
     aller = []
@@ -272,6 +282,23 @@ def choice_check(thing):
     if placeholders['lastRPSWinner'] in thing:
         thing = thing.replace(placeholders['lastRPSWinner'], str(games['rps']['last-winner']))
 
+    if placeholders['heads'] in thing:
+        thing = thing.replace(placeholders['heads'], str(games['rnd']['heads']))
+    if placeholders['tails'] in thing:
+        thing = thing.replace(placeholders['tails'], str(games['rnd']['tails']))
+    if placeholders['flips'] in thing:
+        thing = thing.replace(placeholders['flips'], str(games['rnd']['flips']))
+    if placeholders['rndTies'] in thing:
+        thing = thing.replace(placeholders['rndTies'], str(games['rnd']['ties']))
+    if placeholders['lastHeads'] in thing:
+        thing = thing.replace(placeholders['lastHeads'], str(games['rnd']['last-heads']))
+    if placeholders['lastTails'] in thing:
+        thing = thing.replace(placeholders['lastTails'], str(games['rnd']['last-tails']))
+    if placeholders['lastFlips'] in thing:
+        thing = thing.replace(placeholders['lastFlips'], str(games['rnd']['last-flips']))
+    if placeholders['lastRNDWinner'] in thing:
+        thing = thing.replace(placeholders['lastRNDWinner'], str(games['rnd']['last-winner']))
+        
     if placeholders['g'] in thing:
         thing = thing.replace(placeholders['g'], "9.8")
     if placeholders['e'] in thing:
@@ -440,6 +467,32 @@ class decoded():
 ###########################
 # Defining app menus etc. #
 ###########################
+
+def rnd_menu():
+
+    global window
+    window = "rnd_menu()"
+    
+    print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to Randomeur!")
+    output.note(1)
+    print(f"1: {x.GRAY}Coin Flipeur{c.END}")
+    print(f"2: {x.GRAY}Game Stats{c.END}")
+    print(f"9: {x.GRAY}Reset RPS Statistics{c.END}")
+    print(f"0: {x.GRAY}Home{c.END}")
+
+    choice = input(intake.prompt)
+    choice = choice_check(choice)
+    
+    if choice == "1" or choice.casefold() in ("flipeur", "coin flipeur", "coin"):
+        clear()
+        rnd.flipeur()
+        woosh_back()
+    elif choice == "0":
+        clear()
+        main_menu()
+    else:
+        clear()
+        last_check(choice)
 
 def rps_menu():
 
@@ -665,6 +718,15 @@ def help_menu():
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['cpuWins']}: " + f"      {x.GRAY}Returns how many times {rps.cpu['name']}{x.GRAY} won.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['rpsTies']}: " + f"      {x.GRAY}Returns how many times RPS ties happened.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastRPSWinner']}: " + f"{x.GRAY}Returns the last RPS winner.{c.END}")
+    print("")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['heads']}: " + f"        {x.GRAY}Returns the total amount of {rnd.headsStyle}{x.GRAY}.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['tails']}: " + f"        {x.GRAY}Returns the total amount of {rnd.tailsStyle}{x.GRAY}.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['rndTies']}: " + f"      {x.GRAY}Returns the total amount of RND {rnd.tieStyle}{x.RED}s{x.GRAY}.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['flips']}: " + f"        {x.GRAY}Returns the total amount of RND flips.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastHeads']}: " + f"    {x.GRAY}Returns the last {rnd.headsStyle}{x.GRAY} count.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastTails']}: " + f"    {x.GRAY}Returns the last {rnd.tailsStyle}{x.GRAY} count.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastFlips']}: " + f"    {x.GRAY}Returns the last flips count.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastRNDWinner']}: " + f"{x.GRAY}Returns the last RND winner.{c.END}")
 
     enter_continue()
 

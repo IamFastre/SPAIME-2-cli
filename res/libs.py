@@ -59,6 +59,7 @@ def go_thro(thing, allowed):
     return True
 def enter_continue():
     print(f"\n{x.YELLOW}>> {x.GRAY}Press Enter to continue...{c.END}")
+
     choice = input(f"{c.DIM + c.ITALIC + x.GRAY}")
     print(c.END)
     clear()

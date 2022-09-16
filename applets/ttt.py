@@ -153,8 +153,8 @@ def play():
         choice = rm.choice_check(choice)
     except:
         pass
+    
     allowed = "123456789"
-
     if go_thro(choice,allowed) and len(choice) == 1:
         choice = int(choice) - 1
         if board[choice] in ns:
