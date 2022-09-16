@@ -86,6 +86,11 @@ def rps_reset():
     global games
     games['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
     games_update()
+    
+def rnd_reset():
+    global games
+    games['rnd'] = {'ties': 0, 'heads': 0, 'tails': 0, 'flips': 0, 'last-heads': 0, 'last-tails': 0, 'last-flips': 0, 'last-winner': '—'}
+    games_update()
 
 # Resting all files by copying the .old ones.
 def all_reset():
@@ -473,11 +478,30 @@ def rnd_menu():
     global window
     window = "rnd_menu()"
     
+    def stats_reset():
+        if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
+            rnd_reset()
+            clear()
+            print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
+            
+    def stats_menu():
+        print(f"\n{x.YELLOW}>>>{x.VIOLET} Randomeur Statistics:\n{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.headsStyle}{c.END}: {x.GRAY}{games['rnd']['heads']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tailsStyle}{c.END}: {x.GRAY}{games['rnd']['tails']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.flipsStyle}{c.END}: {x.GRAY}{games['rnd']['flips']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tieStyle}{x.RED}s{c.END}:  {x.GRAY}{games['rnd']['ties']}{c.END}")
+        print("")
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.headsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-heads']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.tailsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-tails']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.flipsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-flips']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last Winner{c.END}: {x.GRAY}{games['rnd']['last-winner']}{c.END}")
+        enter_continue()
+    
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to Randomeur!")
     output.note(1)
     print(f"1: {x.GRAY}Coin Flipeur{c.END}")
     print(f"2: {x.GRAY}Game Stats{c.END}")
-    print(f"9: {x.GRAY}Reset RPS Statistics{c.END}")
+    print(f"9: {x.GRAY}Reset RND Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
     choice = input(intake.prompt)
@@ -486,7 +510,31 @@ def rnd_menu():
     if choice == "1" or choice.casefold() in ("flipeur", "coin flipeur", "coin"):
         clear()
         rnd.flipeur()
+        
+        games['rnd']['heads']    += rnd.heads
+        games['rnd']['tails']    += rnd.tails
+        games['rnd']['flips']    += rnd.flips
+        if rnd.heads == rnd.tails:
+            games['rnd']['ties'] += 1
+        games_update()
+        
+        games['rnd']['last-heads']       = rnd.heads  
+        games['rnd']['last-tails']       = rnd.tails
+        games['rnd']['last-flips']       = rnd.flips
+        games_update()
+        
+        games['rnd']['last-winner']      = rnd.winner
+        games_update()
+        
         woosh_back()
+    elif choice == "2" or choice.casefold() == "stats":
+        clear()
+        stats_menu()
+        rnd_menu()
+    elif choice == "9" or choice.casefold() == "reset":
+        clear()
+        stats_reset()
+        rnd_menu()
     elif choice == "0":
         clear()
         main_menu()
@@ -536,7 +584,6 @@ def rps_menu():
             rps_reset()
             clear()
             print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
-            rps_menu()
             
             
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to RockPaperScissors!")
@@ -722,10 +769,10 @@ def help_menu():
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['heads']}: " + f"        {x.GRAY}Returns the total amount of {rnd.headsStyle}{x.GRAY}.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['tails']}: " + f"        {x.GRAY}Returns the total amount of {rnd.tailsStyle}{x.GRAY}.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['rndTies']}: " + f"      {x.GRAY}Returns the total amount of RND {rnd.tieStyle}{x.RED}s{x.GRAY}.{c.END}")
-    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['flips']}: " + f"        {x.GRAY}Returns the total amount of RND flips.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['flips']}: " + f"        {x.GRAY}Returns the total amount of RND {rnd.flipsStyle}{x.GRAY}.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastHeads']}: " + f"    {x.GRAY}Returns the last {rnd.headsStyle}{x.GRAY} count.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastTails']}: " + f"    {x.GRAY}Returns the last {rnd.tailsStyle}{x.GRAY} count.{c.END}")
-    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastFlips']}: " + f"    {x.GRAY}Returns the last flips count.{c.END}")
+    print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastFlips']}: " + f"    {x.GRAY}Returns the last {rnd.flipsStyle}{x.GRAY} count.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastRNDWinner']}: " + f"{x.GRAY}Returns the last RND winner.{c.END}")
 
     enter_continue()
@@ -1022,6 +1069,7 @@ def main_menu():
     print(f"2: {x.GRAY}[{x.LETTUCE}π*{x.GRAY}]"      + f" Basic Math{c.END}")
     print(f"3: {x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}]" + f" TicTacToe{c.END}")
     print(f"4: {x.GRAY}[{x.LETTUCE}$${x.GRAY}]"      + f" RockPaperScissors{c.END}")
+    print(f"5: {x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}]"      + f" Randomeur{c.END}")
     print(f"7: {x.GRAY}[{x.ORANGE}{bricks}{x.GRAY}]"        + f" Options{c.END}")
     print(f"8: {x.GRAY}[{x.VIOLET}>>{x.GRAY}]"       + f" Credits{c.END}")
     print(f"9: {x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}]" + f" Restart{c.END}")
@@ -1041,9 +1089,12 @@ def main_menu():
     elif choice == "3" or choice.casefold() in ("ttt", "tictactoe"):
         clear()
         ttt_menu()
-    elif choice == "4" or choice.casefold() in ("ttt", "tictactoe"):
+    elif choice == "4" or choice.casefold() in ("rps", "rockpaperscissors"):
         clear()
         rps_menu()
+    elif choice == "5" or choice.casefold() in ("rnd", "randomeur"):
+        clear()
+        rnd_menu()
     elif choice == "7" or choice.casefold() in ("options", "option"):
         clear()
         options_menu()

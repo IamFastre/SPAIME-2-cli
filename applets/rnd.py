@@ -15,6 +15,7 @@ from res.colors import *
 from res.libs import *
 import res.main as rm
 
+flipsStyle = x.GREEN + "Flips" + x.END
 headsStyle = x.YELLOW + "Heads" + x.END
 tailsStyle = x.ORANGE + "Tails" + x.END
 tieStyle = x.RED + "Tie" + x.END

@@ -24,10 +24,10 @@ rps:
   last-winner: '—'
 
 rnd:
-  ties: 0
   heads: 0
   tails: 0
   flips: 0
+  ties: 0
 
   last-heads: 0
   last-tails: 0
