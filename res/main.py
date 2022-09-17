@@ -177,7 +177,9 @@ commands = {
     'home' : settings['prefix'] +  f'home' ,
     'dev1' : settings['prefix'] +  f'dev1' ,
     'dev2' : settings['prefix'] +  f'dev2' ,
-    'reset': settings['prefix'] +  f'reset'
+    'reset': settings['prefix'] +  f'reset',
+    
+    '': settings['prefix'] + f''
 }
 placeholders = {
     'nl'            : '{' + 'nl' + '}',
