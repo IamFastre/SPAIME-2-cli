@@ -37,3 +37,4 @@ Very very amazing if i might say, c'est juste parfait.
 ---
 
 ### Commands:
+Just do `.help`
