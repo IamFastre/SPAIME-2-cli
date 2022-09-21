@@ -1,14 +1,8 @@
-import os
-try:
-    exec(open(".exec/__homer__.py").read())
-except:
-    print('\33[31m')
-    print("I FUCKING HATE MYSELF, OMFG!!!")
-    print("some fucking thing went wrong\nplease run the fucking app.py or know what you're doing")
-    print('\33[0m')
-    os.system('pause')
-    exit()
+import os, sys
+from os.path import dirname, join, abspath
 
+if __name__ == "__main__":
+    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
 from res.colors import *
 from res.libs import *
@@ -40,9 +34,18 @@ board = [ns[0],ns[1],ns[2],
          ns[3],ns[4],ns[5],
          ns[6],ns[7],ns[8]]
 
-currentPlayer = None
-gameStatus = 'running'
-winner = None
+def renewVars():
+    global currentPlayer
+    global gameStatus
+    global winnerLine
+    global winner
+    
+    currentPlayer = None
+    gameStatus    = 'running'
+    winnerLine    = None
+    winner        = None
+
+renewVars()
 
 p1 = s.x
 p2 = s.o
@@ -71,6 +74,44 @@ def choosePlayer():
 
 
 def displayBoard(board, returnBoard=False, left=""):
+        
+    if gameStatus == "done":
+        if winnerLine == "r1":
+            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
+            board[1] = c.BOLD + c.URL + c.BLINK + board[1] + x.END
+            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
+        if winnerLine == "r2":
+            board[3] = c.BOLD + c.URL + c.BLINK + board[3] + x.END
+            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
+            board[5] = c.BOLD + c.URL + c.BLINK + board[5] + x.END
+        if winnerLine == "r3":
+            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
+            board[7] = c.BOLD + c.URL + c.BLINK + board[7] + x.END
+            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+            
+        if winnerLine == "c1":
+            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
+            board[3] = c.BOLD + c.URL + c.BLINK + board[3] + x.END
+            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
+        if winnerLine == "c2":
+            board[1] = c.BOLD + c.URL + c.BLINK + board[1] + x.END
+            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
+            board[7] = c.BOLD + c.URL + c.BLINK + board[7] + x.END
+        if winnerLine == "c3":
+            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
+            board[5] = c.BOLD + c.URL + c.BLINK + board[5] + x.END
+            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+            
+        if winnerLine == "d1":
+            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
+            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
+            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+        if winnerLine == "d2":
+            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
+            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
+            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
+            
+    
     arrow = str(left) + x.END
     board_look = f"""{arrow}{x.LETTUCE}=============
 {arrow}{x.LETTUCE}| {board[0]} {x.LETTUCE}| {board[1]} {x.LETTUCE}| {board[2]} {x.LETTUCE}|
@@ -104,6 +145,38 @@ def currentPlayerChange(player):
 
 def check():
     global board
+    
+    global r1
+    global r2
+    global r3
+    
+    global c1
+    global c2
+    global c3
+    
+    global d1
+    global d2
+
+    def lineChecker():
+        if line == r1:
+            return "r1"
+        if line == r2:
+            return "r2"
+        if line == r3:
+            return "r3"
+            
+        if line == c1:
+            return "c1"
+        if line == c2:
+            return "c2"
+        if line == c3:
+            return "c3"
+            
+        if line == d1:
+            return "d1"
+        if line == d2:
+            return "d2"
+            
 
     r1 = [board[0],board[1],board[2]]
     r2 = [board[3],board[4],board[5]]
@@ -118,24 +191,24 @@ def check():
 
     lines = [r1,r2,r3,c1,c2,c3,d1,d2]
 
-    x_won = [s.x]
-    o_won = [s.o]
-    tie   = [s.n]
-
     for line in lines:
-        if go_thro(line, x_won):
-            return [p1, "done"]
-        if go_thro(line, o_won):
-            return [p2, "done"]
+        
+        if go_thro(line, [s.x]):
+            return [p1, "done", lineChecker()]
+        
+        if go_thro(line, [s.o]):
+            return [p2, "done", lineChecker()]
     
     busy_tiles = 0
+    
     for num in ns:
         if not num in board:
             busy_tiles += 1
+            
     if busy_tiles == 9:
-        return [p3, "done"]
+        return [p3, "done", None]
     
-    return [None, "running"]
+    return [None, "running", None]
 
 def play():
     check()
@@ -174,17 +247,15 @@ def play():
 def ttt_start():
     global currentPlayer
     global gameStatus
-    global board
+    global winnerLine
     global winner
+    global board
     
     board = [ns[0],ns[1],ns[2],
              ns[3],ns[4],ns[5],
              ns[6],ns[7],ns[8]]
     
-    currentPlayer = None
-    gameStatus = 'running'
-    winner = None
-    
+    renewVars()
     clear()
 
     while currentPlayer == None:
@@ -198,10 +269,10 @@ def ttt_start():
         results = check()
         winner = results[0]
         gameStatus = results[1]
+        winnerLine = results[2]
     else:
         clear()
         displayBoard(board)
-
         finalWinner = winner
         finalBoard = board
         #finalBoard = displayBoard(board, True, left=f"{x.YELLOW}>>{c.END} ")

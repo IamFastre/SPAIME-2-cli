@@ -1,16 +1,10 @@
-import os
-import random
-from secrets import choice
-try:
-    exec(open(".exec/__homer__.py").read())
-except:
-    print('\33[31m')
-    print("I FUCKING HATE MYSELF, OMFG!!!")
-    print("some fucking thing went wrong\nplease run the fucking app.py or know what you're doing")
-    print('\33[0m')
-    os.system('pause')
-    exit()
+import os, sys
+from os.path import dirname, join, abspath
+
+if __name__ == "__main__":
+    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
     
+import random
 
 from res.colors import *
 from res.libs import *
@@ -22,17 +16,21 @@ game = {
     'mode': None
 }
 
-p1  = {
+p1     = {
     'input': None,
     'name': f"{x.LETTUCE}P-1{c.END}"
 }
-p2  = {
+p2     = {
     'input': None,
     'name': f"{x.SKY}P-2{c.END}"
 }
-cpu = {
+cpu    = {
     'input': None,
     'name': f"{x.RED}CPU{c.END}"
+}
+pN     = {
+    'input': None,
+    'name': None
 }
 winner = {
     'input': None,
@@ -86,12 +84,13 @@ def cpuRPC(player):
 def compareRPC(player1,player2):    
     n1 = player1
     n2 = player2
+    n3 = pN
     
     c1 = player1['input']
     c2 = player2['input']
 
     if c1 == s.r and c2 == s.r:
-        return None
+        return n3
     if c1 == s.r and c2 == s.p:
         return n2
     if c1 == s.r and c2 == s.s:
@@ -100,7 +99,7 @@ def compareRPC(player1,player2):
     if c1 == s.p and c2 == s.r:
         return n1
     if c1 == s.p and c2 == s.p:
-        return None
+        return n3
     if c1 == s.p and c2 == s.s:
         return n2
                 
@@ -109,7 +108,7 @@ def compareRPC(player1,player2):
     if c1 == s.s and c2 == s.p:
         return n1
     if c1 == s.s and c2 == s.s:
-        return None
+        return n3
     
 def result(player1,player2,winner):
     
@@ -118,7 +117,7 @@ def result(player1,player2,winner):
     print(f"{x.YELLOW}>>> {player2['name']}{x.VIOLET} chose {player2['input']}{c.END}")
     print("")
     
-    if winner != None:
+    if winner['name'] != None:
         print(f"{x.YELLOW}>> {winner['name']}{x.VIOLET} won!{c.END}")
     else:
         print(f"{x.YELLOW}>>{x.VIOLET} It's a tie!{c.END}")

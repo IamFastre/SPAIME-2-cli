@@ -1,7 +1,9 @@
-try:
-    exec(open(".exec/__homer__.py").read())
-except:
-    pass
+import os, sys
+from os.path import dirname, join, abspath
+
+if __name__ == "__main__":
+    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+
 ########################################
 # Importing important files & modules. #
 ########################################
@@ -16,7 +18,7 @@ import applets.ttt as ttt
 import applets.rps as rps
 import applets.rnd as rnd
 
-import os, atexit, shutil
+import os, sys, atexit, shutil
 
 # Installing/importing other modules that are just as important.
 # Hope you don't mind. :)
@@ -561,8 +563,14 @@ def rps_menu():
         best = max(wins)
         bestIndex = wins.index(best)
         
-        if len(set(wins)) < len(wins):
+        wins.remove(best)
+        best2 = max(wins)
+        
+        if best == best2:
             return '—'
+        
+        #if len(set(wins)) < len(wins):
+        #    return '—'
         
         return name[bestIndex]
     
@@ -602,6 +610,7 @@ def rps_menu():
     if choice == "1" or choice.casefold() == "solo":
         rps.soloMode()
 
+        pN = rps.pN
         p1 = rps.p1
         cpu = rps.cpu
         winner = rps.winner
@@ -615,7 +624,7 @@ def rps_menu():
             games['rps']['p1']['wins'] += 1
         if winner == cpu:
             games['rps']['cpu']['wins'] += 1
-        if winner == None:
+        if winner == pN:
             games['rps']['ties'] += 1
         games_update()
 
@@ -624,6 +633,7 @@ def rps_menu():
     elif choice == "2" or choice.casefold() == "duo":
         rps.duoMode()
         
+        pN = rps.pN
         p1 = rps.p1
         p2 = rps.p2
         winner = rps.winner
@@ -637,7 +647,7 @@ def rps_menu():
             games['rps']['p1']['wins'] += 1
         if winner == p2:
             games['rps']['p2']['wins'] += 1
-        if winner == None:
+        if winner == pN:
             games['rps']['ties'] += 1
         games_update()
 
@@ -670,7 +680,7 @@ def ttt_menu():
         print(f" {x.YELLOW}-{c.END} " + f"O Wins     : {x.GRAY}{games['ttt']['o-wins']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Ties       : {x.GRAY}{games['ttt']['ties']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Last Winner: {x.GRAY}{games['ttt']['last-winner']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Board :\n")
+        print(f" {x.YELLOW}-{c.END} " + f"Last Board :-\n")
         print(ttt.displayBoard(games['ttt']['last-board'], True, left=f' {x.YELLOW}-{c.END} '))
         enter_continue()
     def stats_reset():
@@ -1022,38 +1032,38 @@ def restart():
     clear()
     run_app()
 
-def exit_app():
+def exit_app(sayBye=True):
     global user
     global exited
     exited = True
-    print(f"{x.YELLOW}>>{x.GRAY} Okie!{c.END}")
-    sleep(0.5)
     
-    if os.name == 'nt':
-        os.system('del "./__pycache__" /q')
-        os.system('del "res/__pycache__" /q')
-        os.system('del "applets/__pycache__" /q')
-        os.system('del ".exec/__pycache__" /q')
-    else:
-        os.system('rm "./__pycache__" /q')
-        os.system('rm "res/__pycache__" /q')
-        os.system('rm "applets/__pycache__" /q')
-        os.system('rm ".exec/__pycache__" /q')
+    if sayBye:
+        print(f"{x.YELLOW}>>{x.GRAY} Okie!{c.END}")
+        sleep(0.5)
+        
     
-    os.system('rmdir "./__pycache__"')
-    os.system('rmdir "res/__pycache__"')
-    os.system('rmdir "applets/__pycache__"')
-    os.system('rmdir ".exec/__pycache__"')
-    
-    
-    
-    clear()
-    if user['name'] == '':
-        print(f"{x.YELLOW}>>{x.VIOLET} Bye Bye!{c.END}")
-    else:
-        print(f"{x.YELLOW}>>{x.VIOLET} Bye Bye, {x.GREEN}{user['name']}{x.VIOLET}!{c.END}")
+        clear()
+        if user['name'] == '':
+            print(f"{x.YELLOW}>>{x.VIOLET} Bye Bye!{c.END}")
+        else:
+            print(f"{x.YELLOW}>>{x.VIOLET} Bye Bye, {x.GREEN}{user['name']}{x.VIOLET}!{c.END}")
+        
     pause()
-    exit()
+    
+    if os.path.exists('./res/__pycache__'):
+        shutil.rmtree('./res/__pycache__')
+        
+    if os.path.exists('./applets/__pycache__'):
+        shutil.rmtree('./applets/__pycache__')
+        
+    if os.path.exists('./.exec/__pycache__'):
+        shutil.rmtree('./.exec/__pycache__')
+        
+    if os.path.exists('./__pycache__'):
+        shutil.rmtree('./__pycache__')
+        
+    keyboard.press_and_release('ctrl+c')
+    exit(0)
 
 def main_menu():
 

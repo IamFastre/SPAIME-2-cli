@@ -1,15 +1,10 @@
-import random
-import os
-try:
-    exec(open(".exec/__homer__.py").read())
-except:
-    print('\33[31m')
-    print("I FUCKING HATE MYSELF, OMFG!!!")
-    print("some fucking thing went wrong\nplease run the fucking app.py or know what you're doing")
-    print('\33[0m')
-    os.system('pause')
-    exit()
+import os, sys
+from os.path import dirname, join, abspath
 
+if __name__ == "__main__":
+    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+
+import random
 
 from res.colors import *
 from res.libs import *
