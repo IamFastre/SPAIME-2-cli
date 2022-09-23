@@ -706,7 +706,7 @@ def ttt_menu():
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "start":
-        result = ttt.ttt_start()
+        result = ttt.ttt_2p_start()
 
         winner = result[0]
         board = result[1]
