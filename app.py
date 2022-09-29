@@ -14,10 +14,14 @@ def erase():
     else:
         _ = os.system('clear')
 
-atexit.register(erase)
+try:
+    atexit.register(erase)
+except:
+    pass
 
 try:
     run_app()
 except:
-    erase()
     exit()
+
+erase()

@@ -14,11 +14,11 @@ from res.codes import *
 from res.libs import *
 from time import *
 
-import applets.ttt as ttt
-import applets.rps as rps
-import applets.rnd as rnd
+import apps.ttt as ttt
+import apps.rps as rps
+import apps.rnd as rnd
 
-import os, sys, atexit, shutil
+import os, sys, atexit, shutil, random
 
 # Installing/importing other modules that are just as important.
 # Hope you don't mind. :)
@@ -26,8 +26,12 @@ try:
     import yaml, keyboard
 except:
     print(f"{x.YELLOW}>>{x.GRAY} Gonna do some PIP'ing for ya{c.END}")
-    eval("os.system('pip install pyyaml')")
-    eval("os.system('pip install keyboard')")
+    try:
+        os.system('pip install pyyaml')
+        os.system('pip install keyboard')
+    except:
+        os.system('sudo pip install pyyaml')
+        os.system('sudo pip install keyboard')
     sleep(2)
 finally:
     import yaml, keyboard
@@ -249,78 +253,78 @@ def woosh_back():
 def choice_check(thing):
 
     # Placeholders:
+    if "{" in thing and "}" in thing:
+        if placeholders['nl'] in thing:
+            thing = thing.replace(placeholders['nl'], f"\n{x.YELLOW}>>{x.VIOLET}=============================={x.YELLOW}<<{c.END}\n{x.YELLOW}>>{x.VIOLET} ")
+        if placeholders['br'] in thing:
+            thing = thing.replace(placeholders['br'], f"\n{x.YELLOW}>>{x.VIOLET} ")
+            
+        if placeholders['name'] in thing:
+            thing = thing.replace(placeholders['name'], str(user['name']))
+        if placeholders['age'] in thing:
+            thing = thing.replace(placeholders['age'], str(user['age']))
+            
+        if placeholders['prefix'] in thing:
+            thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
+            
+        if placeholders['lastTTTWinner'] in thing:
+            thing = thing.replace(placeholders['lastTTTWinner'], str(games['ttt']['last-winner'])) 
+        if placeholders['xWins'] in thing:
+            thing = thing.replace(placeholders['xWins'], str(games['ttt']['x-wins']))
+        if placeholders['oWins'] in thing:
+            thing = thing.replace(placeholders['oWins'], str(games['ttt']['o-wins']))
+        if placeholders['tttTies'] in thing:
+            thing = thing.replace(placeholders['tttTies'], str(games['ttt']['ties']))
+        if placeholders['lastTTTBoard'] in thing:
+            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(games['ttt']['last-board'], True, left=f'{x.YELLOW}>>{c.END} ')}{x.YELLOW}>>{x.VIOLET} ")
+        
+        if placeholders['p1Last'] in thing:
+            thing = thing.replace(placeholders['p1Last'], str(games['rps']['p1']['last-choice']))
+        if placeholders['p2Last'] in thing:
+            thing = thing.replace(placeholders['p2Last'], str(games['rps']['p2']['last-choice']))
+        if placeholders['cpuLast'] in thing:
+            thing = thing.replace(placeholders['cpuLast'], str(games['rps']['cpu']['last-choice']))
+        if placeholders['p1Wins'] in thing:
+            thing = thing.replace(placeholders['p1Wins'], str(games['rps']['p1']['wins']))
+        if placeholders['p2Wins'] in thing:
+            thing = thing.replace(placeholders['p2Wins'], str(games['rps']['p2']['wins']))
+        if placeholders['cpuWins'] in thing:
+            thing = thing.replace(placeholders['cpuWins'], str(games['rps']['cpu']['wins']))
+        if placeholders['rpsTies'] in thing:
+            thing = thing.replace(placeholders['rpsTies'], str(games['rps']['ties']))
+        if placeholders['lastRPSWinner'] in thing:
+            thing = thing.replace(placeholders['lastRPSWinner'], str(games['rps']['last-winner']))
 
-    if placeholders['nl'] in thing:
-        thing = thing.replace(placeholders['nl'], f"\n{x.YELLOW}>>{x.VIOLET}=============================={x.YELLOW}<<{c.END}\n{x.YELLOW}>>{x.VIOLET} ")
-    if placeholders['br'] in thing:
-        thing = thing.replace(placeholders['br'], f"\n{x.YELLOW}>>{x.VIOLET} ")
+        if placeholders['heads'] in thing:
+            thing = thing.replace(placeholders['heads'], str(games['rnd']['heads']))
+        if placeholders['tails'] in thing:
+            thing = thing.replace(placeholders['tails'], str(games['rnd']['tails']))
+        if placeholders['flips'] in thing:
+            thing = thing.replace(placeholders['flips'], str(games['rnd']['flips']))
+        if placeholders['rndTies'] in thing:
+            thing = thing.replace(placeholders['rndTies'], str(games['rnd']['ties']))
+        if placeholders['lastHeads'] in thing:
+            thing = thing.replace(placeholders['lastHeads'], str(games['rnd']['last-heads']))
+        if placeholders['lastTails'] in thing:
+            thing = thing.replace(placeholders['lastTails'], str(games['rnd']['last-tails']))
+        if placeholders['lastFlips'] in thing:
+            thing = thing.replace(placeholders['lastFlips'], str(games['rnd']['last-flips']))
+        if placeholders['lastRNDWinner'] in thing:
+            thing = thing.replace(placeholders['lastRNDWinner'], str(games['rnd']['last-winner']))
+            
+        if placeholders['g'] in thing:
+            thing = thing.replace(placeholders['g'], "9.8")
+        if placeholders['e'] in thing:
+            thing = thing.replace(placeholders['e'], "2.7182")
+        if placeholders['pi'] in thing:
+            thing = thing.replace(placeholders['pi'], "3.1415")
+        if placeholders['tau'] in thing:
+            thing = thing.replace(placeholders['tau'], "6.2830")
+        if placeholders['phi'] in thing:
+            thing = thing.replace(placeholders['phi'], "1.618")
         
-    if placeholders['name'] in thing:
-        thing = thing.replace(placeholders['name'], str(user['name']))
-    if placeholders['age'] in thing:
-        thing = thing.replace(placeholders['age'], str(user['age']))
-        
-    if placeholders['prefix'] in thing:
-        thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
-        
-    if placeholders['lastTTTWinner'] in thing:
-        thing = thing.replace(placeholders['lastTTTWinner'], str(games['ttt']['last-winner'])) 
-    if placeholders['xWins'] in thing:
-        thing = thing.replace(placeholders['xWins'], str(games['ttt']['x-wins']))
-    if placeholders['oWins'] in thing:
-        thing = thing.replace(placeholders['oWins'], str(games['ttt']['o-wins']))
-    if placeholders['tttTies'] in thing:
-        thing = thing.replace(placeholders['tttTies'], str(games['ttt']['ties']))
-    if placeholders['lastTTTBoard'] in thing:
-        thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(games['ttt']['last-board'], True, left=f'{x.YELLOW}>>{c.END} ')}{x.YELLOW}>>{x.VIOLET} ")
-    
-    if placeholders['p1Last'] in thing:
-        thing = thing.replace(placeholders['p1Last'], str(games['rps']['p1']['last-choice']))
-    if placeholders['p2Last'] in thing:
-        thing = thing.replace(placeholders['p2Last'], str(games['rps']['p2']['last-choice']))
-    if placeholders['cpuLast'] in thing:
-        thing = thing.replace(placeholders['cpuLast'], str(games['rps']['cpu']['last-choice']))
-    if placeholders['p1Wins'] in thing:
-        thing = thing.replace(placeholders['p1Wins'], str(games['rps']['p1']['wins']))
-    if placeholders['p2Wins'] in thing:
-        thing = thing.replace(placeholders['p2Wins'], str(games['rps']['p2']['wins']))
-    if placeholders['cpuWins'] in thing:
-        thing = thing.replace(placeholders['cpuWins'], str(games['rps']['cpu']['wins']))
-    if placeholders['rpsTies'] in thing:
-        thing = thing.replace(placeholders['rpsTies'], str(games['rps']['ties']))
-    if placeholders['lastRPSWinner'] in thing:
-        thing = thing.replace(placeholders['lastRPSWinner'], str(games['rps']['last-winner']))
-
-    if placeholders['heads'] in thing:
-        thing = thing.replace(placeholders['heads'], str(games['rnd']['heads']))
-    if placeholders['tails'] in thing:
-        thing = thing.replace(placeholders['tails'], str(games['rnd']['tails']))
-    if placeholders['flips'] in thing:
-        thing = thing.replace(placeholders['flips'], str(games['rnd']['flips']))
-    if placeholders['rndTies'] in thing:
-        thing = thing.replace(placeholders['rndTies'], str(games['rnd']['ties']))
-    if placeholders['lastHeads'] in thing:
-        thing = thing.replace(placeholders['lastHeads'], str(games['rnd']['last-heads']))
-    if placeholders['lastTails'] in thing:
-        thing = thing.replace(placeholders['lastTails'], str(games['rnd']['last-tails']))
-    if placeholders['lastFlips'] in thing:
-        thing = thing.replace(placeholders['lastFlips'], str(games['rnd']['last-flips']))
-    if placeholders['lastRNDWinner'] in thing:
-        thing = thing.replace(placeholders['lastRNDWinner'], str(games['rnd']['last-winner']))
-        
-    if placeholders['g'] in thing:
-        thing = thing.replace(placeholders['g'], "9.8")
-    if placeholders['e'] in thing:
-        thing = thing.replace(placeholders['e'], "2.7182")
-    if placeholders['pi'] in thing:
-        thing = thing.replace(placeholders['pi'], "3.1415")
-    if placeholders['tau'] in thing:
-        thing = thing.replace(placeholders['tau'], "6.2830")
-    if placeholders['phi'] in thing:
-        thing = thing.replace(placeholders['phi'], "1.618")
-    
-    if placeholders[''] in thing:
-        thing = thing.replace(placeholders[''], "")
+        if placeholders[''] in thing:
+            thing = thing.replace(placeholders[''], "")
 
     # Commands:
 
@@ -450,22 +454,26 @@ class output():
 class decoded():
 
     n69 = asciiToChar(encoded.n69)
-    sea = asciiToChar(encoded.sea) + user['name']
+    n70 = asciiToChar(encoded.n70)
 
-    def f69(force=False):
-        if user['age'] >= 17 or force:
+    def f69():
+        
+        if random.randint(0,1) == 1:
             if user['name'] == '':
                 print(f"\n{x.YELLOW}>> {x.VIOLETBG}{c.WHITE}{decoded.n69}{c.END}")
             else:
                 print(f"\n{x.YELLOW}>>{x.GREEN} {user['name']}{c.END}, {x.VIOLETBG}{c.WHITE}{decoded.n69}{c.END}")
-            sleep(0.2)
-            clear()
-
-    def fea(force=False):
-        if user['name'].casefold() == asciiToChar("77 97 114 105 97").casefold() or user['name'].casefold() == asciiToChar("77 97 114 105 101").casefold() or force:
-            print(f"{x.YELLOW}\n>> {x.VIOLETBG}{c.WHITE}{decoded.sea}{c.END}")
+        else:
+            if user['name'] == '':
+                print(f"\n{x.YELLOW}>> {x.VIOLETBG}{c.WHITE}{decoded.n70}{c.END}")
+            else:
+                print(f"\n{x.YELLOW}>>{x.GREEN} {user['name']}{c.END}, {x.VIOLETBG}{c.WHITE}{decoded.n70}{c.END}")
         sleep(0.2)
         clear()
+
+    def foo(force=False):
+        if True or force:
+            pass
 
 
 
@@ -803,7 +811,6 @@ def options_menu():
             print(f"{x.RED}>>{x.GRAY} Something went wrong. {c.END}")
         else:
             user_update()
-            decoded.fea()
             clear()
             print(f"{x.GREEN}>>{x.GRAY} Changes saved. {c.END}")
 
@@ -1020,8 +1027,8 @@ def app_info():
     main_menu()
 
 
-def restart():
-    print(f"{x.YELLOW}>>{x.GRAY} Restarting.{c.END}")
+def refresh():
+    print(f"{x.YELLOW}>>{x.GRAY} Refreshing.{c.END}")
 
     settings_update()
     user_update()
@@ -1053,8 +1060,8 @@ def exit_app(sayBye=True):
     if os.path.exists('./res/__pycache__'):
         shutil.rmtree('./res/__pycache__')
         
-    if os.path.exists('./applets/__pycache__'):
-        shutil.rmtree('./applets/__pycache__')
+    if os.path.exists('./apps/__pycache__'):
+        shutil.rmtree('./apps/__pycache__')
         
     if os.path.exists('./.exec/__pycache__'):
         shutil.rmtree('./.exec/__pycache__')
@@ -1062,8 +1069,8 @@ def exit_app(sayBye=True):
     if os.path.exists('./__pycache__'):
         shutil.rmtree('./__pycache__')
         
-    keyboard.press_and_release('ctrl+c')
-    exit(0)
+    #keyboard.press_and_release('ctrl+c')
+    sys.exit(0)
 
 def main_menu():
 
@@ -1084,7 +1091,7 @@ def main_menu():
     print(f"5: {x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}]"      + f" Randomeur{c.END}")
     print(f"7: {x.GRAY}[{x.ORANGE}{bricks}{x.GRAY}]"        + f" Options{c.END}")
     print(f"8: {x.GRAY}[{x.VIOLET}>>{x.GRAY}]"       + f" Credits{c.END}")
-    print(f"9: {x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}]" + f" Restart{c.END}")
+    print(f"9: {x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}]" + f" Refresh{c.END}")
     print(f"0: {x.GRAY}[{x.RED}xx{x.GRAY}]"          + f" Exit{c.END}")
 
     choice = input(intake.prompt)
@@ -1113,8 +1120,8 @@ def main_menu():
     elif choice == "8" or choice.casefold() in ("credits", "info"):
         clear()
         app_info()
-    elif choice == "9" or choice.casefold() == "restart" or choice.casefold() == "rerun":
-        restart()
+    elif choice == "9" or choice.casefold() == "refresh" or choice.casefold() == "rerun":
+        refresh()
     elif choice == "0" or choice.casefold() == "end" or choice.casefold() == "exit":
         exit_app()
     else:

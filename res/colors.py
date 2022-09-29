@@ -66,6 +66,7 @@ class x():
     RED         =  RGB(251,80,83)
     GRAY        =  RGB(145,145,145)
     ORANGE      =  RGB(244,136,17)
+    REDANGE     =  RGB(220,67,0)
 
     WHITEBG     =  RGB(255,255,255, True)
     YELLOWBG    =  RGB(226,226,46, True)
@@ -76,6 +77,7 @@ class x():
     REDBG       =  RGB(251,80,83, True)
     GRAYBG      =  RGB(145,145,145, True)
     ORANGEBG    =  RGB(244,136,17, True)
+    REDANGEBG   =  RGB(220,67,0, True)
     
     neRED       =  RGB(153, 50, 51)
     neNOIR      =  RGB(25, 25, 25)
