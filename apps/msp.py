@@ -45,16 +45,18 @@ class BOARD:
     # If only dimension  :
     #    Bomb Count   : (dim**2)/10
     
-    def __init__(this, dim = 10, bombs = None):
+    def __init__(this, dim = 10, bombC = None):
         this.dim   = dim
         # Counts Bombs if no int provided
-        if bombs == None:
-            this.bombs = math.ceil((this.dim ** 2)  / 10)
+        if bombC == None:
+            this.bombC = math.ceil((this.dim ** 2)  / 10)
         else:
-            this.bombs = bombs
-        this.map = this.makeMap()
+            this.bombC = bombC
+        this.bombs     = set()
+        this.dug       = set()
+        this.flagged   = set()
+        this.map       = this.makeMap()
         this.numerate()
-        this.dug   = set()
     
     def __str__(self):
         pass
@@ -73,7 +75,7 @@ class BOARD:
         BOMBS = 0
 
         # The planting °¬°
-        while BOMBS < this.bombs:
+        while BOMBS < this.bombC:
             # Getting random (x,y) for the bombs 
             Loc  = random.randint(0, this.dim ** 2 - 1)
             
@@ -86,6 +88,7 @@ class BOARD:
             
             # Actually adding the bomb
             MAP[xLoc][yLoc] = bombS
+            this.bombs.add((xLoc,yLoc))
             BOMBS += 1
 
         return MAP
@@ -108,27 +111,31 @@ class BOARD:
         # If bomb => lose
         # If not => reveal
         
+        if not (X,Y) in this.flagged:
+            this.dug.add((X,Y))
 
-        this.dug.add((X,Y))
+            if this.map[X][Y] == bombS:
+                return False
+            elif nS.index(this.map[X][Y]) > 0:
+                return True
 
-        if this.map[X][Y] == bombS:
-            return False
-        elif nS.index(this.map[X][Y]) > 0:
-            return True
-
-        for x in range(X - 1, X + 2):
-            for y in range(Y - 1, Y + 2):
-                if this.dim > x > -1 and this.dim > y > -1:
-                    if (x,y) in this.dug:
-                        continue
-                    this.dig(x, y)
+            for x in range(X - 1, X + 2):
+                for y in range(Y - 1, Y + 2):
+                    if this.dim > x > -1 and this.dim > y > -1:
+                        if (x,y) in this.dug:
+                            continue
+                        this.dig(x, y)
 
         return True
 
 
     def flag(this, X, Y):
-        
-        pass
+        global mapView
+
+        if (X,Y) in this.flagged:
+            this.flagged.remove((X,Y))
+        else:
+            this.flagged.add((X,Y))
 
     def numerate(this):
         # Turning the spot into the number of neighboring bombs
@@ -143,47 +150,50 @@ class BOARD:
 
     def print(this):
         
-        this.mapDis   = [[emptyS for _ in range(this.dim)] for _ in range(this.dim)]
+        this.mapView   = [[emptyS for _ in range(this.dim)] for _ in range(this.dim)]
         
         for _x in range(0, this.dim):
             for _y in range(0, this.dim):
                 if (_x,_y) in this.dug:
-                    this.mapDis[_x][_y] = this.map[_x][_y]
-                    
+                    this.mapView[_x][_y] = this.map[_x][_y]
+                if (_x, _y) in this.flagged:
+                    this.mapView[_x][_y] = flagS
 
-        lineL = len(this.mapDis) * 2 + 1
+        lineL = len(this.mapView) * 2 + 1
         
-        OO = 0
+        lineH = f"\n{x.SKY}x{x.VIOLET},{x.LETTUCE}y{c.END} "
         for i in range(this.dim):
-            SO = x.ORANGE + str(OO) + c.END
-                
+            SO = x.SKY + " " + str(i) + c.END
+            lineH = lineH + SO
             
+        print(lineH)
         print( x.VIOLET + "    " + ("_"*lineL) + c.END)
 
         II = 0
-        for row in this.mapDis:
-            SI = x.ORANGE + " " + str(II) + c.END
-            line = x.VIOLET + SI + f"  {spS}" + c.END
+        for row in this.mapView:
+            SI = x.LETTUCE + "" + str(II) + c.END
+            lineV = x.VIOLET + SI + f"   {spS}" + c.END
             II += 1
             for spot in row:
-                line = f"{line}{spot}{spS}"
-            print(line)
+                lineV = f"{lineV}{spot}{spS}"
+            print(lineV)
             #print("—"*lineL)
 
         print( x.VIOLET + "    " + ("‾"*lineL) + c.END)
             
         print()
         print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
-        #print(f"{x.YELLOW}>>{x.VIOLET} Board Size: {x.LETTUCE}{this.dim}{x.YELLOW}u{c.END}")
-        #print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count: {x.LETTUCE}{this.bombs}{bombS}{c.END}")
+        print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
+        print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
+        print(f"{x.YELLOW}>>{x.VIOLET} Flags to use: {x.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{c.END}")
 
 
 def startGame():
     gameRunning = True
     
-    BD = BOARD(10)
+    BD = BOARD(10, 1)
     
-    flagC = BD.bombs
+    flagC = BD.bombC
     
     output.notify('Dig by typing {x-pos,y-pos}. Spaces are ignored.')
     
@@ -214,20 +224,42 @@ def startGame():
                     continue
                 else:
                     gameRunning = False
+                    gameWon     = False
             else:
                 clear()
                 output.invalid(f"Invalid position, dummy.")
                 continue
         else:
-            BD.flag()
+            Loc = re.split(" *, *", choice.replace("F", ""))
+
+            try:
+                Y = int(Loc[0])
+                X = int(Loc[1])
+            except ValueError:
+                clear()
+                output.invalid(f"Invalid position, dummy.")
+                continue
+            if BD.dim > X >= 0 and BD.dim > Y >= 0:
+                
+                BD.flag(X,Y)
+                
+                if BD.flagged == BD.bombs:
+                    gameRunning = False
+                    gameWon     = True
+                clear()
+                output.notify("OK, OK!!")
+                continue
 
         for _x in range(0, BD.dim):
             for _y in range(0, BD.dim):
                 BD.dig(_x,_y)
-    
     clear()
-    output.invalid(f"You lost. :(")
+    if gameWon:
+        output.success("CONGRATULATIONS! You won!")
+    else:
+        output.invalid(f"You lost. :(")
     BD.print()
+    enter_continue()
 
 
 if __name__ == "__main__":

@@ -18,6 +18,12 @@ class output():
             print(f"{x.RED}>>{x.GRAY} Invalid Input.{c.END}")
         else:
             print(f"{x.RED}>>{x.GRAY} {string}{c.END}")
+            
+    def notify(string):
+        print(f"{x.YELLOW}>>{x.GRAY} {string}{c.END}")
+        
+    def success(string):
+        print(f"{x.GREEN}>>{x.GRAY} {string}{c.END}")
 
 def asciiToChar(string):
     string = string.split(" ")
