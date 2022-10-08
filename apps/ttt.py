@@ -6,7 +6,6 @@ if __name__ == "__main__":
 
 from res.colors import *
 from res.libs import *
-import res.main as rm
 
 
 class s():
@@ -54,22 +53,18 @@ p3 = s.n
 
 def choosePlayer():
     print(f"\n{x.YELLOW}>>> {x.VIOLET}Wanna start with {s.x} {x.VIOLET}or {s.o}?{c.END}")
-    choice = input(intake.prompt)
-    try:
-        choice = rm.choice_check(choice)
-    except:
-        pass
-    allowed = "xo"
-    if go_thro(choice.casefold(), allowed):
-        if choice.capitalize() in ("X"):
+    choice = intake.prompt()
+    allowed = "xo12"
+    if goThro(choice.casefold(), allowed) and len(choice) == 1:
+        if choice.capitalize() in ("X", "1"):
             clear()
             return p1
-        elif choice.capitalize() in ("O"):
+        elif choice.capitalize() in ("O", "2"):
             clear()
             return p2
     else:
         clear()
-        output.invalid()
+        output.error("Invalid input.")
         return None
 
 def cpuChoice(board):
@@ -226,10 +221,10 @@ def check():
 
     for line in lines:
         
-        if go_thro(line, [s.x]):
+        if goThro(line, [s.x]):
             return [p1, "done", lineChecker()]
         
-        if go_thro(line, [s.o]):
+        if goThro(line, [s.o]):
             return [p2, "done", lineChecker()]
     
     busy_tiles = 0
@@ -254,26 +249,22 @@ def play():
     elif currentPlayer == p2:
         mark = s.o
 
-    choice = input(intake.prompt)
-    try:
-        choice = rm.choice_check(choice)
-    except:
-        pass
+    choice = intake.prompt()
     
     allowed = "123456789"
-    if go_thro(choice,allowed) and len(choice) == 1:
+    if goThro(choice,allowed) and len(choice) == 1:
         choice = int(choice) - 1
         if board[choice] in ns:
             board[choice] = mark
             currentPlayer = currentPlayerChange(p1, p2)
         else:
             clear()
-            output.invalid()
+            output.error("Invalid input.")
             displayBoard(board)
             play()
     else:
         clear()
-        output.invalid()
+        output.error("Invalid input.")
         displayBoard(board)
         play()
         
@@ -309,7 +300,7 @@ def ttt_2p_start():
         finalWinner = winner
         finalBoard = board
         #finalBoard = displayBoard(board, True, left=f"{x.YELLOW}>>{c.END} ")
-        enter_continue()
+        enterContinue()
         return [finalWinner, finalBoard]
 
 if __name__ == '__main__':

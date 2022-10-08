@@ -9,7 +9,6 @@ import random, math, re
 # Importing my modules
 from res.colors import *
 from res.libs import *
-import res.main as rm
 
 # Declaring spot tiles looks
 emptyS = x.VIOLET + "#" + x.END
@@ -195,17 +194,13 @@ def startGame():
     
     flagC = BD.bombC
     
-    output.notify('Dig by typing {x-pos,y-pos}. Spaces are ignored.')
+    output.warn('Dig by typing {x-pos,y-pos}. Spaces are ignored.')
     
     while gameRunning:
 
         BD.print()
 
-        choice = input(intake.prompt)
-        try:
-            choice = rm.choice_check(choice)
-        except:
-            pass
+        choice = intake.prompt()
 
         if not "F" in choice:
             Loc = re.split(" *, *", choice)
@@ -215,7 +210,7 @@ def startGame():
                 X = int(Loc[1])
             except ValueError:
                 clear()
-                output.invalid(f"Invalid position, dummy.")
+                output.error(f"Invalid position, dummy.")
                 continue
             if BD.dim > X >= 0 and BD.dim > Y >= 0:
                 if BD.dig(X,Y):
@@ -227,7 +222,7 @@ def startGame():
                     gameWon     = False
             else:
                 clear()
-                output.invalid(f"Invalid position, dummy.")
+                output.error(f"Invalid position, dummy.")
                 continue
         else:
             Loc = re.split(" *, *", choice.replace("F", ""))
@@ -237,7 +232,7 @@ def startGame():
                 X = int(Loc[1])
             except ValueError:
                 clear()
-                output.invalid(f"Invalid position, dummy.")
+                output.error(f"Invalid position, dummy.")
                 continue
             if BD.dim > X >= 0 and BD.dim > Y >= 0:
                 
@@ -247,7 +242,7 @@ def startGame():
                     gameRunning = False
                     gameWon     = True
                 clear()
-                output.notify("OK, OK!!")
+                output.warn("OK, OK!!")
                 continue
 
         for _x in range(0, BD.dim):
@@ -257,9 +252,9 @@ def startGame():
     if gameWon:
         output.success("CONGRATULATIONS! You won!")
     else:
-        output.invalid(f"You lost. :(")
+        output.error(f"You lost. :(")
     BD.print()
-    enter_continue()
+    enterContinue()
 
 
 if __name__ == "__main__":

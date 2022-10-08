@@ -4,8 +4,10 @@ ttt:
 
   x-wins: 0
   o-wins: 0
-  
+
   ties: 0
+
+
 
 rps:
   p1:
@@ -23,6 +25,8 @@ rps:
   ties: 0
   last-winner: '—'
 
+
+
 rnd:
   heads: 0
   tails: 0
@@ -33,3 +37,14 @@ rnd:
   last-tails: 0
   last-flips: 0
   last-winner: '—'
+
+
+
+msp:
+  wins: 0
+  loses: 0
+
+  spots-dug: 0
+
+  last-game:
+  - null

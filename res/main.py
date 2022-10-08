@@ -17,6 +17,7 @@ from time import *
 import apps.ttt as ttt
 import apps.rps as rps
 import apps.rnd as rnd
+import apps.msp as msp
 
 import os, sys, atexit, shutil, random
 
@@ -54,10 +55,10 @@ def settings_update():
     with open('./data/settings.yml', 'w') as settings_yaml:
         yaml.safe_dump(settings, settings_yaml)
 
-# Updating the 'games.yml' file.
+# Updating the 'apps.yml' file.
 def games_update():
-    with open('./data/games.yml', 'w') as games_yaml:
-        yaml.safe_dump(games, games_yaml)
+    with open('./data/apps.yml', 'w') as apps_yaml:
+        yaml.safe_dump(apps, apps_yaml)
 
 # Resting the 'user.yml' file by copying the .old one.
 def user_reset():
@@ -75,29 +76,31 @@ def settings_reset():
     with open('./data/settings.yml', 'rb') as settings_yaml:
         settings = yaml.safe_load(settings_yaml)
 
-# Resting the 'games.yml' file by copying the .old one.
+# Resting the 'apps.yml' file by copying the .old one.
 def games_reset():
-    global games
-    shutil.copy('./data/.old/games.yml', './data/')
+    global apps
+    shutil.copy('./data/.old/apps.yml', './data/')
 
-    with open('./data/games.yml', 'rb') as games_yaml:
-        games = yaml.safe_load(games_yaml)
+    with open('./data/apps.yml', 'rb') as apps_yaml:
+        apps = yaml.safe_load(apps_yaml)
         
 def ttt_reset():
-    global games
-    games['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0}
+    global apps
+    apps['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0}
     games_update()
     
 def rps_reset():
-    global games
-    games['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
+    global apps
+    apps['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
     games_update()
     
 def rnd_reset():
-    global games
-    games['rnd'] = {'ties': 0, 'heads': 0, 'tails': 0, 'flips': 0, 'last-heads': 0, 'last-tails': 0, 'last-flips': 0, 'last-winner': '—'}
+    global apps
+    apps['rnd'] = {'ties': 0, 'heads': 0, 'tails': 0, 'flips': 0, 'last-heads': 0, 'last-tails': 0, 'last-flips': 0, 'last-winner': '—'}
     games_update()
 
+def msp_reset():
+    global apps
 # Resting all files by copying the .old ones.
 def all_reset():
     user_reset()
@@ -132,17 +135,17 @@ finally:
     with open('./data/settings.yml','rb') as settings_yml:
         settings = yaml.safe_load(settings_yml)
 
-# Checks if 'games.yml' is present.
+# Checks if 'apps.yml' is present.
 try:
-    with open('./data/games.yml', 'rb') as games_yml:
-        games = yaml.safe_load(games_yml)
+    with open('./data/apps.yml', 'rb') as apps_yml:
+        apps = yaml.safe_load(apps_yml)
 except:
     print(f"{x.YELLOW}>>{x.GRAY} Some YAML files are missing. {c.END}")
     sleep(1)
     games_reset()
 finally:
-    with open('./data/games.yml', 'rb') as games_yml:
-        games = yaml.safe_load(games_yml)
+    with open('./data/apps.yml', 'rb') as apps_yml:
+        apps = yaml.safe_load(apps_yml)
 
 # Checks if 'user.yml' is OK.
 try:
@@ -162,9 +165,9 @@ except:
 finally:
     clear()
 
-# Checks if 'games.yml' is OK
+# Checks if 'apps.yml' is OK
 try:
-    print(f"{games}")
+    print(f"{apps}")
 except:
     print("Reset")
     games_reset()
@@ -268,49 +271,49 @@ def choice_check(thing):
             thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
             
         if placeholders['lastTTTWinner'] in thing:
-            thing = thing.replace(placeholders['lastTTTWinner'], str(games['ttt']['last-winner'])) 
+            thing = thing.replace(placeholders['lastTTTWinner'], str(apps['ttt']['last-winner'])) 
         if placeholders['xWins'] in thing:
-            thing = thing.replace(placeholders['xWins'], str(games['ttt']['x-wins']))
+            thing = thing.replace(placeholders['xWins'], str(apps['ttt']['x-wins']))
         if placeholders['oWins'] in thing:
-            thing = thing.replace(placeholders['oWins'], str(games['ttt']['o-wins']))
+            thing = thing.replace(placeholders['oWins'], str(apps['ttt']['o-wins']))
         if placeholders['tttTies'] in thing:
-            thing = thing.replace(placeholders['tttTies'], str(games['ttt']['ties']))
+            thing = thing.replace(placeholders['tttTies'], str(apps['ttt']['ties']))
         if placeholders['lastTTTBoard'] in thing:
-            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(games['ttt']['last-board'], True, left=f'{x.YELLOW}>>{c.END} ')}{x.YELLOW}>>{x.VIOLET} ")
+            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(apps['ttt']['last-board'], True, left=f'{x.YELLOW}>>{c.END} ')}{x.YELLOW}>>{x.VIOLET} ")
         
         if placeholders['p1Last'] in thing:
-            thing = thing.replace(placeholders['p1Last'], str(games['rps']['p1']['last-choice']))
+            thing = thing.replace(placeholders['p1Last'], str(apps['rps']['p1']['last-choice']))
         if placeholders['p2Last'] in thing:
-            thing = thing.replace(placeholders['p2Last'], str(games['rps']['p2']['last-choice']))
+            thing = thing.replace(placeholders['p2Last'], str(apps['rps']['p2']['last-choice']))
         if placeholders['cpuLast'] in thing:
-            thing = thing.replace(placeholders['cpuLast'], str(games['rps']['cpu']['last-choice']))
+            thing = thing.replace(placeholders['cpuLast'], str(apps['rps']['cpu']['last-choice']))
         if placeholders['p1Wins'] in thing:
-            thing = thing.replace(placeholders['p1Wins'], str(games['rps']['p1']['wins']))
+            thing = thing.replace(placeholders['p1Wins'], str(apps['rps']['p1']['wins']))
         if placeholders['p2Wins'] in thing:
-            thing = thing.replace(placeholders['p2Wins'], str(games['rps']['p2']['wins']))
+            thing = thing.replace(placeholders['p2Wins'], str(apps['rps']['p2']['wins']))
         if placeholders['cpuWins'] in thing:
-            thing = thing.replace(placeholders['cpuWins'], str(games['rps']['cpu']['wins']))
+            thing = thing.replace(placeholders['cpuWins'], str(apps['rps']['cpu']['wins']))
         if placeholders['rpsTies'] in thing:
-            thing = thing.replace(placeholders['rpsTies'], str(games['rps']['ties']))
+            thing = thing.replace(placeholders['rpsTies'], str(apps['rps']['ties']))
         if placeholders['lastRPSWinner'] in thing:
-            thing = thing.replace(placeholders['lastRPSWinner'], str(games['rps']['last-winner']))
+            thing = thing.replace(placeholders['lastRPSWinner'], str(apps['rps']['last-winner']))
 
         if placeholders['heads'] in thing:
-            thing = thing.replace(placeholders['heads'], str(games['rnd']['heads']))
+            thing = thing.replace(placeholders['heads'], str(apps['rnd']['heads']))
         if placeholders['tails'] in thing:
-            thing = thing.replace(placeholders['tails'], str(games['rnd']['tails']))
+            thing = thing.replace(placeholders['tails'], str(apps['rnd']['tails']))
         if placeholders['flips'] in thing:
-            thing = thing.replace(placeholders['flips'], str(games['rnd']['flips']))
+            thing = thing.replace(placeholders['flips'], str(apps['rnd']['flips']))
         if placeholders['rndTies'] in thing:
-            thing = thing.replace(placeholders['rndTies'], str(games['rnd']['ties']))
+            thing = thing.replace(placeholders['rndTies'], str(apps['rnd']['ties']))
         if placeholders['lastHeads'] in thing:
-            thing = thing.replace(placeholders['lastHeads'], str(games['rnd']['last-heads']))
+            thing = thing.replace(placeholders['lastHeads'], str(apps['rnd']['last-heads']))
         if placeholders['lastTails'] in thing:
-            thing = thing.replace(placeholders['lastTails'], str(games['rnd']['last-tails']))
+            thing = thing.replace(placeholders['lastTails'], str(apps['rnd']['last-tails']))
         if placeholders['lastFlips'] in thing:
-            thing = thing.replace(placeholders['lastFlips'], str(games['rnd']['last-flips']))
+            thing = thing.replace(placeholders['lastFlips'], str(apps['rnd']['last-flips']))
         if placeholders['lastRNDWinner'] in thing:
-            thing = thing.replace(placeholders['lastRNDWinner'], str(games['rnd']['last-winner']))
+            thing = thing.replace(placeholders['lastRNDWinner'], str(apps['rnd']['last-winner']))
             
         if placeholders['g'] in thing:
             thing = thing.replace(placeholders['g'], "9.8")
@@ -370,7 +373,7 @@ def choice_check(thing):
                         print("")
                     except:
                         output.invalid(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
-                        enter_continue()
+                        enterContinue()
                         clear()
                         output.invalid(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         main_menu()
@@ -395,7 +398,7 @@ def choice_check(thing):
                         print("")
                     except:
                         output.invalid(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
-                        enter_continue()
+                        enterContinue()
                         clear()
                         output.invalid(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         main_menu()
@@ -484,7 +487,16 @@ class decoded():
 ###########################
 # Defining app menus etc. #
 ###########################
+def msp_menu():
+    
+    global window
+    window = "msp_menu()"
 
+    def stats_reset():
+        if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
+            msp_reset()
+            clear()
+            print(f"{x.GREEN}>>{x.GRAY} All done, good as new. {c.END}")
 def rnd_menu():
 
     global window
@@ -498,16 +510,16 @@ def rnd_menu():
             
     def stats_menu():
         print(f"\n{x.YELLOW}>>>{x.VIOLET} Randomeur Statistics:\n{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.headsStyle}{c.END}: {x.GRAY}{games['rnd']['heads']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tailsStyle}{c.END}: {x.GRAY}{games['rnd']['tails']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.flipsStyle}{c.END}: {x.GRAY}{games['rnd']['flips']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tieStyle}{x.RED}s{c.END}:  {x.GRAY}{games['rnd']['ties']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.headsStyle}{c.END}: {x.GRAY}{apps['rnd']['heads']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tailsStyle}{c.END}: {x.GRAY}{apps['rnd']['tails']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.flipsStyle}{c.END}: {x.GRAY}{apps['rnd']['flips']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tieStyle}{x.RED}s{c.END}:  {x.GRAY}{apps['rnd']['ties']}{c.END}")
         print("")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.headsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-heads']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.tailsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-tails']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.flipsStyle}{c.END}:  {x.GRAY}{games['rnd']['last-flips']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Winner{c.END}: {x.GRAY}{games['rnd']['last-winner']}{c.END}")
-        enter_continue()
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.headsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-heads']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.tailsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-tails']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.flipsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-flips']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last Winner{c.END}: {x.GRAY}{apps['rnd']['last-winner']}{c.END}")
+        enterContinue()
     
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Welcome to Randomeur!")
     output.note(1)
@@ -516,26 +528,26 @@ def rnd_menu():
     print(f"9: {x.GRAY}Reset RND Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
     
     if choice == "1" or choice.casefold() in ("flipeur", "coin flipeur", "coin"):
         clear()
         rnd.flipeur()
         
-        games['rnd']['heads']    += rnd.heads
-        games['rnd']['tails']    += rnd.tails
-        games['rnd']['flips']    += rnd.flips
+        apps['rnd']['heads']    += rnd.heads
+        apps['rnd']['tails']    += rnd.tails
+        apps['rnd']['flips']    += rnd.flips
         if rnd.heads == rnd.tails:
-            games['rnd']['ties'] += 1
+            apps['rnd']['ties'] += 1
         games_update()
         
-        games['rnd']['last-heads']       = rnd.heads  
-        games['rnd']['last-tails']       = rnd.tails
-        games['rnd']['last-flips']       = rnd.flips
+        apps['rnd']['last-heads']       = rnd.heads  
+        apps['rnd']['last-tails']       = rnd.tails
+        apps['rnd']['last-flips']       = rnd.flips
         games_update()
         
-        games['rnd']['last-winner']      = rnd.winner
+        apps['rnd']['last-winner']      = rnd.winner
         games_update()
         
         woosh_back()
@@ -562,7 +574,7 @@ def rps_menu():
     def whosBest():
         
         wins = [
-            games['rps']['cpu']['wins'], games['rps']['p1']['wins'], games['rps']['p2']['wins']
+            apps['rps']['cpu']['wins'], apps['rps']['p1']['wins'], apps['rps']['p2']['wins']
         ]
         name = [   
             rps.cpu['name'], rps.p1['name'], rps.p2['name']
@@ -584,18 +596,18 @@ def rps_menu():
     
     def stats_menu():
         print(f"\n{x.YELLOW}>>>{x.VIOLET} RockPaperScissors Statistics:\n{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Wins        : {x.GRAY}{games['rps']['p1']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Last Choice : {x.GRAY}{games['rps']['p1']['last-choice']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Wins        : {x.GRAY}{apps['rps']['p1']['wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Last Choice : {x.GRAY}{apps['rps']['p1']['last-choice']}{c.END}")
         print("")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Wins        : {x.GRAY}{games['rps']['p2']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Last Choice : {x.GRAY}{games['rps']['p2']['last-choice']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Wins        : {x.GRAY}{apps['rps']['p2']['wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Last Choice : {x.GRAY}{apps['rps']['p2']['last-choice']}{c.END}")
         print("")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Wins        : {x.GRAY}{games['rps']['cpu']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Last Choice : {x.GRAY}{games['rps']['cpu']['last-choice']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Wins        : {x.GRAY}{apps['rps']['cpu']['wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Last Choice : {x.GRAY}{apps['rps']['cpu']['last-choice']}{c.END}")
         print("")
-        print(f" {x.YELLOW}-{c.END} " + f"Ties : {x.GRAY}{games['rps']['ties']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Ties : {x.GRAY}{apps['rps']['ties']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Best : {x.GRAY}{whosBest()}{c.END}")
-        enter_continue()
+        enterContinue()
 
     def stats_reset():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
@@ -612,7 +624,7 @@ def rps_menu():
     print(f"9: {x.GRAY}Reset RPS Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "solo":
@@ -623,17 +635,17 @@ def rps_menu():
         cpu = rps.cpu
         winner = rps.winner
         
-        games['rps']['p1']['last-choice']  = p1['input']
-        games['rps']['cpu']['last-choice'] = cpu['input']
-        games['rps']['last-winner']        = winner['name']
+        apps['rps']['p1']['last-choice']  = p1['input']
+        apps['rps']['cpu']['last-choice'] = cpu['input']
+        apps['rps']['last-winner']        = winner['name']
         games_update()
 
         if winner == p1:
-            games['rps']['p1']['wins'] += 1
+            apps['rps']['p1']['wins'] += 1
         if winner == cpu:
-            games['rps']['cpu']['wins'] += 1
+            apps['rps']['cpu']['wins'] += 1
         if winner == pN:
-            games['rps']['ties'] += 1
+            apps['rps']['ties'] += 1
         games_update()
 
         rps_menu()
@@ -646,17 +658,17 @@ def rps_menu():
         p2 = rps.p2
         winner = rps.winner
         
-        games['rps']['p1']['last-choice'] = p1['input']
-        games['rps']['p2']['last-choice'] = p2['input']
-        games['rps']['last-winner']       = winner['name']
+        apps['rps']['p1']['last-choice'] = p1['input']
+        apps['rps']['p2']['last-choice'] = p2['input']
+        apps['rps']['last-winner']       = winner['name']
         games_update()
     
         if winner == p1:
-            games['rps']['p1']['wins'] += 1
+            apps['rps']['p1']['wins'] += 1
         if winner == p2:
-            games['rps']['p2']['wins'] += 1
+            apps['rps']['p2']['wins'] += 1
         if winner == pN:
-            games['rps']['ties'] += 1
+            apps['rps']['ties'] += 1
         games_update()
 
         rps_menu()
@@ -684,13 +696,13 @@ def ttt_menu():
 
     def stats_menu():
         print(f"\n{x.YELLOW}>>>{x.VIOLET} TicTacToe Statistics:\n{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"X Wins     : {x.GRAY}{games['ttt']['x-wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"O Wins     : {x.GRAY}{games['ttt']['o-wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Ties       : {x.GRAY}{games['ttt']['ties']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Winner: {x.GRAY}{games['ttt']['last-winner']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"X Wins     : {x.GRAY}{apps['ttt']['x-wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"O Wins     : {x.GRAY}{apps['ttt']['o-wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Ties       : {x.GRAY}{apps['ttt']['ties']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last Winner: {x.GRAY}{apps['ttt']['last-winner']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Last Board :-\n")
-        print(ttt.displayBoard(games['ttt']['last-board'], True, left=f' {x.YELLOW}-{c.END} '))
-        enter_continue()
+        print(ttt.displayBoard(apps['ttt']['last-board'], True, left=f' {x.YELLOW}-{c.END} '))
+        enterContinue()
     def stats_reset():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
             ttt_reset()
@@ -710,7 +722,7 @@ def ttt_menu():
     print(f"9: {x.GRAY}Reset TTT Statistics{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
     
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "start":
@@ -719,16 +731,16 @@ def ttt_menu():
         winner = result[0]
         board = result[1]
 
-        games['ttt']['last-winner'] = winner
-        games['ttt']['last-board'] = board
+        apps['ttt']['last-winner'] = winner
+        apps['ttt']['last-board'] = board
         games_update()
 
         if winner == ttt.s.x:
-            games['ttt']['x-wins'] = int(games['ttt']['x-wins']) + 1
+            apps['ttt']['x-wins'] = int(apps['ttt']['x-wins']) + 1
         if winner == ttt.s.o:
-            games['ttt']['o-wins'] = int(games['ttt']['o-wins']) + 1
+            apps['ttt']['o-wins'] = int(apps['ttt']['o-wins']) + 1
         if winner == ttt.s.n:
-            games['ttt']['ties'] = int(games['ttt']['ties']) + 1
+            apps['ttt']['ties'] = int(apps['ttt']['ties']) + 1
         games_update()
 
         ttt_menu()
@@ -795,7 +807,7 @@ def help_menu():
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastFlips']}: " + f"    {x.GRAY}Returns the last {rnd.flipsStyle}{x.GRAY} count.{c.END}")
     print(f" {x.YELLOW}-{c.END} " + f"{placeholders['lastRNDWinner']}: " + f"{x.GRAY}Returns the last RND winner.{c.END}")
 
-    enter_continue()
+    enterContinue()
 
 def options_menu():
 
@@ -856,7 +868,7 @@ def options_menu():
     print(f"9: {x.GRAY}Rest Application{c.END}")
     print(f"0: {x.GRAY}Home{c.END}")
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "name":
@@ -866,7 +878,7 @@ def options_menu():
         output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{user['name'] if user['name'] != '' else None}{c.END}")
 
-        choice = input(intake.prompt)
+        choice = intake.prompt()
         choice = choice_check(choice)
 
         name_change(choice)
@@ -880,7 +892,7 @@ def options_menu():
         output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{user['age']}{c.END}")
 
-        choice = input(intake.prompt)
+        choice = intake.prompt()
         choice = choice_check(choice)
 
         age_change(choice)
@@ -893,7 +905,7 @@ def options_menu():
         output.note(1)
         print(f"!!: {x.GRAY}Current is {x.GREEN}{settings['prefix']}{c.END}")
         
-        choice = input(intake.prompt)
+        choice = intake.prompt()
         choice = choice_check(choice)
         
         prefix_change(choice)
@@ -906,7 +918,7 @@ def options_menu():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
             print(f"\n{x.YELLOW}>>{x.VIOLET} Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.{c.END}")
 
-            choice = input(intake.prompt)
+            choice = intake.prompt()
             choice = choice_check(choice)
 
             if choice == f"{settings['prefix']}reset":
@@ -930,7 +942,7 @@ def options_menu():
         if confirm(f"{x.YELLOW}>>{x.VIOLET} Are you sure? {c.END}"):
             print(f"\n{x.YELLOW}>>{x.VIOLET} Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.{c.END}")
 
-            choice = input(intake.prompt)
+            choice = intake.prompt()
             choice = choice_check(choice)
 
             if choice == f"{settings['prefix']}reset":
@@ -959,7 +971,7 @@ def repeat():
     print(f"\n{x.YELLOW}>>>{x.VIOLET} What do you want me to repeat?{c.END}")
     output.note(1)
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
     if choice.casefold() == "idk" or choice.casefold() == "not sure":
@@ -981,10 +993,10 @@ def do_math():
     print(f"\n{x.YELLOW}>>>{x.VIOLET} Oh wanna do some math'ing?{c.END}")
     output.note(1)
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
-    if go_thro(choice,allowed):
+    if goThro(choice,allowed):
         try:
             choice = eval(choice)
         except:
@@ -1021,7 +1033,7 @@ def app_info():
     print(f"Github : {x.GRAY}{c.URL}{c.ITALIC}https://github.com/IamFastre{c.END}")
     print(f"Discord: {x.GRAY}{c.URL}{c.ITALIC}https://discord.gg/kkzmxkG{c.END}")
     print(f"Note   : {x.GRAY}There was never a SPAIME¹{c.END}")
-    choice = enter_continue()
+    choice = enterContinue()
     if choice.casefold() in admin:
         print(f"{x.GREEN}>> {x.GRAY}Yes, {x.RED}♥{x.GRAY}.{c.END}")
     main_menu()
@@ -1094,7 +1106,7 @@ def main_menu():
     print(f"9: {x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}]" + f" Refresh{c.END}")
     print(f"0: {x.GRAY}[{x.RED}xx{x.GRAY}]"          + f" Exit{c.END}")
 
-    choice = input(intake.prompt)
+    choice = intake.prompt()
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "repeat":

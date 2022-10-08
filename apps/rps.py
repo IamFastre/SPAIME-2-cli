@@ -8,7 +8,7 @@ import random
 
 from res.colors import *
 from res.libs import *
-import res.main as rm
+
 
 
 game = {
@@ -44,15 +44,11 @@ class s:
 
 def playerRPC(player):
     print(f"\n{x.YELLOW}>>> {player['name']}, {x.VIOLET}Make a choice:{c.END}")
-    print(f"{x.GRAY}r: {s.r}")
-    print(f"{x.GRAY}p: {s.p}")
-    print(f"{x.GRAY}s: {s.s}")
+    print(f"{x.GRAY}1: {s.r}")
+    print(f"{x.GRAY}2: {s.p}")
+    print(f"{x.GRAY}3: {s.s}")
     
-    choice = input(intake.prompt)
-    try:
-        choice = rm.choice_check(choice)
-    except:
-        pass
+    choice = intake.prompt()
     
     if choice in ("r", "1"):
         player['input'] = s.r
@@ -64,7 +60,7 @@ def playerRPC(player):
         player['input'] = s.s
         return
     clear()
-    output.invalid()
+    output.error("Invalid input.")
     playerRPC(player)
 
 
@@ -122,7 +118,7 @@ def result(player1,player2,winner):
     else:
         print(f"{x.YELLOW}>>{x.VIOLET} It's a tie!{c.END}")
 
-    enter_continue()
+    enterContinue()
     
 def soloMode():
     
@@ -159,11 +155,7 @@ def chooseMode():
     print(f"{x.GRAY}1: {x.GRAY}Solo Mode{c.END}")
     print(f"{x.GRAY}2: {x.GRAY}2P Mode{c.END}")
     
-    choice = input(intake.prompt)
-    try:
-        choice = rm.choice_check(choice)
-    except:
-        pass
+    choice = intake.prompt()
     
     if choice in ("1", "solo"):
         soloMode()
@@ -172,7 +164,7 @@ def chooseMode():
         duoMode()
         return
     clear()
-    output.invalid()
+    output.error("Invalid input.")
     chooseMode()
 
 if __name__ == "__main__":

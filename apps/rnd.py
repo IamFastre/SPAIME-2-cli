@@ -8,7 +8,7 @@ import random
 
 from res.colors import *
 from res.libs import *
-import res.main as rm
+
 
 flipsStyle = x.GREEN + "Flips" + x.END
 headsStyle = x.YELLOW + "Heads" + x.END
@@ -36,14 +36,10 @@ def roll(num):
     
 def getNum():
     print(f"\n{x.YELLOW}>>>{x.VIOLET} How many times do you wanna flip the coin?")
-    choice = input(intake.prompt)
-    try:
-        choice = rm.choice_check(choice)
-    except:
-        pass
+    choice = intake.prompt()
         
     allowed = "1234567890"
-    if go_thro(choice, allowed):
+    if goThro(choice, allowed):
         
         if choice == '':
             clear()
@@ -53,13 +49,13 @@ def getNum():
             
         if choice > 1000 or choice < 1:
             clear()
-            output.invalid("Only numbers between 1:1000")
+            output.error("Only numbers between 1:1000")
             getNum()
             
             
     else:
         clear()
-        output.invalid("Only numbers between 1:1000")
+        output.error("Only numbers between 1:1000")
         choice = getNum()
     return choice
 
@@ -104,7 +100,7 @@ def resultDisplay(result, stats):
     print(f" {x.YELLOW}-{c.END} {x.GRAY}Tails:{x.LETTUCE} {tails} {x.SKY}>> {x.LETTUCE}{tailsPer}%{c.END}")
     print(f" {x.YELLOW}-{c.END} {x.GRAY}So {winner}{x.GRAY}, it is.{c.END}")
     
-    enter_continue()
+    enterContinue()
 
 def flipeur():
     
