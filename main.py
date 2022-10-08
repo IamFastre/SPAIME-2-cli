@@ -211,8 +211,12 @@ placeholders = {
     ''   : '{' + '' + '}',
 }
 
+#==================================================================#
+
 def isAdmin():
     return (user['name'].casefold() in admins and user['age'] in passes)
+
+#==================================================================#
 
 def isCommand(thing):
     commands = [
