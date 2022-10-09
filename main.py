@@ -1041,7 +1041,7 @@ def optionMenu():
         
         clear()
         output.notify(f"Continuing would mean you want to reset statistics to default.")
-        if confirm(output.notify(f"Are you sure?", Print=False)):
+        if confirm(output.notify(f"Are you sure? ", Print=False)):
             print()
             output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.")
 
@@ -1059,14 +1059,14 @@ def optionMenu():
                 back()
         else:
             clear()
-            output.error(f"Ready when you're sure.")
+            output.error(f"Ready when you're are.")
             back()
 
     elif choice == "9" or choice.casefold() == "reset all" or choice.casefold() == "reset app" or choice.casefold() == "reset application" :
 
         clear()
         output.notify(f"Continuing would mean you want to reset statistics to default.")
-        if confirm(output.notify(f"Are you sure?", Print=False)):
+        if confirm(output.notify(f"Are you sure? ", Print=False)):
             print()
             output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.")
 
@@ -1084,7 +1084,7 @@ def optionMenu():
                 back()
         else:
             clear()
-            output.error(f"Ready when you're sure.")
+            output.error(f"Ready when you're are.")
             back()
     elif choice == "0":
         clear()
