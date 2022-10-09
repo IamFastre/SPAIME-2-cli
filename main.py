@@ -371,6 +371,70 @@ def choiceCheck(thing:str):
             clear()
             helpF()
             back()
+        
+        if cmd == "home":
+            clear()
+            mainMenu()
+
+        if cmd == "exit":
+            exitF()
+
+        if cmd == "dev1":
+
+            if isAdmin():
+                clear()
+
+                def debug1():
+                    print(f"\n{x.ORANGE}>>>{x.VIOLET} Hey boss! What do you wish to do?{c.END}")
+                    dev = input(f"\n{x.ORANGE}1 >{x.LETTUCE} ")
+                    print(c.END)
+
+                    try:
+                        print(eval(dev))
+                        print("")
+                    except:
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        enterContinue()
+                        clear()
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        back()
+                    else:
+                        debug1()
+
+                debug1()
+
+            else:
+                clear()
+                output.error("It's a dev-only commands, buddy.")
+                back()
+    
+        if cmd == "dev2":
+
+            if isAdmin():
+                clear()
+    
+                def debug1():
+                    print(f"\n{x.ORANGE}>>>{x.VIOLET} Hey boss! What do you wish to do?{c.END}")
+                    dev = input(f"\n{x.ORANGE}2 >{x.LETTUCE} ")
+                    print(c.END)
+
+                    try:
+                        print(exec(dev))
+                        print("")
+                    except:
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        enterContinue()
+                        clear()
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        back()
+                    else:
+                        debug1()
+
+                debug1()
+
+            else:
+                clear()
+                output.error("It's a dev-only commands, buddy.")
 
     return thing
 

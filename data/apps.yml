@@ -1,50 +1,33 @@
-ttt:
-  last-board: '—————————'
-  last-winner: '—'
-
-  x-wins: 0
-  o-wins: 0
-
-  ties: 0
-
-
-
-rps:
-  p1:
-    wins: 0
-    last-choice: '—'
-
-  p2:
-    wins: 0
-    last-choice: '—'
-
-  cpu:
-    wins: 0
-    last-choice: '—'
-
-  ties: 0
-  last-winner: '—'
-
-
-
-rnd:
-  heads: 0
-  tails: 0
-  flips: 0
-  ties: 0
-
-  last-heads: 0
-  last-tails: 0
-  last-flips: 0
-  last-winner: '—'
-
-
-
 msp:
-  wins: 0
-  loses: 0
-
-  spots-dug: 0
-
   last-game:
   - null
+  loses: 0
+  spots-dug: 0
+  wins: 0
+rnd:
+  flips: 0
+  heads: 0
+  last-flips: 0
+  last-heads: 0
+  last-tails: 0
+  last-winner: "\u2014"
+  tails: 0
+  ties: 0
+rps:
+  cpu:
+    last-choice: "\u2014"
+    wins: 0
+  last-winner: "\u2014"
+  p1:
+    last-choice: "\u2014"
+    wins: 0
+  p2:
+    last-choice: "\u2014"
+    wins: 0
+  ties: 0
+ttt:
+  last-board: "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014"
+  last-winner: "\u2014"
+  o-wins: 0
+  ties: 0
+  x-wins: 0
