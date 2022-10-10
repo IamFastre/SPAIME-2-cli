@@ -6,7 +6,7 @@
 ### Naming:
 <br/>
 
-<div align="center">It's a CLI app, It's shitty, It's Pythonic, It's made by me, might just be the most perfect name.</div>
+<div align="center">It's a CLI app that is shitty, Pythonic, made by me, might just be the most perfect name.</div>
 
 ---
 
