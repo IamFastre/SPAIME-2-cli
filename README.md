@@ -1,4 +1,4 @@
-# <div align="center">>>><br>SPAIME-2‌: CLI</div>
+# <div align="center">>>><br>SPAIME-2‌</div>
 <div align="center"><sup>(Shitty Python App I Made Entirely)</sup></div>
 
 ---
@@ -6,21 +6,21 @@
 ### Naming:
 <br/>
 
-- <div align="center">It's an app, It's shitty, It's Pythonic, It's made by me, might just be the most perfect name.</div>
+<div align="center">It's a CLI app, It's shitty, It's Pythonic, It's made by me, might just be the most perfect name.</div>
 
 ---
 
 ### Interface:
 <br/>
 
->  #### Hey {User}, Whatcha wanna do?!
+>  #### Hey {name}, Whatcha wanna do?!
 
 That's what the app asks you, and then It goes on being the most boring thing to ever exist.
 
 >  #### 1: Repeat
 
 The f*ck?!
-People reached the moon in 1969 and you're here doing:
+People reached the moon in 1969 and you're here doing shit like this:
 ```py
 import os
 
@@ -36,5 +36,6 @@ Very very amazing if i might say, c'est juste parfait.
 
 ---
 
-### Commands:
+### Commands & Placeholders:
 Just do `.help`
+I'm too lazy to make a new commands and placeholders menu, OK...
