@@ -46,5 +46,5 @@ msp:
 
   spots-dug: 0
 
-  last-game:
-  - null
+  bombC: 10
+  dim: 10

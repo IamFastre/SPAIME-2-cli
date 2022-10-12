@@ -26,7 +26,9 @@ nS = [
     x.neRED+c.BOLD + "7" + x.END,
     x.neRED+c.BOLD + "8" + x.END
 ]
-
+# Declaring Other stuff
+gameWon     = False
+gameRunning = False
 
 # Declaring a class to:
 #     1: Generate a map
@@ -46,14 +48,18 @@ class BOARD:
     
     def __init__(this, dim = 10, bombC = None):
         this.dim   = dim
+
         # Counts Bombs if no int provided
         if bombC == None:
             this.bombC = math.ceil((this.dim ** 2)  / 10)
         else:
             this.bombC = bombC
+
         this.bombs     = set()
         this.dug       = set()
+        this.playerDug = set()
         this.flagged   = set()
+
         this.map       = this.makeMap()
         this.numerate()
     
@@ -105,11 +111,14 @@ class BOARD:
         return nS[neighbor]
 
 
-    def dig(this, X, Y):
+    def dig(this, X, Y, byPlayer = True):
         # Digs the given (x,y)
         # If bomb => lose
         # If not => reveal
-        
+
+        if byPlayer:
+            this.playerDug.add((X,Y))
+
         if not (X,Y) in this.flagged:
             this.dug.add((X,Y))
 
@@ -123,7 +132,7 @@ class BOARD:
                     if this.dim > x > -1 and this.dim > y > -1:
                         if (x,y) in this.dug:
                             continue
-                        this.dig(x, y)
+                        this.dig(x, y, byPlayer = False)
 
         return True
 
@@ -147,7 +156,7 @@ class BOARD:
                 this.map[x][y] = this.neighborBombs(x, y)
 
 
-    def print(this):
+    def print(this, onlyMap = False):
         
         this.mapView   = [[emptyS for _ in range(this.dim)] for _ in range(this.dim)]
         
@@ -179,18 +188,23 @@ class BOARD:
             #print("—"*lineL)
 
         print( x.VIOLET + "    " + ("‾"*lineL) + c.END)
-            
-        print()
-        print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
-        print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
-        print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
-        print(f"{x.YELLOW}>>{x.VIOLET} Flags to use: {x.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{c.END}")
+        
+        if not onlyMap:
+            print()
+            print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
+            print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
+            print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
+            print(f"{x.YELLOW}>>{x.VIOLET} Flags to use: {x.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{c.END}")
 
 
-def startGame():
+def startGame(SIZE: int, BOMBS: int):
+    global gameRunning
+    global gameWon
+    global BD
+
     gameRunning = True
     
-    BD = BOARD(10, 1)
+    BD = BOARD(SIZE, BOMBS)
     
     flagC = BD.bombC
     
@@ -245,17 +259,20 @@ def startGame():
                 output.warn("OK, OK!!")
                 continue
 
-        for _x in range(0, BD.dim):
-            for _y in range(0, BD.dim):
-                BD.dig(_x,_y)
     clear()
     if gameWon:
         output.success("CONGRATULATIONS! You won!")
     else:
         output.error(f"You lost. :(")
+    
+    for _x in range(0, BD.dim):
+        for _y in range(0, BD.dim):
+            BD.dig(_x,_y, byPlayer = False)
+
     BD.print()
     enterContinue()
 
 
 if __name__ == "__main__":
-    startGame()
+    startGame(10, 1)
+    print(gameWon, BD.playerDug)

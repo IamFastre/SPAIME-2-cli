@@ -39,3 +39,6 @@ Very very amazing if i might say, c'est juste parfait.
 ### Commands & Placeholders:
 Just do `.help`
 I'm too lazy to make a new commands and placeholders menu, OK...
+
+### Games
+It's like games but worse.

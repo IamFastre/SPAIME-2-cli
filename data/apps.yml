@@ -1,6 +1,6 @@
 msp:
-  last-game:
-  - null
+  bombC: 4
+  dim: 7
   loses: 0
   spots-dug: 0
   wins: 0

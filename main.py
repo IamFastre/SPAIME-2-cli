@@ -4,7 +4,7 @@
 ##                                                                ##
 ####################################################################
 
-import os, sys, random, shutil, subprocess, time
+import os, sys, random, shutil, subprocess, time, pickle
 
 # Importing the other py files.
 from res.colors import *
@@ -37,6 +37,7 @@ except ModuleNotFoundError:
         exit(0)
         
     output.success(f"Now everything is good. If the app does't run, please just restart.")
+    sleep(5)
 finally:
     import yaml
 
@@ -47,7 +48,7 @@ finally:
 
 ####################################################################
 ##                                                                ##
-## Loading the YAML files, and defining functions relating to it. ##
+## Loading the YAML & Pickle files and defining their functions.  ##
 ##                                                                ##
 ####################################################################
 
@@ -82,13 +83,13 @@ def writeYAML():
     global YAMLS
     
     with open('./data/settings.yml', 'w') as SETTINGS:
-        yaml.safe_dump(settings, SETTINGS)
+        yaml.dump(settings, SETTINGS)
 
     with open('./data/user.yml', 'w') as USER:
-        yaml.safe_dump(user, USER)
+        yaml.dump(user, USER)
 
     with open('./data/apps.yml', 'w') as APPS:
-        yaml.safe_dump(apps, APPS)
+        yaml.dump(apps, APPS)
     
     readYAML()
 
@@ -141,8 +142,53 @@ def resetRND():
 
 def resetMSP():
     global apps
-    apps['msp'] = {'wins': 0, 'loses': 0, 'spots-dug': 0, 'last-game': [None]}
+    apps['msp'] = {'wins': 0, 'loses': 0, 'spots-dug': 0, 'bombC': 10, 'dim': 10}
+    resetPICKLE(mspBD)
     writeYAML()
+
+#==================================================================#
+
+def readPICKLE():
+    global mspBD
+    global PICKLES
+
+    with open('./data/mspBD.pkl', 'rb') as MSPBD:
+        mspBD = pickle.load(MSPBD)
+        
+    PICKLES = (mspBD,)
+
+#==================================================================#
+
+def writePICKLE():
+    global mspBD
+    global PICKLES
+
+    with open('./data/mspBD.pkl', 'wb') as MSPBD:
+        pickle.dump(mspBD, MSPBD)
+    
+    readPICKLE()
+
+#==================================================================#
+
+def resetPICKLE(PICKLE = None):
+    global mspBD
+    global PICKLES
+    
+    if PICKLE != None:
+        i = PICKLES.index(PICKLE)
+        
+        if i == 0:
+            shutil.copy('./data/.old/mspBD.pkl', './data/')
+    else:
+        for file in glob.glob('./data/.old/*.pkl'):
+            shutil.copy(file, './data/')
+        
+    readPICKLE()
+
+#==================================================================#
+
+readYAML()
+readPICKLE()
 
 
 
@@ -659,7 +705,7 @@ def rndMenu():
         back()
     elif choice == "0":
         clear()
-        back(-2)
+        mainMenu()
     else:
         clear()
         lastCheck(choice)
@@ -791,7 +837,7 @@ def rpsMenu():
         back()
     elif choice == "0":
         clear()
-        back(-2)
+        mainMenu()
     else:
         clear()
         lastCheck(choice)
@@ -867,7 +913,7 @@ def tttMenu():
         back()
     elif choice == "0":
         clear()
-        back(-2)
+        mainMenu()
     else:
         clear()
         lastCheck(choice)
@@ -877,15 +923,82 @@ def tttMenu():
 #==================================================================#
 
 def mspMenu():
+    global mspBD
     updateWindow(f"msp")
+
+    def confMenu():
+        global confSubMenu
+        confSubMenu = confMenu
+        updateWindow("confSub")
+
+        print()
+        output.stamp("Minesweeper Config:")
+        output.note(1)
+        print()
+        output.option(1, "Map Size: " + x.LETTUCE + str(apps['msp']['dim']) + c.END)
+        output.option(2, "Bomb Count: " + x.LETTUCE + str(apps['msp']['bombC']) + c.END)
+        output.option(0, "Back")
+        
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+        
+        if choice == "1":
+            clear()
+            print()
+            output.stamp("What do you want the map size to be?")
+            output.note(1)
+            print()
+
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+
+            allowed = "0123456789"
+            if goThro(choice, allowed):
+                choice = int(choice)
+                if 10 >= choice > 0:
+                    apps['msp']['dim'] = choice
+                    writeYAML()
+                    clear()
+                    output.success("Changes saved.")
+                    back()
+
+        if choice == "2":
+            clear()
+            print()
+            output.stamp("How many bombs do you want there to be?")
+            output.note(1)
+            print()
+
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+
+            allowed = "0123456789"
+            if goThro(choice, allowed):
+                choice = int(choice)
+                if 100 >= choice > 0:
+                    apps['msp']['bombC'] = choice
+                    writeYAML()
+                    clear()
+                    output.success("Changes saved.")
+                    back()
+        if choice == "0":
+            clear()
+            back(-2)
+
+        clear()
+        lastCheck(choice)
+        back(-2)
 
     def statsMenu():
         print()
         output.stamp(f"Minesweeper Statistics:\n")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Wins : {x.GRAY}{apps['msp']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Loses: {x.GRAY}{apps['msp']['loses']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Spots Dug  : {x.GRAY}{apps['msp']['spots-dug']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total Wins :     {x.GRAY}{apps['msp']['wins']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total Loses:     {x.GRAY}{apps['msp']['loses']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total Dug Spots: {x.GRAY}{apps['msp']['spots-dug']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
+
+        mspBD.print(True) 
 
         enterContinue()
 
@@ -914,9 +1027,27 @@ def mspMenu():
     choice = choiceCheck(choice)
 
     if choice == "1":
-        pass
+        clear()
+        dim   = apps['msp']['dim']
+        bombC = apps['msp']['bombC']
+        msp.startGame( SIZE = dim, BOMBS = bombC )
+        
+        if msp.gameWon:
+            apps['msp']['wins']  += 1
+        else:
+            apps['msp']['loses'] += 1
+            
+        apps['msp']['spots-dug'] += len(msp.BD.playerDug)
+        mspBD = msp.BD
+        
+        writeYAML()
+        writePICKLE()
+        back()
+                    
     elif choice == "2" or choice.casefold() == "config":
-        pass
+        clear()
+        confMenu()
+        back()
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
@@ -927,7 +1058,7 @@ def mspMenu():
         back()
     elif choice == "0":
         clear()
-        back(-2)
+        mainMenu()
     else:
         clear()
         lastCheck(choice)
@@ -1088,7 +1219,7 @@ def optionMenu():
             back()
     elif choice == "0":
         clear()
-        back(-2)
+        mainMenu()
     else:
         clear()
         lastCheck(choice)
