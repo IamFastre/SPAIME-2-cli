@@ -1,6 +1,6 @@
 msp:
-  bombC: 4
-  dim: 7
+  bombC: 10
+  dim: 10
   loses: 0
   spots-dug: 0
   wins: 0

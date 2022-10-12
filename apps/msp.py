@@ -192,8 +192,9 @@ class BOARD:
         if not onlyMap:
             print()
             print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
-            print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
-            print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
+        print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
+        print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
+        if not onlyMap:
             print(f"{x.YELLOW}>>{x.VIOLET} Flags to use: {x.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{c.END}")
 
 

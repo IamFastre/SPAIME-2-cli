@@ -947,6 +947,7 @@ def mspMenu():
             print()
             output.stamp("What do you want the map size to be?")
             output.note(1)
+            output.note(f"Current is {x.LETTUCE}{apps['msp']['dim']}{c.END}")
             print()
 
             choice = intake.prompt()
@@ -967,6 +968,7 @@ def mspMenu():
             print()
             output.stamp("How many bombs do you want there to be?")
             output.note(1)
+            output.note(f"Current is {x.LETTUCE}{apps['msp']['bombC']}{c.END}")
             print()
 
             choice = intake.prompt()
@@ -1133,7 +1135,7 @@ def optionMenu():
         clear()
         output.stamp(f"What do you wanna be called?")
         output.note(1)
-        output.option(f"!!", f"Current is {x.GREEN}{user['name'] if user['name'] != '' else None}")
+        output.note(f"Current is {x.GREEN}{user['name'] if user['name'] != '' else None}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1147,7 +1149,7 @@ def optionMenu():
         clear()
         output.stamp(f"How old are you?")
         output.note(1)
-        output.option(f"!!", f"Current is {x.GREEN}{user['age']}")
+        output.note(f"Current is {x.GREEN}{user['age']}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1160,7 +1162,7 @@ def optionMenu():
         clear()
         output.stamp(f"Set prefix to what?")
         output.note(1)
-        output.option(f"!!", f"Current is {x.GREEN}{settings['prefix']}")
+        output.note(f"Current is {x.GREEN}{settings['prefix']}")
         
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1372,3 +1374,4 @@ if __name__ == "__main__":
     clear()
     mainMenu()
     print(x.END)
+    
