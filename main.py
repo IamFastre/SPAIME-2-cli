@@ -1020,7 +1020,7 @@ def mspMenu():
     output.option(1, "Start a Game")
     output.option(2, "Config")
     output.option(3, "Game Statistics")
-    output.option(9, "Reset MSP Statistics")
+    output.option(9, "Reset MSP Statistics & Config")
     output.option(0, "Home")
 
     choice = intake.prompt()
