@@ -1208,6 +1208,7 @@ def optionMenu():
 
             if choice == f"{settings['prefix']}reset":
                 resetYAML()
+                resetPICKLE()
                 clear()
                 output.success(f"All done, good as new. {c.END}")
                 back()
