@@ -37,6 +37,11 @@ def roll(num):
 def getNum():
     print(f"\n{x.YELLOW}>>>{x.VIOLET} How many times do you wanna flip the coin?")
     choice = intake.prompt()
+    if choice == "exit":
+        print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+        enterContinue(False)
+        clear()
+        return
         
     allowed = "1234567890"
     if goThro(choice, allowed):
@@ -105,6 +110,8 @@ def resultDisplay(result, stats):
 def flipeur():
     
     num = getNum()
+    if num == None:
+        return
     result = roll(num)
     stats = getStats(result)
     

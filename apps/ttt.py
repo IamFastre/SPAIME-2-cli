@@ -53,7 +53,14 @@ p3 = s.n
 
 def choosePlayer():
     print(f"\n{x.YELLOW}>>> {x.VIOLET}Wanna start with {s.x} {x.VIOLET}or {s.o}?{c.END}")
+
     choice = intake.prompt()
+    if choice == "exit":
+        print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+        enterContinue(False)
+        clear()
+        return False
+
     allowed = "xo12"
     if goThro(choice.casefold(), allowed) and len(choice) == 1:
         if choice.capitalize() in ("X", "1"):
@@ -250,6 +257,11 @@ def play():
         mark = s.o
 
     choice = intake.prompt()
+    if choice == "exit":
+        print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+        enterContinue(False)
+        clear()
+        return False
     
     allowed = "123456789"
     if goThro(choice,allowed) and len(choice) == 1:
@@ -284,12 +296,15 @@ def ttt_2p_start():
 
     while currentPlayer == None:
         currentPlayer = choosePlayer()
-
+        if not currentPlayer:
+            return False
 
     while gameStatus == "running":
         clear()
         displayBoard(board)
-        play()
+        i = play()
+        if not i:
+            return
         results = check()
         winner = results[0]
         gameStatus = results[1]

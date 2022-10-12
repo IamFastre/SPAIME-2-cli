@@ -47,8 +47,13 @@ def playerRPC(player):
     print(f"{x.GRAY}1: {s.r}")
     print(f"{x.GRAY}2: {s.p}")
     print(f"{x.GRAY}3: {s.s}")
-    
+
     choice = intake.prompt()
+    if choice == "exit":
+        print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+        enterContinue(False)
+        clear()
+        return False
     
     if choice in ("r", "1"):
         player['input'] = s.r
@@ -128,7 +133,10 @@ def soloMode():
     global winner
     
     clear()
-    playerRPC(p1)
+    i = playerRPC(p1)
+    if not i:
+        return
+    
     cpuRPC(cpu)
     
     winner = compareRPC(cpu,p1)
@@ -143,9 +151,14 @@ def duoMode():
     global winner
 
     clear()
-    playerRPC(p1)
+    i = playerRPC(p1)
+    if not i:
+        return
+
     clear()
-    playerRPC(p2)
+    i = playerRPC(p2)
+    if not i:
+        return
     
     winner = compareRPC(p2,p1)
     result(p1,p2,winner)

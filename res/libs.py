@@ -5,10 +5,7 @@ if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
 from res.colors import *
-
 import os, time, glob, shutil, pip, subprocess, random
-
-
 
 
 class intake():
@@ -22,12 +19,16 @@ class intake():
             output.error("Please don't EOF me...")
             output.error("If you wanna end the app use KeyboardInterrupt or the in-app exit.")
             time.sleep(2)
+            delCache()
             return f"I am stupid"
         except KeyboardInterrupt:
             clear()
             output.notify(f"Why so fast? Bye-bye anyway!")
+            delCache()
             pause()
             sys.exit(0)
+
+
 class output():
     """A way of decorating the texts!"""
 
@@ -91,6 +92,18 @@ class output():
         else:
             print(f'''{x.WHITE}!!: {x.GRAY}{num}{c.END}''')
 
+def delCache():
+    if os.path.exists('./res/__pycache__'):
+        shutil.rmtree('./res/__pycache__')
+
+    if os.path.exists('./apps/__pycache__'):
+        shutil.rmtree('./apps/__pycache__')
+
+    if os.path.exists('./.exec/__pycache__'):
+        shutil.rmtree('./.exec/__pycache__')
+
+    if os.path.exists('./__pycache__'):
+        shutil.rmtree('./__pycache__')
 
 def confirm(string):
     string = str(string)
@@ -141,8 +154,10 @@ def goThro(thing, allowed):
     return True
 
 
-def enterContinue():
-    print(f"\n{x.YELLOW}>> {x.GRAY}Press Enter to continue...{c.END}")
+def enterContinue(Space=True):
+    if Space:
+        print()
+    print(f"{x.YELLOW}>> {x.GRAY}Press Enter to continue...{c.END}")
 
     choice = input(f"{c.DIM + c.ITALIC + x.GRAY}")
     print(c.END)

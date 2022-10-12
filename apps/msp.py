@@ -219,6 +219,11 @@ def startGame(SIZE: int, BOMBS: int):
         BD.print()
 
         choice = intake.prompt()
+        if choice == "exit":
+            print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+            enterContinue(False)
+            clear()
+            return
 
         if not "F" in choice:
             Loc = re.split(" *, *", choice)
