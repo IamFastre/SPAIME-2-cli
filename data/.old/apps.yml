@@ -42,7 +42,7 @@ rnd:
 
 msp:
   wins: 0
-  loses: 0
+  defeats: 0
 
   spots-dug: 0
 

@@ -41,6 +41,8 @@ except ModuleNotFoundError:
 finally:
     import yaml
 
+#==================================================================#
+
 
 
 
@@ -114,9 +116,9 @@ def resetYAML(YAML = None):
     else:
         for file in glob.glob('./data/.old/*.yml'):
             shutil.copy(file, './data/')
-        
+
     readYAML()
-    
+            
 #==================================================================#
 
 def resetTTT():
@@ -142,7 +144,7 @@ def resetRND():
 
 def resetMSP():
     global apps
-    apps['msp'] = {'wins': 0, 'loses': 0, 'spots-dug': 0, 'bombC': 10, 'dim': 10}
+    apps['msp'] = {'wins': 0, 'defeats': 0, 'spots-dug': 0, 'bombC': 10, 'dim': 10}
     resetPICKLE(mspBD)
     writeYAML()
 
@@ -189,6 +191,8 @@ def resetPICKLE(PICKLE = None):
 
 readYAML()
 readPICKLE()
+
+#==================================================================#
 
 
 
@@ -254,6 +258,12 @@ placeholders = {
     'lastFlips'   : '{' + 'lastFlips' + '}',
     'lastRNDWinner'   : '{' + 'lastRNDWinner' + '}',
     
+    'mspWins'   : '{' + 'mspWins' + '}',
+    'mspDefeats'   : '{' + 'mspDefeats' + '}',
+    'mspDug'   : '{' + 'mspDug' + '}',
+    'mspBombs'   : '{' + 'mspBombs' + '}',
+    'mspSize'   : '{' + 'mspSize' + '}',
+    
     ''   : '{' + '' + '}',
 }
 
@@ -269,6 +279,7 @@ def isCommand(thing):
         settings['prefix'] + "help",
         settings['prefix'] + "home",
         settings['prefix'] + "exit",
+        settings['prefix'] + "refresh",
         settings['prefix'] + "dev1",
         settings['prefix'] + "dev2",
         settings['prefix'] + "reset",
@@ -325,6 +336,7 @@ def updateWindow(string):
 #==================================================================#
 
 def choiceCheck(thing:str):
+
 
     # Placeholders:
     if "{" in thing and "}" in thing:
@@ -397,14 +409,30 @@ def choiceCheck(thing:str):
         if placeholders['phi'] in thing:
             thing = thing.replace(placeholders['phi'], "1.618")
         
+        if placeholders['mspWins'] in thing:
+            thing = thing.replace(placeholders['mspWins'], str(apps['msp']['wins']))
+        if placeholders['mspDefeats'] in thing:
+            thing = thing.replace(placeholders['mspDefeats'], str(apps['msp']['defeats']))
+        if placeholders['mspDug'] in thing:
+            thing = thing.replace(placeholders['mspDug'], str(apps['msp']['spots-dug']))
+        if placeholders['mspBombs'] in thing:
+            thing = thing.replace(placeholders['mspBombs'], str(apps['msp']['bombC']))
+        if placeholders['mspSize'] in thing:
+            thing = thing.replace(placeholders['mspSize'], str(apps['msp']['dim']))
+
         if placeholders[''] in thing:
             thing = thing.replace(placeholders[''], "")
+
+    #==============================================================#
 
     if thing == "":
         clear()
         output.error(f"You gotta type something first, no?")
         back()
-    
+
+    #==============================================================#
+
+    # Commands:
     if thing.startswith(settings['prefix']):
         cmd = thing.replace(settings['prefix'], "")
         
@@ -424,6 +452,9 @@ def choiceCheck(thing:str):
 
         if cmd == "exit":
             exitF()
+
+        if cmd == "refresh":
+            refreshF()
 
         if cmd == "dev1":
 
@@ -490,6 +521,10 @@ def lastCheck(choice):
     if not isCommand(choice):
         output.error(f"Invalid input.")
     back()
+
+#==================================================================#
+
+
 
 
 
@@ -567,6 +602,10 @@ def mainMenu():
     output.warn(f"Huh...")
     back()
 
+#==================================================================#
+
+
+
 
 
 
@@ -582,7 +621,7 @@ def repeatMenu():
     
     print()
     output.stamp(f"What do you want me to repeat?")
-    output.note(1)
+    output.note(1, settings['prefix'])
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -612,7 +651,7 @@ def mathMenu():
 
     print()
     output.stamp(f"Oh wanna do some math'ing?")
-    output.note(1)
+    output.note(1, settings['prefix'])
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -665,7 +704,7 @@ def rndMenu():
     
     print()
     output.stamp(f"Welcome to Randomeur!")
-    output.note(1)
+    output.note(1, settings['prefix'])
     print()
     output.option(1, "Coin Flipeur")
     output.option(2, "Game Statistics")
@@ -769,7 +808,7 @@ def rpsMenu():
             
     print()
     output.stamp(f"Welcome to RockPaperScissors!")
-    output.note(1)
+    output.note(1, settings['prefix'])
     print()
     output.option(1, "Solo")
     output.option(2, "Duo")
@@ -873,7 +912,7 @@ def tttMenu():
 
     print()
     output.stamp(f"Welcome to TicTacToe!")
-    output.note(1)
+    output.note(1, settings['prefix'])
     print()
     output.option(1, "Start Game")
     output.option(2, "Game Statistics")
@@ -933,7 +972,7 @@ def mspMenu():
 
         print()
         output.stamp("Minesweeper Config:")
-        output.note(1)
+        output.note(1, settings['prefix'])
         print()
         output.option(1, "Map Size: " + x.LETTUCE + str(apps['msp']['dim']) + c.END)
         output.option(2, "Bomb Count: " + x.LETTUCE + str(apps['msp']['bombC']) + c.END)
@@ -946,7 +985,9 @@ def mspMenu():
             clear()
             print()
             output.stamp("What do you want the map size to be?")
-            output.note(1)
+            output.note(1, settings['prefix'])
+            output.note(f"Map size ranges from {x.YELLOW}1:99{c.END}")
+            output.note(f"I don't recommend anything above 25 for your machine's health, also I do not recommend anything above 10 for the looks of it.")
             output.note(f"Current is {x.LETTUCE}{apps['msp']['dim']}{c.END}")
             print()
 
@@ -956,7 +997,7 @@ def mspMenu():
             allowed = "0123456789"
             if goThro(choice, allowed):
                 choice = int(choice)
-                if 10 >= choice > 0:
+                if 99 >= choice > 0:
                     apps['msp']['dim'] = choice
                     writeYAML()
                     clear()
@@ -967,7 +1008,8 @@ def mspMenu():
             clear()
             print()
             output.stamp("How many bombs do you want there to be?")
-            output.note(1)
+            output.note(1, settings['prefix'])
+            output.note(f"Bombs count ranges from {x.YELLOW}1:{apps['msp']['dim']**2}{x.END}")
             output.note(f"Current is {x.LETTUCE}{apps['msp']['bombC']}{c.END}")
             print()
 
@@ -977,7 +1019,7 @@ def mspMenu():
             allowed = "0123456789"
             if goThro(choice, allowed):
                 choice = int(choice)
-                if 100 >= choice > 0:
+                if (apps['msp']['dim']**2) >= choice > 0:
                     apps['msp']['bombC'] = choice
                     writeYAML()
                     clear()
@@ -995,7 +1037,7 @@ def mspMenu():
         print()
         output.stamp(f"Minesweeper Statistics:\n")
         print(f" {x.YELLOW}-{c.END} " + f"Total Wins :     {x.GRAY}{apps['msp']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Loses:     {x.GRAY}{apps['msp']['loses']}{c.END}")
+        print(f" {x.YELLOW}-{c.END} " + f"Total Loses:     {x.GRAY}{apps['msp']['defeats']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Total Dug Spots: {x.GRAY}{apps['msp']['spots-dug']}{c.END}")
         print(f" {x.YELLOW}-{c.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
@@ -1017,7 +1059,7 @@ def mspMenu():
 
     print()
     output.stamp(f"Welcome to Minesweeper!")
-    output.note(1)
+    output.note(1, settings['prefix'])
     print()
     output.option(1, "Start a Game")
     output.option(2, "Config")
@@ -1037,7 +1079,7 @@ def mspMenu():
         if msp.gameWon:
             apps['msp']['wins']  += 1
         else:
-            apps['msp']['loses'] += 1
+            apps['msp']['defeats'] += 1
             
         apps['msp']['spots-dug'] += len(msp.BD.playerDug)
         mspBD = msp.BD
@@ -1118,7 +1160,7 @@ def optionMenu():
 
     print()
     output.stamp(f"Options:")
-    output.note(1)
+    output.note(1, settings['prefix'])
     print()
     output.option(1, f"Name: {x.LETTUCE}{user['name'] if user['name'] != '' else None}")
     output.option(2, f"Age: {x.LETTUCE}{user['age']}")
@@ -1134,7 +1176,7 @@ def optionMenu():
 
         clear()
         output.stamp(f"What do you wanna be called?")
-        output.note(1)
+        output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{user['name'] if user['name'] != '' else None}")
 
         choice = intake.prompt()
@@ -1148,7 +1190,7 @@ def optionMenu():
 
         clear()
         output.stamp(f"How old are you?")
-        output.note(1)
+        output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{user['age']}")
 
         choice = intake.prompt()
@@ -1161,7 +1203,7 @@ def optionMenu():
 
         clear()
         output.stamp(f"Set prefix to what?")
-        output.note(1)
+        output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{settings['prefix']}")
         
         choice = intake.prompt()
@@ -1229,6 +1271,10 @@ def optionMenu():
 
     back(-2)
 
+#==================================================================#
+
+
+
 
 
 
@@ -1240,7 +1286,10 @@ def optionMenu():
 
 
 def helpF():
+    """The cmd & plh help menu."""
+
     output.stamp(f"Commands: {c.END}")
+    # The available SPAIME commands.
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}help: {x.GRAY}Shows this menu.{c.END}")
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}home: {x.GRAY}Returns you to home page.{c.END}")
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}exit: {x.GRAY}To safely exit the app.{c.END}")
@@ -1248,34 +1297,21 @@ def helpF():
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}dev2: {x.GRAY}Enters exec() mode. {x.RED}{c.DIM}(dev-only){c.END}")
     print("\n")
     output.stamp(f"Placeholders: {c.END}")
+    # The available placeholders.
+               # The syntax ones.
     print(f" {x.YELLOW}-{c.END}" + " {nl}: " + f"           {x.GRAY}Makes a lovely line separator, not useful.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {br}: " + f"           {x.GRAY}Makes a new line, useful in repeat, I guess.{c.END}")
-    print(f"")
+    print(f"") # The user & settings ones.
+    print(f" {x.YELLOW}-{c.END}" + " {name}: " + f"         {x.GRAY}Returns your name.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {age}: " + f"          {x.GRAY}Returns your age.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {prefix}: " + f"       {x.GRAY}Returns set prefix{c.END}")
+    print(f"") # The math & physics ones.
     print(f" {x.YELLOW}-{c.END}" + " {e}: " + f"            {x.GRAY}Returns Euler's number's value.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {g}: " + f"            {x.GRAY}Returns gravitational acceleration constant's value.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {pi}: " + f"           {x.GRAY}Returns pi's value.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {tau}: " + f"          {x.GRAY}Returns tau's value.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {phi}: " + f"          {x.GRAY}Returns the golden ratio's value.{c.END}")
-    print(f"")
-    print(f" {x.YELLOW}-{c.END}" + " {name}: " + f"         {x.GRAY}Returns your name.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {age}: " + f"          {x.GRAY}Returns your age.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {prefix}: " + f"       {x.GRAY}Returns set prefix{c.END}")
-    print(f"")
-    print(f" {x.YELLOW}-{c.END}" + " {lastTTTWinner}: " + f"{x.GRAY}Returns the last TTT winner.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastTTTBoard}: " + f" {x.GRAY}Returns the last TTT board.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {xWins}: " + f"        {x.GRAY}Returns how many times x won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {oWins}: " + f"        {x.GRAY}Returns how many times o won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {tttTies}: " + f"      {x.GRAY}Returns how many TTT ties happened.{c.END}")
-    print(f"")
-    print(f" {x.YELLOW}-{c.END}" + " {p1Last}: " + f"       {x.GRAY}Returns {rps.p1['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p2Last}: " + f"       {x.GRAY}Returns {rps.p2['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {cpuLast}: " + f"      {x.GRAY}Returns {rps.cpu['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p1Wins}: " + f"       {x.GRAY}Returns how many times {rps.p1['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p2Wins}: " + f"       {x.GRAY}Returns how many times {rps.p2['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {cpuWins}: " + f"      {x.GRAY}Returns how many times {rps.cpu['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {rpsTies}: " + f"      {x.GRAY}Returns how many times RPS ties happened.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastRPSWinner}: " + f"{x.GRAY}Returns the last RPS winner.{c.END}")
-    print(f"")
+    print(f"") # The Randomeur ones.
     print(f" {x.YELLOW}-{c.END}" + " {heads}: " + f"        {x.GRAY}Returns the total amount of {rnd.headsStyle}{x.GRAY}.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {tails}: " + f"        {x.GRAY}Returns the total amount of {rnd.tailsStyle}{x.GRAY}.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {rndTies}: " + f"      {x.GRAY}Returns the total amount of RND {rnd.tieStyle}{x.RED}s{x.GRAY}.{c.END}")
@@ -1284,13 +1320,36 @@ def helpF():
     print(f" {x.YELLOW}-{c.END}" + " {lastTails}: " + f"    {x.GRAY}Returns the last {rnd.tailsStyle}{x.GRAY} count.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {lastFlips}: " + f"    {x.GRAY}Returns the last {rnd.flipsStyle}{x.GRAY} count.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {lastRNDWinner}: " + f"{x.GRAY}Returns the last RND winner.{c.END}")
+    print(f"") # The RockPaperScissors ones.
+    print(f" {x.YELLOW}-{c.END}" + " {p1Last}: " + f"       {x.GRAY}Returns {rps.p1['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {p2Last}: " + f"       {x.GRAY}Returns {rps.p2['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {cpuLast}: " + f"      {x.GRAY}Returns {rps.cpu['name']}{x.GRAY} last move.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {p1Wins}: " + f"       {x.GRAY}Returns how many times {rps.p1['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {p2Wins}: " + f"       {x.GRAY}Returns how many times {rps.p2['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {cpuWins}: " + f"      {x.GRAY}Returns how many times {rps.cpu['name']}{x.GRAY} won.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {rpsTies}: " + f"      {x.GRAY}Returns how many times RPS ties happened.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {lastRPSWinner}: " + f"{x.GRAY}Returns the last RPS winner.{c.END}")
+    print(f"") # The TicTacToe ones.
+    print(f" {x.YELLOW}-{c.END}" + " {lastTTTWinner}: " + f"{x.GRAY}Returns the last TTT winner.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {lastTTTBoard}: " + f" {x.GRAY}Returns the last TTT board.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {xWins}: " + f"        {x.GRAY}Returns how many times x won.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {oWins}: " + f"        {x.GRAY}Returns how many times o won.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {tttTies}: " + f"      {x.GRAY}Returns how many TTT ties happened.{c.END}")
+    print(f"") # The Minesweeper ones.
+    print(f" {x.YELLOW}-{c.END}" + " {mspWins}: " + f"      {x.GRAY}Returns how many times you won at MSP.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {mspDefeats}: " + f"   {x.GRAY}Returns how many times you lost at MSP.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {mspDug}: " + f"       {x.GRAY}Returns how many times you dug manually at MSP.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {mspBombs}: " + f"     {x.GRAY}Returns how many bombs are in MSP config.{c.END}")
+    print(f" {x.YELLOW}-{c.END}" + " {mspSize}: " + f"      {x.GRAY}Returns how big the map is in MSP config.{c.END}")
 
     enterContinue()
 
 #==================================================================#
 
 def infoF():
-    # 
+    """App and author info and shit you know."""
+
+    # Reading the logo.txt file and separating it into its pieces.
     with open('./res/extras/logo.txt', 'r') as file:
         logo = file.read().split(f"-sex-is-cool-")
         logo_art = logo[0]
@@ -1299,13 +1358,15 @@ def infoF():
 
     clear()
 
+    # ASCII art for the logo, that shows on first launch.
     print( ""
         + x.LETTUCE + logo_art + c.END
         + x.VIOLET + logo_text + c.END
         + c.DIM
         + x.GRAY + logo_motto + c.END
         )
-    
+
+    # Your usual yadda yadda.
     print()
     output.stamp(f"SPAIME²")
     output.option(f"Version", f"x.x.x{c.END}")
@@ -1314,6 +1375,8 @@ def infoF():
     output.option(f"Discord", f"{c.URL}{c.ITALIC}https://discord.gg/kkzmxkG{c.END}")
     output.option(f"Note   ", f"There was never a SPAIME¹{c.END}")
     choice = enterContinue()
+
+    # An easter egg!
     if choice.casefold() in admins:
         output.success(f"Yes, {x.RED}♥{x.GRAY}.{c.END}")
     back()
@@ -1323,6 +1386,7 @@ def infoF():
 def refreshF():
     """Practically does nothing, maybe clears notifications."""
 
+    # It's just to clear notifications or print faults.
     clear()
     output.notify(f"Refreshing!")
     sleep(0.5)
@@ -1336,9 +1400,9 @@ def exitF():
 
     print(f"{x.YELLOW}>>{x.GRAY} Okie!{c.END}")
     sleep(0.5)
-
-
     clear()
+
+    # Telling you sweet goodbyes.
     if user['name'] == '':
         output.notify(f"Bye-bye{x.VIOLET}!")
     else:
@@ -1346,6 +1410,7 @@ def exitF():
 
     pause()
 
+    # Deleting pycache generated by windows python.
     if os.path.exists('./res/__pycache__'):
         shutil.rmtree('./res/__pycache__')
 
@@ -1358,7 +1423,10 @@ def exitF():
     if os.path.exists('./__pycache__'):
         shutil.rmtree('./__pycache__')
 
+    # raising SystemExit without parsing errors.
     sys.exit(0)
+
+#==================================================================#
 
 
 
@@ -1375,4 +1443,5 @@ if __name__ == "__main__":
     clear()
     mainMenu()
     print(x.END)
-    
+
+#==================================================================#

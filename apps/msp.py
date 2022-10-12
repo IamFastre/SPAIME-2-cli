@@ -10,6 +10,9 @@ import random, math, re
 from res.colors import *
 from res.libs import *
 
+# So we can happily fry your device
+sys.setrecursionlimit(100000)
+
 # Declaring spot tiles looks
 emptyS = x.VIOLET + "#" + x.END
 flagS  = x.SKY    + "F" + x.END
@@ -173,14 +176,14 @@ class BOARD:
         for i in range(this.dim):
             SO = x.SKY + " " + str(i) + c.END
             lineH = lineH + SO
-            
+
         print(lineH)
         print( x.VIOLET + "    " + ("_"*lineL) + c.END)
 
         II = 0
         for row in this.mapView:
             SI = x.LETTUCE + "" + str(II) + c.END
-            lineV = x.VIOLET + SI + f"   {spS}" + c.END
+            lineV = x.VIOLET + SI + (f"   {spS}" if len(str(II)) < 2 else f"  {spS}") + c.END
             II += 1
             for spot in row:
                 lineV = f"{lineV}{spot}{spS}"
