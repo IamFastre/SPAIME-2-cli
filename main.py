@@ -336,6 +336,7 @@ def updateWindow(string):
 #==================================================================#
 
 def choiceCheck(thing:str):
+    """Makes changes to the input to execute commands or place the placeholders."""
 
 
     # Placeholders:
@@ -422,6 +423,14 @@ def choiceCheck(thing:str):
 
         if placeholders[''] in thing:
             thing = thing.replace(placeholders[''], "")
+
+    #==============================================================#
+
+    # Easter Eggs:
+    if "SPAIME-2" in thing:
+        thing = thing.replace("SPAIME-2", f"{x.YELLOW}[{x.VIOLET}SPAIME{x.YELLOW}]²" + x.GRAY)
+    if "Shrek" in thing:
+        thing = thing.replace("Shrek", x.GREEN + "Shrek" + x.GRAY)
 
     #==============================================================#
 
