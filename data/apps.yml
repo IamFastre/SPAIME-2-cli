@@ -1,33 +1,50 @@
-msp:
-  bombC: 1
-  defeats: 6
-  dim: 3
-  spots-dug: 2
-  wins: 0
+ttt:
+  last-board: '—————————'
+  last-winner: '—'
+
+  x-wins: 0
+  o-wins: 0
+
+  ties: 0
+
+
+
+rps:
+  p1:
+    wins: 0
+    last-choice: '—'
+
+  p2:
+    wins: 0
+    last-choice: '—'
+
+  cpu:
+    wins: 0
+    last-choice: '—'
+
+  ties: 0
+  last-winner: '—'
+
+
+
 rnd:
-  flips: 0
   heads: 0
-  last-flips: 0
+  tails: 0
+  flips: 0
+  ties: 0
+
   last-heads: 0
   last-tails: 0
-  last-winner: null
-  tails: 0
-  ties: 3
-rps:
-  cpu:
-    last-choice: null
-    wins: 0
-  last-winner: null
-  p1:
-    last-choice: null
-    wins: 0
-  p2:
-    last-choice: null
-    wins: 0
-  ties: 2
-ttt:
-  last-board: "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014"
-  last-winner: "\u2014"
-  o-wins: 0
-  ties: 0
-  x-wins: 0
+  last-flips: 0
+  last-winner: '—'
+
+
+
+msp:
+  wins: 0
+  defeats: 0
+
+  spots-dug: 0
+
+  bombC: 10
+  dim: 10
