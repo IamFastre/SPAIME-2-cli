@@ -269,6 +269,7 @@ def play():
         if board[choice] in ns:
             board[choice] = mark
             currentPlayer = currentPlayerChange(p1, p2)
+            return True
         else:
             clear()
             output.error("Invalid input.")

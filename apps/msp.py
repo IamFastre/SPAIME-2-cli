@@ -225,7 +225,7 @@ def startGame(SIZE: int, BOMBS: int):
             clear()
             return
 
-        if not "F" in choice:
+        if not ("F" in choice or "f" in choice):
             Loc = re.split(" *, *", choice)
 
             try:
@@ -247,8 +247,10 @@ def startGame(SIZE: int, BOMBS: int):
                 clear()
                 output.error(f"Invalid position, dummy.")
                 continue
-        else:
+        elif "F" in choice:
             Loc = re.split(" *, *", choice.replace("F", ""))
+        elif "f" in choice:
+            Loc = re.split(" *, *", choice.replace("f", ""))
 
             try:
                 Y = int(Loc[0])

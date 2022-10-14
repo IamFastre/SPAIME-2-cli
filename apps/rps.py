@@ -57,13 +57,13 @@ def playerRPC(player):
     
     if choice in ("r", "1"):
         player['input'] = s.r
-        return
+        return True
     if choice in ("p", "2"):
         player['input'] = s.p
-        return
+        return True
     if choice in ("s", "3"):
         player['input'] = s.s
-        return
+        return True
     clear()
     output.error("Invalid input.")
     playerRPC(player)
