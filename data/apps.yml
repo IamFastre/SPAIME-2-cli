@@ -1,42 +1,50 @@
-msp:
-  bombC: 1
-  defeats: 7
-  dim: 3
-  spots-dug: 6
-  wins: 1
-rnd:
-  flips: 24
-  heads: 14
-  last-flips: 12
-  last-heads: 7
-  last-tails: 5
-  last-winner: "\e[38;2;226;226;46mHeads\e[0m"
-  tails: 10
-  ties: 3
-rps:
-  cpu:
-    last-choice: "\e[2m\e[90mRock\e[0m"
-    wins: 0
-  last-winner: "\e[38;2;144;238;144mP-1\e[0m"
-  p1:
-    last-choice: "\e[2m\e[90mRock\e[0m"
-    wins: 2
-  p2:
-    last-choice: "\e[38;2;251;80;83mScissors\e[0m"
-    wins: 0
-  ties: 4
 ttt:
-  last-board:
-  - "\e[1m\e[4m\e[5m\e[38;2;166;226;46m\e[1mo\e[0m\e[0m"
-  - "\e[38;2;251;80;83m\e[1mx\e[0m"
-  - "\e[38;2;251;80;83m\e[1mx\e[0m"
-  - "\e[38;2;166;226;46m\e[1mo\e[0m"
-  - "\e[1m\e[4m\e[5m\e[38;2;166;226;46m\e[1mo\e[0m\e[0m"
-  - "\e[38;2;251;80;83m\e[1mx\e[0m"
-  - "\e[38;2;145;145;145m\e[2m\e[3m\e[5m7\e[0m"
-  - "\e[38;2;251;80;83m\e[1mx\e[0m"
-  - "\e[1m\e[4m\e[5m\e[38;2;166;226;46m\e[1mo\e[0m\e[0m"
-  last-winner: "\e[38;2;166;226;46m\e[1mo\e[0m"
-  o-wins: 1
-  ties: 1
-  x-wins: 1
+  last-board: '—————————'
+  last-winner: '—'
+
+  x-wins: 0
+  o-wins: 0
+
+  ties: 0
+
+
+
+rps:
+  p1:
+    wins: 0
+    last-choice: '—'
+
+  p2:
+    wins: 0
+    last-choice: '—'
+
+  cpu:
+    wins: 0
+    last-choice: '—'
+
+  ties: 0
+  last-winner: '—'
+
+
+
+rnd:
+  heads: 0
+  tails: 0
+  flips: 0
+  ties: 0
+
+  last-heads: 0
+  last-tails: 0
+  last-flips: 0
+  last-winner: '—'
+
+
+
+msp:
+  wins: 0
+  defeats: 0
+
+  spots-dug: 0
+
+  bombC: 10
+  dim: 10
