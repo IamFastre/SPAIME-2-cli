@@ -134,7 +134,7 @@ def soloMode():
     
     clear()
     i = playerRPC(p1)
-    if not i:
+    if i == False:
         return
     
     cpuRPC(cpu)
@@ -152,12 +152,12 @@ def duoMode():
 
     clear()
     i = playerRPC(p1)
-    if not i:
+    if i == False:
         return
 
     clear()
     i = playerRPC(p2)
-    if not i:
+    if i == False:
         return
     
     winner = compareRPC(p2,p1)

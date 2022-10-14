@@ -304,7 +304,7 @@ def ttt_2p_start():
         clear()
         displayBoard(board)
         i = play()
-        if not i:
+        if i == False:
             return
         results = check()
         winner = results[0]
