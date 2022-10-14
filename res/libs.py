@@ -25,7 +25,7 @@ class intake():
             clear()
             output.notify(f"Why so fast? Bye-bye anyway!")
             delCache()
-            pause()
+            enterContinue()
             sys.exit(0)
 
 

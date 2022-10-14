@@ -1067,7 +1067,7 @@ def exit_app(sayBye=True):
         else:
             print(f"{x.YELLOW}>>{x.VIOLET} Bye Bye, {x.GREEN}{user['name']}{x.VIOLET}!{c.END}")
         
-    pause()
+    enterContinue()
     
     if os.path.exists('./res/__pycache__'):
         shutil.rmtree('./res/__pycache__')
@@ -1162,7 +1162,7 @@ def run_app():
     if not exited:
         print(f"{x.RED}>>{x.GRAY} Something wrong happened.{c.END}")
         print(f"{x.RED}>>{x.GRAY} Gonna rerun.{c.END}")
-        pause()
+        enterContinue()
         run_app()
 
 if __name__ == '__main__':

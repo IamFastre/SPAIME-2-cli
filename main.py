@@ -1427,7 +1427,7 @@ def exitF():
 
     # Deleting pycache, it makes the app run faster but screw it, am I right?
     delCache()
-    pause()
+    enterContinue()
 
     # raising SystemExit without parsing errors.
     sys.exit(0)
