@@ -52,15 +52,15 @@ def getNum():
             
         choice = int(choice)
             
-        if choice > 1000 or choice < 1:
+        if choice > 10000 or choice < 1:
             clear()
-            output.error("Only numbers between 1:1000")
+            output.error("Only numbers between 1:10000")
             getNum()
             
             
     else:
         clear()
-        output.error("Only numbers between 1:1000")
+        output.error("Only numbers between 1:10000")
         choice = getNum()
     return choice
 

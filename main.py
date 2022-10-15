@@ -30,13 +30,13 @@ except ModuleNotFoundError:
     output.warn(f"You seem to be missing the PyYAML module.")
     output.warn(f"Don't worry it's safe, gonna PIP it for you.")
     
-    if confirm(output.warn(f"Download it? ", Print=False)):
+    if confirm(output.warn(f"Download it?", Print=False)):
         pipInstall('pyyaml')
     else:
         output.error(f"OK, then.")
         exit(0)
         
-    output.success(f"Now everything is good. If the app does't run, please just restart.")
+    output.success(f"Now everything is good. If the app does't run (Specially If Unix/Linux), please just restart.")
     sleep(5)
 finally:
     import yaml
@@ -277,11 +277,20 @@ def isAdmin():
 def isCommand(thing):
     commands = [
         settings['prefix'] + "help",
+        settings['prefix'] + "help math",
+        settings['prefix'] + "help rnd",
+        settings['prefix'] + "help rps",
+        settings['prefix'] + "help ttt",
+        settings['prefix'] + "help msp",
+
+        settings['prefix'] + "back",
         settings['prefix'] + "home",
         settings['prefix'] + "exit",
-        settings['prefix'] + "refresh",
+        settings['prefix'] + "refr",
+
         settings['prefix'] + "dev1",
         settings['prefix'] + "dev2",
+
         settings['prefix'] + "reset",
     ]
     
@@ -320,7 +329,12 @@ class decoded():
 def back(num = -1):
     WN = windowHistory[num]
     func = f"{WN}Menu()"
-    exec(func)
+    try:
+        exec(func)
+    except ValueError:
+        clear()
+        output.error("I guess there's nothing to go back to.")
+        back()
 
 #==================================================================#
 
@@ -427,6 +441,8 @@ def choiceCheck(thing:str):
     #==============================================================#
 
     # Easter Eggs:
+    if "SPAIME" in thing:
+        thing = thing.replace("SPAIME", f"{x.YELLOW}[{x.VIOLET}SPAIME{x.YELLOW}]" + x.GRAY)
     if "SPAIME-2" in thing:
         thing = thing.replace("SPAIME-2", f"{x.YELLOW}[{x.VIOLET}SPAIME{x.YELLOW}]²" + x.GRAY)
     if "Shrek" in thing:
@@ -454,16 +470,39 @@ def choiceCheck(thing:str):
             clear()
             helpF()
             back()
-        
+        if cmd == "help math":
+            clear()
+            helpMathF()
+            back()
+        if cmd == "help rnd":
+            clear()
+            helpRNDF()
+            back()
+        if cmd == "help rps":
+            clear()
+            helpRPSF()
+            back()
+        if cmd == "help ttt":
+            clear()
+            helpTTTF()
+            back()
+        if cmd == "help msp":
+            clear()
+            helpMSPF()
+            back()
+
+
+        if cmd == "back":
+            clear()
+            back(-2)
         if cmd == "home":
             clear()
             mainMenu()
-
         if cmd == "exit":
             exitF()
-
-        if cmd == "refresh":
+        if cmd == "refr":
             refreshF()
+
 
         if cmd == "dev1":
 
@@ -493,7 +532,7 @@ def choiceCheck(thing:str):
                 clear()
                 output.error("It's a dev-only commands, buddy.")
                 back()
-    
+
         if cmd == "dev2":
 
             if isAdmin():
@@ -558,7 +597,7 @@ def mainMenu():
     print()
     
     output.option(1, f"{x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}] Repeat")
-    output.option(2, f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] Basic Math")
+    output.option(2, f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] Math & Logic")
     output.option(3, f"{x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}] Randomeur")
     output.option(4, f"{x.GRAY}[{x.LETTUCE}$${x.GRAY}] RockPaperScissors")
     output.option(5, f"{x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}] TicTacToe")
@@ -592,7 +631,7 @@ def mainMenu():
         mspMenu()
     if choice == "7":
         clear()
-        optionMenu()
+        optionsMenu()
     if choice == "8":
         clear()
         infoF()
@@ -657,31 +696,40 @@ def repeatMenu():
 def mathMenu():
     updateWindow(f"math")
 
-    allowed = "0123456789+-*/.,()% "
-
     print()
     output.stamp(f"Oh wanna do some math'ing?")
     output.note(1, settings['prefix'])
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
+    choice = choice.replace("^", "**").replace("x", "*").replace("×", "*").replace("÷", "/").replace("\\", "/")
+    choiceL = choice.split("#")
+    choice  = choiceL[0]
 
+    allowed = "0123456789+-*/.,()%=TF!&| "
     if goThro(choice,allowed):
+        choice  = choice.replace("!", "not ").replace("not =", "!=").replace("&", " and ").replace("|", " or ").replace("T", " True ").replace("F", " False ")
+
         try:
             choice = eval(choice)
         except:
             clear()
-            output.error(f"That's not really math...")
+            output.error(f"That's not really math or logic...")
         else:
             if choice == 69:
                 decoded.f69()
             clear()
-            output.notify(choice)
+            try:
+                choice = str(choice).replace("True", "T").replace("False", "F")
+            except:
+                output.error("Woah, cowboy! Easy on your machine.")
+            else:
+                output.notify(choice)
     else:
         clear()
-        output.error(f"That's not really math...")
+        output.error(f"That's not really math or logic...")
     
-    back(-2)
+    back()
 
 #==================================================================#
 
@@ -703,7 +751,7 @@ def rndMenu():
         enterContinue()
 
     def statsReset():
-        if confirm(output.notify(f"Are you sure? ", Print= False)):
+        if confirm(output.notify(f"Are you sure?", Print= False)):
             resetTTT()
             clear()
             output.success(f"All done, good as new.")
@@ -717,7 +765,7 @@ def rndMenu():
     output.stamp(f"Welcome to Randomeur!")
     output.note(1, settings['prefix'])
     print()
-    output.option(1, "Coin Flipeur")
+    output.option(1, "Flipeur")
     output.option(2, "Game Statistics")
     output.option(9, "Reset RND Statistics")
     output.option(0, "Home")
@@ -807,7 +855,7 @@ def rpsMenu():
         enterContinue()
 
     def statsReset():
-        if confirm(output.notify(f"Are you sure? ", Print= False)):
+        if confirm(output.notify(f"Are you sure?", Print= False)):
             resetTTT()
             clear()
             output.success(f"All done, good as new.")
@@ -911,7 +959,7 @@ def tttMenu():
         enterContinue()
 
     def statsReset():
-        if confirm(output.notify(f"Are you sure? ", Print= False)):
+        if confirm(output.notify(f"Are you sure?", Print= False)):
             resetTTT()
             clear()
             output.success(f"All done, good as new.")
@@ -1060,7 +1108,7 @@ def mspMenu():
         enterContinue()
 
     def statsReset():
-        if confirm(output.notify(f"Are you sure? ", Print= False)):
+        if confirm(output.notify(f"Are you sure?", Print= False)):
             resetMSP()
             clear()
             output.success(f"All done, good as new.")
@@ -1124,10 +1172,10 @@ def mspMenu():
 
 #==================================================================#
 
-def optionMenu():
-    updateWindow(f"option")
+def optionsMenu():
+    updateWindow(f"options")
 
-    def name_change(name):
+    def nameChange(name):
         user['name'] = str(name)
         try:
             writeYAML()
@@ -1139,7 +1187,38 @@ def optionMenu():
             clear()
             output.success(f"Changes saved.")
 
-    def age_change(age):
+    def sexChange(sex:str):
+
+        if sex.capitalize() in ("M", "F", "N"):
+
+            if sex.upper() == "M":
+                sex = "Male"
+            if sex.upper() == "F":
+                sex = "Female"
+            if sex.upper() == "N":
+                sex = "Non-Binary"
+
+            user['sex'] = sex
+
+            try:
+                writeYAML()
+            except:
+                clear()
+                output.error(f"Something went wrong.")
+            else:
+                writeYAML()
+                clear()
+                output.success(f"Changes saved.")
+
+        elif sex.upper() == "MF":
+            clear()
+            output.warn("Are you calling me a mf...?")
+
+        else:
+            clear()
+            output.error(f"What gender is that?! Available Options: male, female, non-binary")
+
+    def ageChange(age):
         age_old = user['age']
         try:
             user['age'] = int(age)
@@ -1175,9 +1254,10 @@ def optionMenu():
     output.stamp(f"Options:")
     output.note(1, settings['prefix'])
     print()
-    output.option(1, f"Name: {x.LETTUCE}{user['name'] if user['name'] != '' else None}")
-    output.option(2, f"Age: {x.LETTUCE}{user['age']}")
-    output.option(3, f"Prefix: {x.LETTUCE}{settings['prefix']}")
+    output.option(1, f"Name: {x.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
+    output.option(2, f"Gender: {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
+    output.option(3, f"Age: {x.GREEN}{user['age']}")
+    output.option(4, f"Prefix: {x.GREEN}{settings['prefix']}")
     output.option(8, f"Rest Games' Stats")
     output.option(9, f"Rest Application")
     output.option(0, f"Home")
@@ -1191,16 +1271,16 @@ def optionMenu():
         print()
         output.stamp(f"What do you wanna be called?")
         output.note(1, settings['prefix'])
-        output.note(f"Current is {x.GREEN}{user['name'] if user['name'] != '' else None}")
+        output.note(f"Current is {x.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
 
-        name_change(choice)
+        nameChange(choice)
 
         back()
 
-    elif choice == "2" or choice.casefold() == "age":
+    elif choice == "3" or choice.casefold() == "age":
 
         clear()
         print()
@@ -1211,10 +1291,24 @@ def optionMenu():
         choice = intake.prompt()
         choice = choiceCheck(choice)
 
-        age_change(choice)
+        ageChange(choice)
 
         back()
-    elif choice == "3" or choice.casefold() == "prefix":
+    elif choice == "2" or choice.casefold() == "gender":
+
+        clear()
+        print()
+        output.stamp(f"Cation, Anion or Zwitterion? (M,F,N)")
+        output.note(1, settings['prefix'])
+        output.note(f"Current is {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
+        
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+
+        sexChange(choice)
+
+        back()
+    elif choice == "4" or choice.casefold() == "prefix":
 
         clear()
         print()
@@ -1232,9 +1326,9 @@ def optionMenu():
         
         clear()
         output.notify(f"Continuing would mean you want to reset statistics to default.")
-        if confirm(output.notify(f"Are you sure? ", Print=False)):
+        if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.")
+            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{x.LETTUCE}{settings['prefix']}reset{x.GRAY}\"{c.END}{x.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1257,9 +1351,9 @@ def optionMenu():
 
         clear()
         output.notify(f"Continuing would mean you want to reset statistics to default.")
-        if confirm(output.notify(f"Are you sure? ", Print=False)):
+        if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{settings['prefix']}reset\"{c.END}{x.VIOLET} to further confirm.")
+            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{x.LETTUCE}{settings['prefix']}reset{x.GRAY}\"{c.END}{x.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1305,15 +1399,22 @@ def helpF():
     """The cmd & plh help menu."""
 
     print()
-    output.stamp(f"Commands: {c.END}")
+    output.stamp(f"Commands:")
     # The available SPAIME commands.
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}help: {x.GRAY}Shows this menu.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}home: {x.GRAY}Returns you to home page.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}exit: {x.GRAY}To safely exit the app.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}dev1: {x.GRAY}Enters eval() mode. {x.RED}{c.DIM}(dev-only){c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}dev2: {x.GRAY}Enters exec() mode. {x.RED}{c.DIM}(dev-only){c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"help [┬]   : {x.GRAY}Shows this menu.{c.END}")
+    print(                                          f"          ├math: {x.GRAY}Shows help about Math & Logic.{c.END}")
+    print(                                          f"          ├rnd : {x.GRAY}Shows help about Randomeur.{c.END}")
+    print(                                          f"          ├rps : {x.GRAY}Shows help about RockPaperScissors.{c.END}")
+    print(                                          f"          ├ttt : {x.GRAY}Shows help about TicTacToe.{c.END}")
+    print(                                          f"          └msp : {x.GRAY}Shows help about Minesweeper.{c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"back:        {x.GRAY}Returns you a page back.{c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"home:        {x.GRAY}Returns you to home page.{c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"refr:        {x.GRAY}Refreshes current page.{c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"exit:        {x.GRAY}To safely exit the app.{c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"dev1:        {x.GRAY}Enters eval() mode. {x.RED}{c.DIM}(dev-only){c.END}")
+    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"dev2:        {x.GRAY}Enters exec() mode. {x.RED}{c.DIM}(dev-only){c.END}")
     print("\n")
-    output.stamp(f"Placeholders: {c.END}")
+    output.stamp(f"Placeholders:")
     # The available placeholders.
                # The syntax ones.
     print(f" {x.YELLOW}-{c.END}" + " {nl}: " + f"           {x.GRAY}Makes a lovely line separator, not useful.{c.END}")
@@ -1358,6 +1459,84 @@ def helpF():
     print(f" {x.YELLOW}-{c.END}" + " {mspDug}: " + f"       {x.GRAY}Returns how many times you dug manually at MSP.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {mspBombs}: " + f"     {x.GRAY}Returns how many bombs are in MSP config.{c.END}")
     print(f" {x.YELLOW}-{c.END}" + " {mspSize}: " + f"      {x.GRAY}Returns how big the map is in MSP config.{c.END}")
+
+    enterContinue()
+
+#==================================================================#
+
+def helpMathF():
+
+    print()
+    output.stamp("Math & Logic Help:")
+
+    output.note(f"You can use basic math and logic gates.", sign="D")
+    output.note(f'Allowed Input: "{x.LETTUCE}0123456789+-*×x/\\÷^.,()%=TF!&| {c.END}{x.GRAY}".', sign="D")
+    output.note(f"T  {x.LETTUCE}->{x.GRAY} True", sign="D")
+    output.note(f"F  {x.LETTUCE}->{x.GRAY} False", sign="D")
+    output.note(f"!  {x.LETTUCE}->{x.GRAY} not", sign="D")
+    output.note(f"&  {x.LETTUCE}->{x.GRAY} and", sign="D")
+    output.note(f"|  {x.LETTUCE}->{x.GRAY} or", sign="D")
+    output.note(f"== {x.LETTUCE}->{x.GRAY} equal-to", sign="D")
+    output.note(f"!= {x.LETTUCE}->{x.GRAY} not-equal-to", sign="D")
+
+    enterContinue()
+
+#==================================================================#
+
+def helpRNDF():
+
+    print()
+    output.stamp("Randomeur Help:")
+
+    print()
+    output.notify("Flipeur:")
+
+    output.note(f"Flip a coin for [{x.LETTUCE}x-amount{x.GRAY}] of times.", sign="D")
+    output.note(f"[{x.LETTUCE}x-amount{x.GRAY}] must be between {x.LETTUCE}1:10000.", sign="D")
+    output.note(f"That is so you don't smell a grilled CPU core.", sign="D")
+    output.note(f"Check on the statistics to see some cool figures.", sign="D")
+
+    enterContinue()
+
+#==================================================================#
+
+def helpRPSF():
+    print()
+    output.stamp("RockPaperScissors Help:")
+    output.note(f"There're two main modes:", sign="D")
+    output.note(f"You choose rock, paper or scissors and the CPU randomizes a choice.", sign=f"{x.YELLOW}Solo:")
+    output.note(f"You choose rock, paper or scissors and call a friend to choose too.", sign=f"{x.YELLOW}Duo :")
+    output.note(f"Check on the statistics to see some cool figures.", sign="D")
+
+    enterContinue()
+
+#==================================================================#
+
+def helpTTTF():
+    print()
+    output.stamp("TicTacToe Help:")
+    output.note(f"First, choose whether to start with {ttt.s.x}{x.GRAY} or {ttt.s.o}{x.GRAY}.", sign="D")
+    output.note(f"Next, just type the position number you want to play at.", sign="D")
+    output.note(f"Check on the statistics to see some cool figures.", sign="D")
+
+    enterContinue()
+
+#==================================================================#
+
+def helpMSPF():
+    print()
+    output.stamp("Minesweeper Help:")
+    output.note(f"Boom!! {msp.bombS}", sign="D")
+    output.note(f"Let's start by talking about the Config page.", sign="D")
+    output.note(f"There you can choose the map size and the amount of bombs.", sign="D")
+    output.note(f"To dig a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]'{c.END}{x.GRAY} of that spot.", sign="D")
+    output.note(f"To flag a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]{msp.flagS}'{c.END}{x.GRAY} of that spot.", sign="D")
+    output.note("Any brackets like (), [] or {}, and spaces are ignored.", sign="D")
+    output.note(f"{msp.emptyS} {x.LETTUCE}->{x.GRAY} Not Dug", sign="D")
+    output.note(f"{msp.nS[ random.randint(0,len(msp.nS)) -1 ]} {x.LETTUCE}->{x.GRAY} Dug", sign="D")
+    output.note(f"{msp.flagS} {x.LETTUCE}->{x.GRAY} Flagged", sign="D")
+    output.note(f"{msp.bombS} {x.LETTUCE}->{x.GRAY} Bomb", sign="D")
+    output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
     enterContinue()
 

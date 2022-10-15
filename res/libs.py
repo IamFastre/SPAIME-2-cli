@@ -86,29 +86,32 @@ class output():
         else:
             return out
 
-    def note(num, pref = ""):
-        if num == 1:
-            print(f'''{x.WHITE}!!: {x.GRAY}Type {c.ITALIC}"{pref}help"{c.END}{x.GRAY} to get a list of available commands.{c.END}''')
+    def note(num, pref = "", sign = "E"):
+        if sign == "E":
+            Sign = f"{x.WHITE}!!:"
+        elif sign == "D":
+            Sign = f"{x.YELLOW}-"
         else:
-            print(f'''{x.WHITE}!!: {x.GRAY}{num}{c.END}''')
+            Sign = sign
+
+        if num == 1:
+            print(f'''{Sign} {x.GRAY}Type {c.ITALIC}"{x.LETTUCE}{c.DIM}{pref}help{x.END}{x.GRAY}{c.ITALIC}"{c.END}{x.GRAY} to get a list of available commands.{c.END}''')
+        else:
+            print(f'''{Sign} {x.GRAY}{num}{c.END}''')
 
 def delCache():
-    if os.path.exists('./res/__pycache__'):
-        shutil.rmtree('./res/__pycache__')
 
-    if os.path.exists('./apps/__pycache__'):
-        shutil.rmtree('./apps/__pycache__')
-
-    if os.path.exists('./.exec/__pycache__'):
-        shutil.rmtree('./.exec/__pycache__')
-
-    if os.path.exists('./__pycache__'):
-        shutil.rmtree('./__pycache__')
+    for file in glob.glob('./*/__pycache__'):
+        if os.path.exists(file):
+            shutil.rmtree(file)
 
 def confirm(string):
+
     string = str(string)
-    print(string + f"{c.YELLOW}({x.GREEN}y{c.YELLOW}/{x.RED}n{c.YELLOW}){c.END}")
+
+    print(string + f" {c.YELLOW}({x.GREEN}y{c.YELLOW}/{x.RED}n{c.YELLOW}){c.END}")
     confirmation = intake.prompt()
+
     if confirmation.casefold() == "y" or confirmation.casefold()== "yes" or confirmation.casefold()== "true":
         return True
     else:
@@ -158,8 +161,21 @@ def enterContinue(Space=True):
     if Space:
         print()
     print(f"{x.YELLOW}>> {x.GRAY}Press Enter to continue...{c.END}")
-
-    choice = input(f"{c.DIM + c.ITALIC + x.GRAY}")
+    try:
+        choice = input(f"{c.DIM + c.ITALIC + x.GRAY}")
+    except EOFError:
+        print()
+        output.error("Please don't EOF me...")
+        output.error("If you wanna end the app use KeyboardInterrupt or the in-app exit.")
+        time.sleep(2)
+        delCache()
+        return f"I am stupid"
+    except KeyboardInterrupt:
+        clear()
+        output.notify(f"Why so fast? Bye-bye anyway!")
+        delCache()
+        enterContinue()
+        sys.exit(0)
     print(c.END)
     clear()
     return choice

@@ -224,7 +224,7 @@ def startGame(SIZE: int, BOMBS: int):
             enterContinue(False)
             clear()
             return
-
+        choice = choice.replace("[", "").replace("]", "").replace("(", "").replace(")", "").replace("{", "").replace("}", "")
         if not ("F" in choice or "f" in choice):
             Loc = re.split(" *, *", choice)
 
