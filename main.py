@@ -270,7 +270,7 @@ placeholders = {
 #==================================================================#
 
 def isAdmin():
-    return (user['name'].casefold() in admins and user['age'] in passes)
+    return (user['name'].casefold() in admins and user['age'] in passes and user['sex'] == "Male")
 
 #==================================================================#
 
@@ -517,7 +517,7 @@ def choiceCheck(thing:str):
                     try:
                         print(eval(dev))
                         print("")
-                    except:
+                    except NameError:
                         output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         enterContinue()
                         clear()
@@ -546,7 +546,7 @@ def choiceCheck(thing:str):
                     try:
                         print(exec(dev))
                         print("")
-                    except:
+                    except NameError:
                         output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         enterContinue()
                         clear()
@@ -767,6 +767,7 @@ def rndMenu():
     print()
     output.option(1, "Flipeur")
     output.option(2, "Game Statistics")
+    output.option(8, "Help")
     output.option(9, "Reset RND Statistics")
     output.option(0, "Home")
 
@@ -796,6 +797,10 @@ def rndMenu():
     elif choice == "2" or choice.casefold() == "stats":
         clear()
         statsMenu()
+        back()
+    elif choice == "8" or choice.casefold() == "help":
+        clear()
+        helpRNDF()
         back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
@@ -872,6 +877,7 @@ def rpsMenu():
     output.option(1, "Solo")
     output.option(2, "Duo")
     output.option(3, "Game Statistics")
+    output.option(8, "Help")
     output.option(9, "Reset RPS Statistics")
     output.option(0, "Home")
 
@@ -929,6 +935,10 @@ def rpsMenu():
         clear()
         statsMenu()
         back()
+    elif choice == "8" or choice.casefold() == "help":
+        clear()
+        helpRPSF()
+        back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
         statsReset()
@@ -975,6 +985,7 @@ def tttMenu():
     print()
     output.option(1, "Start Game")
     output.option(2, "Game Statistics")
+    output.option(8, "Help")
     output.option(9, "Reset TTT Statistics")
     output.option(0, "Home")
     
@@ -1006,6 +1017,10 @@ def tttMenu():
     elif choice == "2" or choice.casefold() == "stats":
         clear()
         statsMenu()
+        back()
+    elif choice == "8" or choice.casefold() == "help":
+        clear()
+        helpTTTF()
         back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
@@ -1125,6 +1140,7 @@ def mspMenu():
     output.option(1, "Start a Game")
     output.option(2, "Config")
     output.option(3, "Game Statistics")
+    output.option(8, "Help")
     output.option(9, "Reset MSP Statistics & Config")
     output.option(0, "Home")
 
@@ -1156,6 +1172,10 @@ def mspMenu():
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
+        back()
+    elif choice == "8" or choice.casefold() == "help":
+        clear()
+        helpMSPF()
         back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
