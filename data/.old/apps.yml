@@ -4,8 +4,9 @@ ttt:
 
   x-wins: 0
   o-wins: 0
-
   ties: 0
+
+  diff: 'M'
 
 
 

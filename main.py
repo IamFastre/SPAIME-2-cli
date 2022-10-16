@@ -123,7 +123,7 @@ def resetYAML(YAML = None):
 
 def resetTTT():
     global apps
-    apps['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0}
+    apps['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0, 'diff': 'M'}
     writeYAML()
 
 #==================================================================#
@@ -335,6 +335,10 @@ def back(num = -1):
         clear()
         output.error("I guess there's nothing to go back to.")
         back()
+    except NameError:
+        clear()
+        output.notify("Hello, Hello!!")
+        mainMenu()
 
 #==================================================================#
 
@@ -957,6 +961,71 @@ def rpsMenu():
 def tttMenu():
     updateWindow(f"ttt")
 
+    def tttGameMenu():
+        global tttGameSubMenu
+        tttGameSubMenu = tttGameMenu
+        updateWindow("tttGameSub")
+
+        print()
+        output.stamp("Game Menu:")
+        output.note(1, settings['prefix'])
+        print()
+        output.option(1, "Start Game")
+        output.option(2, "Difficulty: " + x.LETTUCE + apps['ttt']['diff'])
+        output.option(0, "Back")
+
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+
+        result = None
+
+        if choice == "1":
+            clear()
+            print()
+            output.notify("Game mode...")
+            output.note(1, settings['prefix'])
+            print()
+            output.option(1, "Solo")
+            output.option(2, "Duo")
+            output.option(0, "Back")
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+            if choice == "1":
+                result = ttt.soloMode(apps['ttt']['diff'])
+                if not result:
+                    back(-2)
+            if choice == "2":
+                result = ttt.duoMode()
+                if not result:
+                    back(-2)
+            if choice == "0":
+                clear()
+                back()
+            return result
+        if choice == "2":
+            clear()
+            print()
+            output.stamp(f"What do you want the difficulty to be? {x.LETTUCE}(H,M,E)")
+            output.note(1, settings['prefix'])
+            output.note(f"Current is {x.LETTUCE}{apps['ttt']['diff']}{c.END}")
+            print()
+            allowed = "HME"
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+            if goThro(choice.upper(), allowed) and len(choice) == 1:
+                apps['ttt']['diff'] = choice.upper()
+                writeYAML()
+                clear()
+                output.success("Changes saved.")
+                back()
+            else:
+                clear()
+                output.error("No, no, no. Only: Hard, Medium, Easy")
+                back()
+        if choice == "0":
+            clear()
+            back(-2)
+
     def statsMenu():
         print()
         output.stamp(f"TicTacToe Statistics:\n{c.END}")
@@ -983,7 +1052,7 @@ def tttMenu():
     output.stamp(f"Welcome to TicTacToe!")
     output.note(1, settings['prefix'])
     print()
-    output.option(1, "Start Game")
+    output.option(1, "Game Menu")
     output.option(2, "Game Statistics")
     output.option(8, "Help")
     output.option(9, "Reset TTT Statistics")
@@ -993,24 +1062,23 @@ def tttMenu():
     choice = choiceCheck(choice)
 
     if choice == "1" or choice.casefold() == "start":
-        result = ttt.ttt_2p_start()
-        if not result:
-            back()
+        clear()
+        result = tttGameMenu()
 
-        winner = result[0]
-        board = result[1]
+        if type(result) == type(["Oh", "hey there", "cutie!"]): 
+            winner = result[0]
+            board = result[1]
 
-        apps['ttt']['last-winner'] = winner
-        apps['ttt']['last-board'] = board
-        writeYAML()
+            apps['ttt']['last-winner'] = winner['name']
+            apps['ttt']['last-board'] = board
 
-        if winner == ttt.s.x:
-            apps['ttt']['x-wins'] = int(apps['ttt']['x-wins']) + 1
-        if winner == ttt.s.o:
-            apps['ttt']['o-wins'] = int(apps['ttt']['o-wins']) + 1
-        if winner == ttt.s.n:
-            apps['ttt']['ties'] = int(apps['ttt']['ties']) + 1
-        writeYAML()
+            if winner == ttt.s.x:
+                apps['ttt']['x-wins'] = int(apps['ttt']['x-wins']) + 1
+            if winner == ttt.s.o:
+                apps['ttt']['o-wins'] = int(apps['ttt']['o-wins']) + 1
+            if winner == ttt.s.n:
+                apps['ttt']['ties'] = int(apps['ttt']['ties']) + 1
+            writeYAML()
 
         back()
 
@@ -1034,17 +1102,17 @@ def tttMenu():
         lastCheck(choice)
 
     back(-2)
-    
+
 #==================================================================#
 
 def mspMenu():
     global mspBD
     updateWindow(f"msp")
 
-    def confMenu():
-        global confSubMenu
-        confSubMenu = confMenu
-        updateWindow("confSub")
+    def mspConfMenu():
+        global mspConfSubMenu
+        mspConfSubMenu = mspConfMenu
+        updateWindow("mspConfSub")
 
         print()
         output.stamp("Minesweeper Config:")
@@ -1167,7 +1235,7 @@ def mspMenu():
                     
     elif choice == "2" or choice.casefold() == "config":
         clear()
-        confMenu()
+        mspConfMenu()
         back()
     elif choice == "3" or choice.casefold() == "stats":
         clear()
@@ -1318,7 +1386,7 @@ def optionsMenu():
 
         clear()
         print()
-        output.stamp(f"Cation, Anion or Zwitterion? (M,F,N)")
+        output.stamp(f"Cation, Anion or Zwitterion? {x.LETTUCE}(M,F,N)")
         output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
         
@@ -1646,6 +1714,10 @@ def exitF():
 
 if __name__ == "__main__":
     clear()
+    if settings['first-time']:
+        settings['first-time'] = False
+        writeYAML()
+        infoF()
     mainMenu()
     print(x.END)
 

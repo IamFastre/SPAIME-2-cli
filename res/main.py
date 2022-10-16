@@ -726,7 +726,7 @@ def ttt_menu():
     choice = choice_check(choice)
 
     if choice == "1" or choice.casefold() == "start":
-        result = ttt.ttt_2p_start()
+        result = ttt.duoMode()
 
         winner = result[0]
         board = result[1]

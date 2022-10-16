@@ -11,31 +11,14 @@ from res.libs import *
 
 
 
-game = {
-    'status': 'running',
-    'mode': None
-}
+game   = {'status': 'running', 'mode': None}
 
-p1     = {
-    'input': None,
-    'name': f"{x.LETTUCE}P-1{c.END}"
-}
-p2     = {
-    'input': None,
-    'name': f"{x.SKY}P-2{c.END}"
-}
-cpu    = {
-    'input': None,
-    'name': f"{x.RED}CPU{c.END}"
-}
-pN     = {
-    'input': None,
-    'name': None
-}
-winner = {
-    'input': None,
-    'name': None
-}
+p1     = {'input': None, 'name': f"{x.LETTUCE}P-1{c.END}"}
+p2     = {'input': None, 'name': f"{x.SKY}P-2{c.END}"}
+cpu    = {'input': None, 'name': f"{x.RED}CPU{c.END}"}
+pN     = {'input': None, 'name': None}
+winner = {'input': None, 'name': None}
+
 class s:
     r = f"{c.DIM}{c.GRAY}Rock{c.END}"
     p = f"{x.WHITE}Paper{c.END}"

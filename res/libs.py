@@ -86,18 +86,22 @@ class output():
         else:
             return out
 
-    def note(num, pref = "", sign = "E"):
+    def note(num, pref = "", sign = "E", Print = True):
         if sign == "E":
             Sign = f"{x.WHITE}!!:"
         elif sign == "D":
             Sign = f"{x.YELLOW}-"
         else:
             Sign = sign
-
         if num == 1:
-            print(f'''{Sign} {x.GRAY}Type {c.ITALIC}"{x.LETTUCE}{c.DIM}{pref}help{x.END}{x.GRAY}{c.ITALIC}"{c.END}{x.GRAY} to get a list of available commands.{c.END}''')
+            out = f'''{Sign} {x.GRAY}Type {c.ITALIC}"{x.LETTUCE}{c.DIM}{pref}help{x.END}{x.GRAY}{c.ITALIC}"{c.END}{x.GRAY} to get a list of available commands.{c.END}'''
         else:
-            print(f'''{Sign} {x.GRAY}{num}{c.END}''')
+            out = f'''{Sign} {x.GRAY}{num}{c.END}'''
+
+        if Print:
+            print(out)
+        else:
+            return out
 
 def delCache():
 
