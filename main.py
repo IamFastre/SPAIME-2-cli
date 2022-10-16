@@ -1076,7 +1076,7 @@ def tttMenu():
                 apps['ttt']['x-wins'] = int(apps['ttt']['x-wins']) + 1
             if winner == ttt.s.o:
                 apps['ttt']['o-wins'] = int(apps['ttt']['o-wins']) + 1
-            if winner == ttt.s.n:
+            if winner == ttt.tied:
                 apps['ttt']['ties'] = int(apps['ttt']['ties']) + 1
             writeYAML()
 

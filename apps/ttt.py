@@ -45,6 +45,7 @@ def renewVars():
 
     global currentPlayer
     global winner
+    global tied
 
     global gameMode 
     global gameStatus
@@ -61,6 +62,7 @@ def renewVars():
 
     currentPlayer = {'name': None                    , 'mark': None} 
     winner        = {'name': None                    , 'mark': None}
+    tied          = {'name': 'No one'                , 'mark': None}
 
     gameMode      = None
     gameStatus    = None
@@ -237,7 +239,7 @@ def check(p1: dict, p2: dict):
             busy_tiles += 1
     # If yes, then game is tied.
     if busy_tiles == 9:
-        return [s.n, "done", None]
+        return [tied, "done", None]
     # If no check checks, keep going.
     return [winner, "running", None]
 
