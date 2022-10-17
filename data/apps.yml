@@ -1,51 +1,43 @@
-ttt:
-  last-board: '—————————'
-  last-winner: '—'
-
-  x-wins: 0
-  o-wins: 0
-  ties: 0
-
-  diff: 'M'
-
-
-
-rps:
-  p1:
-    wins: 0
-    last-choice: '—'
-
-  p2:
-    wins: 0
-    last-choice: '—'
-
-  cpu:
-    wins: 0
-    last-choice: '—'
-
-  ties: 0
-  last-winner: '—'
-
-
-
-rnd:
-  heads: 0
-  tails: 0
-  flips: 0
-  ties: 0
-
-  last-heads: 0
-  last-tails: 0
-  last-flips: 0
-  last-winner: '—'
-
-
-
 msp:
-  wins: 0
-  defeats: 0
-
-  spots-dug: 0
-
   bombC: 10
+  defeats: 0
   dim: 10
+  spots-dug: 0
+  wins: 0
+rnd:
+  flips: 21930
+  heads: 10957
+  last-flips: 10000
+  last-heads: 5044
+  last-tails: 4956
+  last-winner: "\e[38;2;226;226;46mHeads\e[0m"
+  tails: 10973
+  ties: 1
+rps:
+  cpu:
+    last-choice: "\u2014"
+    wins: 0
+  last-winner: "\u2014"
+  p1:
+    last-choice: "\u2014"
+    wins: 0
+  p2:
+    last-choice: "\u2014"
+    wins: 0
+  ties: 0
+ttt:
+  diff: H
+  last-board:
+  - "\e[38;2;251;80;83m\e[1mX\e[0m"
+  - "\e[38;2;166;226;46m\e[1mO\e[0m"
+  - "\e[38;2;251;80;83m\e[1mX\e[0m"
+  - "\e[38;2;251;80;83m\e[1mX\e[0m"
+  - "\e[38;2;166;226;46m\e[1mO\e[0m"
+  - "\e[38;2;166;226;46m\e[1mO\e[0m"
+  - "\e[38;2;166;226;46m\e[1mO\e[0m"
+  - "\e[38;2;251;80;83m\e[1mX\e[0m"
+  - "\e[38;2;251;80;83m\e[1mX\e[0m"
+  last-winner: No one
+  o-wins: 0
+  ties: 8
+  x-wins: 0

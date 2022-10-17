@@ -47,7 +47,7 @@ def renewVars():
     global winner
     global tied
 
-    global gameMode 
+    global gameMode
     global gameStatus
     global winnerLine
 
@@ -138,8 +138,8 @@ def displayBoard(board, returnBoard=False, left=""):
             board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
             board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
             board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
-            
-    
+
+
     Left = str(left) + x.END
     board_look = f"""{Left}{x.LETTUCE}=============
 {Left}{x.LETTUCE}| {board[0]} {x.LETTUCE}| {board[1]} {x.LETTUCE}| {board[2]} {x.LETTUCE}|
@@ -177,39 +177,37 @@ def swapPlayer(P1, P2):
 
 def check(p1: dict, p2: dict):
     global board
-    
+
     global r1
     global r2
     global r3
-    
+
     global c1
     global c2
     global c3
-    
+
     global d1
     global d2
 
-    # I couldn't really do it any other way. 
-    def lineChecker():
+    # I couldn't really do it any other way.
+    def lineChecker(line):
         if line == r1:
             return "r1"
         if line == r2:
             return "r2"
         if line == r3:
             return "r3"
-            
         if line == c1:
             return "c1"
         if line == c2:
             return "c2"
         if line == c3:
             return "c3"
-            
         if line == d1:
             return "d1"
         if line == d2:
             return "d2"
-            
+
     # Declaring game lines.
     r1 = [board[0],board[1],board[2]]
     r2 = [board[3],board[4],board[5]]
@@ -227,10 +225,10 @@ def check(p1: dict, p2: dict):
     # Checks if there's a winner line.
     for line in lines:
         if goThro(line, [p1['mark']]):
-            return [p1, "done", lineChecker()]
-        
+            return [p1, "done", lineChecker(line)]
+
         if goThro(line, [p2['mark']]):
-            return [p2, "done", lineChecker()]
+            return [p2, "done", lineChecker(line)]
 
     # Checks if there's no empty space.
     busy_tiles = 0
@@ -276,7 +274,7 @@ def userDecide(player):
 def cpuDecide(diff="H"):
     global board
 
-    
+
     def lineChecker():
         if line == r1:
             return "r1"
@@ -284,14 +282,14 @@ def cpuDecide(diff="H"):
             return "r2"
         if line == r3:
             return "r3"
-            
+
         if line == c1:
             return "c1"
         if line == c2:
             return "c2"
         if line == c3:
             return "c3"
-            
+
         if line == d1:
             return "d1"
         if line == d2:
@@ -302,7 +300,7 @@ def cpuDecide(diff="H"):
             if List.count(thing) > 1:
                 return thing
         return False
-    
+
     # Declaring game lines.
     r1 = [board[0],board[1],board[2]]
     r2 = [board[3],board[4],board[5]]
@@ -316,7 +314,7 @@ def cpuDecide(diff="H"):
     d2 = [board[2],board[4],board[6]]
 
     lines = [r1,r2,r3,c1,c2,c3,d1,d2]
-    
+
     if diff == "H":
         coin = 0.5
         mess = f"This is so easy!"
@@ -329,7 +327,7 @@ def cpuDecide(diff="H"):
         coin = 0
         mess = f"I love pancakes! Huh, what's TicTacToe?"
         dur  = 1
-    
+
     output.note(mess, sign=cpu['name']+":")
     sleep(dur)
 
@@ -366,10 +364,9 @@ def cpuDecide(diff="H"):
         if board[choice] in ns:
             board[choice] = cpu['mark']
             break
-            
-            
 
-    
+
+
 
 
 #==================================================================#
@@ -384,18 +381,18 @@ def duoMode():
     global winnerLine
 
     renewVars()
-    gameStatus = "running"    
+    gameStatus = "running"
     gameMode   = "duo"
 
     clear()
     while currentPlayer['mark'] == None: 
         user1['mark'] = chooseMark()
         user2['mark'] = s.o if user1['mark'] == s.x else s.x
-        
+
         if user1['mark'] == False: return False
-        
+
         currentPlayer = user1
-    
+
     while gameStatus == "running":
 
         clear()
@@ -428,9 +425,9 @@ def soloMode(diff):
     global winner
     global winnerLine
     global gameDiff
-    
+
     renewVars()
-    gameStatus = "running"    
+    gameStatus = "running"
     gameMode   = "solo"
     gameDiff   = diff
 
@@ -439,11 +436,11 @@ def soloMode(diff):
     while currentPlayer['mark'] == None: 
         user1['mark'] = chooseMark()
         cpu['mark']   = s.o if user1['mark'] == s.x else s.x
-        
+
         if user1['mark'] == False: return False
-        
+
         currentPlayer = user1 if user1['mark'] == s.x else cpu
-    
+
     while gameStatus == "running":
 
         clear()
@@ -461,7 +458,7 @@ def soloMode(diff):
         winnerLine = result[2]
 
         currentPlayer = swapPlayer(user1, cpu)
-        
+
     clear()
     displayBoard(board)
     enterContinue()
@@ -474,9 +471,9 @@ def chooseMode():
     print(f"\n{x.YELLOW}>>> {x.VIOLET}2-Player or Solo Mode?{c.END}")
     print(f"{x.GRAY}1: {x.GRAY}Solo Mode{c.END}")
     print(f"{x.GRAY}2: {x.GRAY}2P Mode{c.END}")
-    
+
     choice = intake.prompt()
-    
+
     if choice in ("1", "solo"):
         soloMode("E")
         return

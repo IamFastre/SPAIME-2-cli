@@ -3,7 +3,7 @@ from os.path import dirname, join, abspath
 
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
-    
+
 import random
 
 from res.colors import *
@@ -23,7 +23,7 @@ class s:
     r = f"{c.DIM}{c.GRAY}Rock{c.END}"
     p = f"{x.WHITE}Paper{c.END}"
     s = f"{x.RED}Scissors{c.END}"
-    
+
 
 def playerRPC(player):
     print(f"\n{x.YELLOW}>>> {player['name']}, {x.VIOLET}Make a choice:{c.END}")
@@ -37,7 +37,7 @@ def playerRPC(player):
         enterContinue(False)
         clear()
         return False
-    
+
     if choice in ("r", "1"):
         player['input'] = s.r
         return True
@@ -65,11 +65,11 @@ def cpuRPC(player):
         return
 
 
-def compareRPC(player1,player2):    
+def compareRPC(player1,player2):
     n1 = player1
     n2 = player2
     n3 = pN
-    
+
     c1 = player1['input']
     c2 = player2['input']
 
@@ -79,55 +79,55 @@ def compareRPC(player1,player2):
         return n2
     if c1 == s.r and c2 == s.s:
         return n1
-        
+
     if c1 == s.p and c2 == s.r:
         return n1
     if c1 == s.p and c2 == s.p:
         return n3
     if c1 == s.p and c2 == s.s:
         return n2
-                
+
     if c1 == s.s and c2 == s.r:
         return n2
     if c1 == s.s and c2 == s.p:
         return n1
     if c1 == s.s and c2 == s.s:
         return n3
-    
+
 def result(player1,player2,winner):
-    
+
     clear()
     print(f"\n{x.YELLOW}>>> {player1['name']}{x.VIOLET} chose {player1['input']}{c.END}")
     print(f"{x.YELLOW}>>> {player2['name']}{x.VIOLET} chose {player2['input']}{c.END}")
     print("")
-    
+
     if winner['name'] != None:
         print(f"{x.YELLOW}>> {winner['name']}{x.VIOLET} won!{c.END}")
     else:
         print(f"{x.YELLOW}>>{x.VIOLET} It's a tie!{c.END}")
 
     enterContinue()
-    
+
 def soloMode():
-    
+
     global game
     global p1
     global cpu
     global winner
-    
+
     clear()
     i = playerRPC(p1)
     if i == False:
         return
-    
+
     cpuRPC(cpu)
-    
+
     winner = compareRPC(cpu,p1)
     result(p1,cpu,winner)
 
 
 def duoMode():
-    
+
     global game
     global p1
     global p2
@@ -142,7 +142,7 @@ def duoMode():
     i = playerRPC(p2)
     if i == False:
         return
-    
+
     winner = compareRPC(p2,p1)
     result(p1,p2,winner)
 
@@ -150,9 +150,9 @@ def chooseMode():
     print(f"\n{x.YELLOW}>>> {x.VIOLET}2-Player or Solo Mode?{c.END}")
     print(f"{x.GRAY}1: {x.GRAY}Solo Mode{c.END}")
     print(f"{x.GRAY}2: {x.GRAY}2P Mode{c.END}")
-    
+
     choice = intake.prompt()
-    
+
     if choice in ("1", "solo"):
         soloMode()
         return

@@ -41,14 +41,13 @@ gameRunning = False
 #    3c: Testing if it's a good spot
 
 class BOARD:
-    
     # Declaring a new class would need map dimension & bomb count
     # If None is provided:
     #    Map Dimension: 10
     #    Bomb Count   : 10
     # If only dimension  :
     #    Bomb Count   : (dim**2)/10
-    
+
     def __init__(this, dim = 10, bombC = None):
         this.dim   = dim
 
@@ -65,18 +64,18 @@ class BOARD:
 
         this.map       = this.makeMap()
         this.numerate()
-    
+
     def __str__(self):
         pass
-    
+
     def makeMap(this):
         # Generates a map like:
         # [[spot, spot, ... ,spot]
         # ,[spot, ... ,spot]
-        # ,  ... 
+        # ,  ...
         # ,[spot, ... ,spot]]
         # and plants bomb previously provided
-    
+
         # Drawing the map like previously explained
         # and resetting bomb count for new boards
         MAP   = [[emptyS for _ in range(this.dim)] for _ in range(this.dim)]
@@ -84,16 +83,16 @@ class BOARD:
 
         # The planting °¬°
         while BOMBS < this.bombC:
-            # Getting random (x,y) for the bombs 
+
+            # Getting random (x,y) for the bombs
             Loc  = random.randint(0, this.dim ** 2 - 1)
-            
             xLoc = Loc // this.dim
             yLoc = Loc %  this.dim
-            
+
             # Continuing to loop if (x,y) is already a bomb
             if MAP[xLoc][yLoc] == bombS:
                 continue
-            
+
             # Actually adding the bomb
             MAP[xLoc][yLoc] = bombS
             this.bombs.add((xLoc,yLoc))
@@ -117,7 +116,7 @@ class BOARD:
     def dig(this, X, Y, byPlayer = True):
         # Digs the given (x,y)
         # If bomb => lose
-        # If not => reveal
+        # If not  => reveal
 
         if byPlayer:
             this.playerDug.add((X,Y))
@@ -160,9 +159,9 @@ class BOARD:
 
 
     def print(this, onlyMap = False):
-        
+
         this.mapView   = [[emptyS for _ in range(this.dim)] for _ in range(this.dim)]
-        
+
         for _x in range(0, this.dim):
             for _y in range(0, this.dim):
                 if (_x,_y) in this.dug:
@@ -171,7 +170,7 @@ class BOARD:
                     this.mapView[_x][_y] = flagS
 
         lineL = len(this.mapView) * 2 + 1
-        
+
         lineH = f"\n{x.SKY}x{x.VIOLET},{x.LETTUCE}y{c.END} "
         for i in range(this.dim):
             SO = x.SKY + " " + str(i) + c.END
@@ -191,7 +190,7 @@ class BOARD:
             #print("—"*lineL)
 
         print( x.VIOLET + "    " + ("‾"*lineL) + c.END)
-        
+
         if not onlyMap:
             print()
             print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
@@ -207,13 +206,13 @@ def startGame(SIZE: int, BOMBS: int):
     global BD
 
     gameRunning = True
-    
+
     BD = BOARD(SIZE, BOMBS)
-    
+
     flagC = BD.bombC
-    
+
     output.warn('Dig by typing {x-pos,y-pos}. Spaces are ignored.')
-    
+
     while gameRunning:
 
         BD.print()
@@ -261,9 +260,9 @@ def startGame(SIZE: int, BOMBS: int):
                 output.error(f"Invalid position, dummy.")
                 continue
             if BD.dim > X >= 0 and BD.dim > Y >= 0:
-                
+
                 BD.flag(X,Y)
-                
+
                 if BD.flagged == BD.bombs:
                     gameRunning = False
                     gameWon     = True
@@ -276,7 +275,7 @@ def startGame(SIZE: int, BOMBS: int):
         output.success("CONGRATULATIONS! You won!")
     else:
         output.error(f"You lost. :(")
-    
+
     for _x in range(0, BD.dim):
         for _y in range(0, BD.dim):
             BD.dig(_x,_y, byPlayer = False)

@@ -29,13 +29,13 @@ except ModuleNotFoundError:
     clear()
     output.warn(f"You seem to be missing the PyYAML module.")
     output.warn(f"Don't worry it's safe, gonna PIP it for you.")
-    
+
     if confirm(output.warn(f"Download it?", Print=False)):
         pipInstall('pyyaml')
     else:
         output.error(f"OK, then.")
         exit(0)
-        
+
     output.success(f"Now everything is good. If the app does't run (Specially If Unix/Linux), please just restart.")
     sleep(5)
 finally:
@@ -61,7 +61,7 @@ def readYAML():
     global user
     global apps
     global YAMLS
-    
+
     with open('./data/settings.yml', 'rb') as SETTINGS:
         settings = yaml.safe_load(SETTINGS)
 
@@ -70,7 +70,7 @@ def readYAML():
 
     with open('./data/apps.yml', 'rb') as APPS:
         apps = yaml.safe_load(APPS)
-    
+
     YAMLS = (settings, user, apps)
 
 readYAML()
@@ -83,7 +83,7 @@ def writeYAML():
     global user
     global apps
     global YAMLS
-    
+
     with open('./data/settings.yml', 'w') as SETTINGS:
         yaml.dump(settings, SETTINGS)
 
@@ -92,21 +92,21 @@ def writeYAML():
 
     with open('./data/apps.yml', 'w') as APPS:
         yaml.dump(apps, APPS)
-    
+
     readYAML()
 
 #==================================================================#
 
 def resetYAML(YAML = None):
-    
+
     global settings
     global user
     global apps
     global YAMLS
-    
+
     if YAML != None:
         i = YAMLS.index(YAML)
-        
+
         if i == 0:
             shutil.copy('./data/.old/settings.yml', './data/')
         if i == 1:
@@ -118,7 +118,7 @@ def resetYAML(YAML = None):
             shutil.copy(file, './data/')
 
     readYAML()
-            
+
 #==================================================================#
 
 def resetTTT():
@@ -156,7 +156,7 @@ def readPICKLE():
 
     with open('./data/mspBD.pkl', 'rb') as MSPBD:
         mspBD = pickle.load(MSPBD)
-        
+
     PICKLES = (mspBD,)
 
 #==================================================================#
@@ -167,7 +167,7 @@ def writePICKLE():
 
     with open('./data/mspBD.pkl', 'wb') as MSPBD:
         pickle.dump(mspBD, MSPBD)
-    
+
     readPICKLE()
 
 #==================================================================#
@@ -175,16 +175,16 @@ def writePICKLE():
 def resetPICKLE(PICKLE = None):
     global mspBD
     global PICKLES
-    
+
     if PICKLE != None:
         i = PICKLES.index(PICKLE)
-        
+
         if i == 0:
             shutil.copy('./data/.old/mspBD.pkl', './data/')
     else:
         for file in glob.glob('./data/.old/*.pkl'):
             shutil.copy(file, './data/')
-        
+
     readPICKLE()
 
 #==================================================================#
@@ -210,36 +210,27 @@ windowHistory = [window]
 admins = (f"fastre", "neria", "mahmoud")
 passes = (576957, None)
 
-commands = [
-    settings['prefix'] + "help",
-    settings['prefix'] + "home",
-    settings['prefix'] + "exit",
-    settings['prefix'] + "dev1",
-    settings['prefix'] + "dev2",
-    settings['prefix'] + "reset",
-    ]
-
 placeholders = {
     'nl'            : '{' + 'nl' + '}',
     'br'            : '{' + 'br' + '}',
-    
+
     'name'          : '{' + 'name' + '}',
     'age'           : '{' + 'age' + '}',
-    
+
     'prefix'        : '{' + 'prefix' + '}',
-    
+
     'lastTTTWinner' : '{' + 'lastTTTWinner' + '}',
     'lastTTTBoard'  : '{' + 'lastTTTBoard' + '}',
     'xWins'         : '{' + 'xWins' + '}',
     'oWins'         : '{' + 'oWins' + '}',
     'tttTies'       : '{' + 'tttTies' + '}',
-    
+
     'g'             : '{' + 'g' + '}',
     'pi'            : '{' + 'pi' + '}',
     'e'             : '{' + 'e' + '}',
     'tau'           : '{' + 'tau' + '}',
     'phi'           : '{' + 'phi' + '}',
-    
+
     'p1Last'   : '{' + 'p1Last' + '}',
     'p1Wins'   : '{' + 'p1Wins' + '}',
     'p2Last'   : '{' + 'p2Last' + '}',
@@ -248,7 +239,7 @@ placeholders = {
     'cpuWins'   : '{' + 'cpuWins' + '}',
     'lastRPSWinner'   : '{' + 'lastRPSWinner' + '}',
     'rpsTies'   : '{' + 'rpsTies' + '}',
-    
+
     'heads'   : '{' + 'heads' + '}',
     'tails'   : '{' + 'tails' + '}',
     'flips'   : '{' + 'flips' + '}',
@@ -257,13 +248,13 @@ placeholders = {
     'lastTails'   : '{' + 'lastTails' + '}',
     'lastFlips'   : '{' + 'lastFlips' + '}',
     'lastRNDWinner'   : '{' + 'lastRNDWinner' + '}',
-    
+
     'mspWins'   : '{' + 'mspWins' + '}',
     'mspDefeats'   : '{' + 'mspDefeats' + '}',
     'mspDug'   : '{' + 'mspDug' + '}',
     'mspBombs'   : '{' + 'mspBombs' + '}',
     'mspSize'   : '{' + 'mspSize' + '}',
-    
+
     ''   : '{' + '' + '}',
 }
 
@@ -275,6 +266,8 @@ def isAdmin():
 #==================================================================#
 
 def isCommand(thing):
+    global commands
+
     commands = [
         settings['prefix'] + "help",
         settings['prefix'] + "help math",
@@ -293,7 +286,7 @@ def isCommand(thing):
 
         settings['prefix'] + "reset",
     ]
-    
+
     if thing in commands:
         return True
     return False
@@ -343,6 +336,7 @@ def back(num = -1):
 #==================================================================#
 
 def updateWindow(string):
+    """Tell the app to change the window for the back() function."""
     global window
     global windowHistory
 
@@ -350,7 +344,7 @@ def updateWindow(string):
     if window == windowHistory[-1]:
         return
     windowHistory.append(string)
-    
+
 #==================================================================#
 
 def choiceCheck(thing:str):
@@ -363,15 +357,15 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['nl'], f"\n{x.YELLOW}>>{x.VIOLET}=============================={x.YELLOW}<<{c.END}\n{x.VIOLET}>>{x.GRAY} ")
         if placeholders['br'] in thing:
             thing = thing.replace(placeholders['br'], "\n" + output.notify(f"", Print = False) + x.GRAY)
-            
+
         if placeholders['name'] in thing:
             thing = thing.replace(placeholders['name'], str(user['name']))
         if placeholders['age'] in thing:
             thing = thing.replace(placeholders['age'], str(user['age']))
-            
+
         if placeholders['prefix'] in thing:
             thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
-            
+
         if placeholders['lastTTTWinner'] in thing:
             thing = thing.replace(placeholders['lastTTTWinner'], str(apps['ttt']['last-winner']) + x.GRAY) 
         if placeholders['xWins'] in thing:
@@ -382,7 +376,7 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['tttTies'], str(apps['ttt']['ties']) + x.GRAY)
         if placeholders['lastTTTBoard'] in thing:
             thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(apps['ttt']['last-board'], True, left=f'{x.VIOLET}>>{c.END} ')}{x.VIOLET}>>{x.GRAY} ")
-        
+
         if placeholders['p1Last'] in thing:
             thing = thing.replace(placeholders['p1Last'], str(apps['rps']['p1']['last-choice']) + x.GRAY)
         if placeholders['p2Last'] in thing:
@@ -416,7 +410,7 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['lastFlips'], str(apps['rnd']['last-flips']) + x.GRAY)
         if placeholders['lastRNDWinner'] in thing:
             thing = thing.replace(placeholders['lastRNDWinner'], str(apps['rnd']['last-winner']) + x.GRAY)
-            
+
         if placeholders['g'] in thing:
             thing = thing.replace(placeholders['g'], "9.8")
         if placeholders['e'] in thing:
@@ -427,7 +421,7 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['tau'], "6.2830")
         if placeholders['phi'] in thing:
             thing = thing.replace(placeholders['phi'], "1.618")
-        
+
         if placeholders['mspWins'] in thing:
             thing = thing.replace(placeholders['mspWins'], str(apps['msp']['wins']))
         if placeholders['mspDefeats'] in thing:
@@ -464,7 +458,7 @@ def choiceCheck(thing:str):
     # Commands:
     if thing.startswith(settings['prefix']):
         cmd = thing.replace(settings['prefix'], "")
-        
+
         if not isCommand(thing):
             clear()
             output.error(f"Invalid command.")
@@ -541,7 +535,7 @@ def choiceCheck(thing:str):
 
             if isAdmin():
                 clear()
-    
+
                 def debug1():
                     print(f"\n{x.ORANGE}>>>{x.VIOLET} Hey boss! What do you wish to do?{c.END}")
                     dev = input(f"\n{x.ORANGE}2 >{x.LETTUCE} ")
@@ -599,7 +593,7 @@ def mainMenu():
         output.stamp(f"Hey there, {x.GREEN}{user['name']}{x.VIOLET}! Whatcha wanna do?!")
     output.note(1, settings['prefix'])
     print()
-    
+
     output.option(1, f"{x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}] Repeat")
     output.option(2, f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] Math & Logic")
     output.option(3, f"{x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}] Randomeur")
@@ -610,7 +604,7 @@ def mainMenu():
     output.option(8, f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] Credits")
     output.option(9, f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] Refresh")
     output.option(0, f"{x.GRAY}[{x.RED}xx{x.GRAY}] Exit")
-    
+
     choice = intake.prompt()
     choice = choiceCheck(choice)
 
@@ -650,7 +644,7 @@ def mainMenu():
         clear()
         output.error(f"Invalid input.")
         back()
-    
+
     clear()
     output.warn(f"Huh...")
     back()
@@ -671,7 +665,7 @@ def mainMenu():
 
 def repeatMenu():
     updateWindow(f"repeat")
-    
+
     print()
     output.stamp(f"What do you want me to repeat?")
     output.note(1, settings['prefix'])
@@ -692,9 +686,9 @@ def repeatMenu():
     else:
         clear()
         output.notify(choice)
-    
+
     back(-2)
-    
+
 #==================================================================#
 
 def mathMenu():
@@ -732,14 +726,14 @@ def mathMenu():
     else:
         clear()
         output.error(f"That's not really math or logic...")
-    
+
     back()
 
 #==================================================================#
 
 def rndMenu():
     updateWindow(f"rnd")
-            
+
     def statsMenu():
         print()
         output.stamp(f"Randomeur Statistics:\n")
@@ -764,7 +758,7 @@ def rndMenu():
             clear()
             output.error(f"Okay then.")
             back()
-    
+
     print()
     output.stamp(f"Welcome to Randomeur!")
     output.note(1, settings['prefix'])
@@ -777,7 +771,7 @@ def rndMenu():
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
-    
+
     if choice == "1" or choice.casefold() in (f"flipeur", "coin flipeur", "coin"):
         clear()
         rnd.flipeur()
@@ -793,10 +787,10 @@ def rndMenu():
         apps['rnd']['last-tails']       = rnd.tails
         apps['rnd']['last-flips']       = rnd.flips
         writeYAML()
-        
+
         apps['rnd']['last-winner']      = rnd.winner
         writeYAML()
-        
+
         back()
     elif choice == "2" or choice.casefold() == "stats":
         clear()
@@ -825,28 +819,24 @@ def rpsMenu():
     updateWindow(f"rps")
 
     def whosBest():
-        
-        wins = [
-            apps['rps']['cpu']['wins'], apps['rps']['p1']['wins'], apps['rps']['p2']['wins']
-        ]
-        name = [   
-            rps.cpu['name'], rps.p1['name'], rps.p2['name']
-        ]
-        
+
+        wins = [apps['rps']['cpu']['wins'], apps['rps']['p1']['wins'], apps['rps']['p2']['wins']]
+        name = [rps.cpu['name'], rps.p1['name'], rps.p2['name']]
+
         best = max(wins)
         bestIndex = wins.index(best)
-        
+
         wins.remove(best)
         best2 = max(wins)
-        
+
         if best == best2:
             return '—'
-        
+
         #if len(set(wins)) < len(wins):
         #    return '—'
-        
+
         return name[bestIndex]
-    
+
     def statsMenu():
         print()
         output.stamp(f"RockPaperScissors Statistics:\n")
@@ -873,7 +863,7 @@ def rpsMenu():
             clear()
             output.error(f"Okay then.")
             back()
-            
+
     print()
     output.stamp(f"Welcome to RockPaperScissors!")
     output.note(1, settings['prefix'])
@@ -895,7 +885,7 @@ def rpsMenu():
         p1 = rps.p1
         cpu = rps.cpu
         winner = rps.winner
-        
+
         apps['rps']['p1']['last-choice']  = p1['input']
         apps['rps']['cpu']['last-choice'] = cpu['input']
         apps['rps']['last-winner']        = winner['name']
@@ -910,20 +900,20 @@ def rpsMenu():
         writeYAML()
 
         back()
-        
+
     elif choice == "2" or choice.casefold() == "duo":
         rps.duoMode()
-        
+
         pN = rps.pN
         p1 = rps.p1
         p2 = rps.p2
         winner = rps.winner
-        
+
         apps['rps']['p1']['last-choice'] = p1['input']
         apps['rps']['p2']['last-choice'] = p2['input']
         apps['rps']['last-winner']       = winner['name']
         writeYAML()
-    
+
         if winner == p1:
             apps['rps']['p1']['wins'] += 1
         if winner == p2:
@@ -933,8 +923,7 @@ def rpsMenu():
         writeYAML()
 
         back()
-        
-        
+
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
@@ -1057,7 +1046,7 @@ def tttMenu():
     output.option(8, "Help")
     output.option(9, "Reset TTT Statistics")
     output.option(0, "Home")
-    
+
     choice = intake.prompt()
     choice = choiceCheck(choice)
 
@@ -1121,10 +1110,10 @@ def mspMenu():
         output.option(1, "Map Size: " + x.LETTUCE + str(apps['msp']['dim']) + c.END)
         output.option(2, "Bomb Count: " + x.LETTUCE + str(apps['msp']['bombC']) + c.END)
         output.option(0, "Back")
-        
+
         choice = intake.prompt()
         choice = choiceCheck(choice)
-        
+
         if choice == "1":
             clear()
             print()
@@ -1186,7 +1175,7 @@ def mspMenu():
         print(f" {x.YELLOW}-{c.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
 
-        mspBD.print(True) 
+        mspBD.print(True)
 
         enterContinue()
 
@@ -1220,19 +1209,19 @@ def mspMenu():
         dim   = apps['msp']['dim']
         bombC = apps['msp']['bombC']
         msp.startGame( SIZE = dim, BOMBS = bombC )
-        
+
         if msp.gameWon:
             apps['msp']['wins']  += 1
         else:
             apps['msp']['defeats'] += 1
-            
+
         apps['msp']['spots-dug'] += len(msp.BD.playerDug)
         mspBD = msp.BD
-        
+
         writeYAML()
         writePICKLE()
         back()
-                    
+
     elif choice == "2" or choice.casefold() == "config":
         clear()
         mspConfMenu()
@@ -1255,7 +1244,7 @@ def mspMenu():
     else:
         clear()
         lastCheck(choice)
-    
+
     back(-2)
 
 #==================================================================#
@@ -1389,7 +1378,7 @@ def optionsMenu():
         output.stamp(f"Cation, Anion or Zwitterion? {x.LETTUCE}(M,F,N)")
         output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
-        
+
         choice = intake.prompt()
         choice = choiceCheck(choice)
 
@@ -1403,15 +1392,15 @@ def optionsMenu():
         output.stamp(f"Set prefix to what?")
         output.note(1, settings['prefix'])
         output.note(f"Current is {x.GREEN}{settings['prefix']}")
-        
+
         choice = intake.prompt()
         choice = choiceCheck(choice)
-        
+
         prefix_change(choice)
 
         back()
     elif choice == "8" or choice.casefold() == "reset stats":
-        
+
         clear()
         output.notify(f"Continuing would mean you want to reset statistics to default.")
         if confirm(output.notify(f"Are you sure?", Print=False)):
@@ -1713,12 +1702,14 @@ def exitF():
 ####################################################################
 
 if __name__ == "__main__":
+
     clear()
+
     if settings['first-time']:
         settings['first-time'] = False
         writeYAML()
         infoF()
-    mainMenu()
-    print(x.END)
 
+    mainMenu()
+    clear()
 #==================================================================#
