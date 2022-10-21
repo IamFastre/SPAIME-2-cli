@@ -4,7 +4,7 @@
 ##                                                                ##
 ####################################################################
 
-import os, sys, random, shutil, subprocess, time, pickle
+import os, sys, random, shutil, subprocess, time, pickle, re
 
 # Importing the other py files.
 from res.colors import *
@@ -108,13 +108,13 @@ def resetYAML(YAML = None):
         i = YAMLS.index(YAML)
 
         if i == 0:
-            shutil.copy('./data/.old/settings.yml', './data/')
+            shutil.copy('./data/.default/settings.yml', './data/')
         if i == 1:
-            shutil.copy('./data/.old/user.yml', './data/')
+            shutil.copy('./data/.default/user.yml', './data/')
         if i == 2:
-            shutil.copy('./data/.old/apps.yml', './data/')
+            shutil.copy('./data/.default/apps.yml', './data/')
     else:
-        for file in glob.glob('./data/.old/*.yml'):
+        for file in glob.glob('./data/.default/*.yml'):
             shutil.copy(file, './data/')
 
     readYAML()
@@ -180,9 +180,9 @@ def resetPICKLE(PICKLE = None):
         i = PICKLES.index(PICKLE)
 
         if i == 0:
-            shutil.copy('./data/.old/mspBD.pkl', './data/')
+            shutil.copy('./data/.default/mspBD.pkl', './data/')
     else:
-        for file in glob.glob('./data/.old/*.pkl'):
+        for file in glob.glob('./data/.default/*.pkl'):
             shutil.copy(file, './data/')
 
     readPICKLE()

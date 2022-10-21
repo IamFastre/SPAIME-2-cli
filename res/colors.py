@@ -58,6 +58,7 @@ class x():
     RESET       =  '\33[0m'
 
     WHITE       =  RGB(255,255,255)
+    BLACK       =  RGB(0,0,0)
     YELLOW      =  RGB(226,226,46)
     VIOLET      =  RGB(174,129,255)
     GREEN       =  RGB(166,226,46)
@@ -69,6 +70,7 @@ class x():
     REDANGE     =  RGB(220,67,0)
 
     WHITEBG     =  RGB(255,255,255, True)
+    BLACKBG     =  RGB(0,0,0, True)
     YELLOWBG    =  RGB(226,226,46, True)
     VIOLETBG    =  RGB(174,129,255, True)
     GREENBG     =  RGB(166,226,46, True)

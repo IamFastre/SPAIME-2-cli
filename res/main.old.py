@@ -60,26 +60,26 @@ def games_update():
     with open('./data/apps.yml', 'w') as apps_yaml:
         yaml.safe_dump(apps, apps_yaml)
 
-# Resting the 'user.yml' file by copying the .old one.
+# Resting the 'user.yml' file by copying the .default one.
 def user_reset():
     global user
 
-    shutil.copy('./data/.old/user.yml', './data/')
+    shutil.copy('./data/.default/user.yml', './data/')
     with open('./data/user.yml', 'rb') as user_yaml:
         user = yaml.safe_load(user_yaml)
 
-# Resting the 'settings.yml' file by copying the .old one.
+# Resting the 'settings.yml' file by copying the .default one.
 def settings_reset():
     global settings
-    shutil.copy('./data/.old/settings.yml', './data/')
+    shutil.copy('./data/.default/settings.yml', './data/')
 
     with open('./data/settings.yml', 'rb') as settings_yaml:
         settings = yaml.safe_load(settings_yaml)
 
-# Resting the 'apps.yml' file by copying the .old one.
+# Resting the 'apps.yml' file by copying the .default one.
 def games_reset():
     global apps
-    shutil.copy('./data/.old/apps.yml', './data/')
+    shutil.copy('./data/.default/apps.yml', './data/')
 
     with open('./data/apps.yml', 'rb') as apps_yaml:
         apps = yaml.safe_load(apps_yaml)
@@ -101,7 +101,7 @@ def rnd_reset():
 
 def msp_reset():
     global apps
-# Resting all files by copying the .old ones.
+# Resting all files by copying the .default ones.
 def all_reset():
     user_reset()
     settings_reset()

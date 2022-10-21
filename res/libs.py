@@ -5,7 +5,7 @@ if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
 from res.colors import *
-import os, time, glob, shutil, pip, subprocess, random
+import os, time, glob, shutil, pip, subprocess, random, re
 
 
 class intake():
