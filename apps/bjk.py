@@ -53,6 +53,7 @@ def genCards():
             CARDS.append(card[NUM + SUIT])
     return CARDS
 
+PROTO    = genCards()
 
 def newVars(deckN = 2):
     global deck
@@ -180,18 +181,22 @@ def dealerDecide(soft17 = True):
 
 
 def playerJack():
+    revealHidden(dealer)
     pass
 
 
 def playerWon():
+    revealHidden(dealer)
     pass
 
 
 def playerTied():
+    revealHidden(dealer)
     pass
 
 
 def playerLost():
+    revealHidden(dealer)
     pass
 
 
@@ -334,7 +339,8 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             clear()
             output.error("Invalid input.\n")
             continue
-
+    
+    enterContinue()
     return (BALANCE)
 
 if __name__ == "__main__":

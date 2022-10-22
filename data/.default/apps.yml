@@ -62,5 +62,5 @@ msp:
 
 
 bjk:
-  balance: 0
-  soft17: false
+  balance: 5000
+  soft-17: false

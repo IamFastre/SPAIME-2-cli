@@ -153,7 +153,7 @@ def resetMSP():
 
 def resetBJK():
     global apps
-    apps['bjk'] = {'balance': 0, 'soft17': False}
+    apps['bjk'] = {'balance': 0, 'soft-17': False}
     writeYAML()
 #==================================================================#
 
@@ -282,6 +282,7 @@ def isCommand(thing):
         settings['prefix'] + "help rps",
         settings['prefix'] + "help ttt",
         settings['prefix'] + "help msp",
+        settings['prefix'] + "help bjk",
 
         settings['prefix'] + "back",
         settings['prefix'] + "home",
@@ -495,6 +496,10 @@ def choiceCheck(thing:str):
             clear()
             helpMSPF()
             back()
+        if cmd == "help bjk":
+            clear()
+            helpBJKF()
+            back()
 
 
         if cmd == "back":
@@ -623,7 +628,7 @@ def mainMenu():
     output.option("P", f"{x.GRAY}[{x.YELLOW}{bricks}{x.GRAY}] O{c.URL}p{c.END}{x.GRAY}tions")
     output.option("C", f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] {c.URL}C{c.END}{x.GRAY}redits")
     output.option("E", f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}efresh")
-    output.option("X", f"{x.GRAY}[{x.RED}xx{x.GRAY}] Exit")
+    output.option("X", f"{x.GRAY}[{x.RED}xx{x.GRAY}] E{c.URL}x{c.END}{x.GRAY}it")
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -1286,7 +1291,7 @@ def bjkMenu():
         output.stamp("BlackJack Config:")
         output.note(1, settings['prefix'])
         print()
-        output.option(1, "Hit on Soft 17: " + (f"{x.LETTUCE}Yes" if apps['bjk']['soft17'] else f"{x.RED}No") + c.END)
+        output.option(1, "Hit on Soft 17: " + (f"{x.LETTUCE}Yes" if apps['bjk']['soft-17'] else f"{x.RED}No") + c.END)
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1298,16 +1303,16 @@ def bjkMenu():
             output.note(1, settings['prefix'])
             output.note(f"To explain, this option is to either make the dealer hit on 17 or not.")
             output.note(f"")
-            output.note(f"Current is {(f'{x.LETTUCE}Yes' if apps['bjk']['soft17'] else f'{x.RED}No')}")
+            output.note(f"Current is {(f'{x.LETTUCE}Yes' if apps['bjk']['soft-17'] else f'{x.RED}No')}")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
 
             if goThro(choice, "YNyn12"):
                 if choice.upper() in ("Y", "1"):
-                    apps['bjk']['soft17'] = True
+                    apps['bjk']['soft-17'] = True
                 if choice.upper() in ("N", "2"):
-                    apps['bjk']['soft17'] = False
+                    apps['bjk']['soft-17'] = False
                 writeYAML()
                 clear()
                 output.success("Changes saved.")
@@ -1320,6 +1325,7 @@ def bjkMenu():
         clear()
         lastCheck(choice)
 
+    print()
     output.stamp("Welcome to BlackJack!")
     output.note(1, settings['prefix'])
     print()
@@ -1333,15 +1339,25 @@ def bjkMenu():
     choice = choiceCheck(choice)
 
     if choice == "1":
-        pass
-    if choice == "2":
+        clear()
+        bjk.startGame(apps['bjk']['balance'], 1, apps['bjk']['soft-17'])
+        back()
+    elif choice == "2":
         clear()
         bjkConfMenu()
         back(-2)
-    if choice == "8":
+    elif choice == "8":
         clear()
         helpBJKF()
         back()
+    elif choice == "0":
+        clear()
+        mainMenu()
+    else:
+        clear()
+        lastCheck(choice)
+
+    back(-2)
 
 #==================================================================#
 
@@ -1579,7 +1595,8 @@ def helpF():
     print(                                          f"          ├rnd : {x.GRAY}Shows help about Randomeur.{c.END}")
     print(                                          f"          ├rps : {x.GRAY}Shows help about RockPaperScissors.{c.END}")
     print(                                          f"          ├ttt : {x.GRAY}Shows help about TicTacToe.{c.END}")
-    print(                                          f"          └msp : {x.GRAY}Shows help about Minesweeper.{c.END}")
+    print(                                          f"          ├msp : {x.GRAY}Shows help about Minesweeper.{c.END}")
+    print(                                          f"          └bjk : {x.GRAY}Shows help about BlackJack.{c.END}")
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"back:        {x.GRAY}Returns you a page back.{c.END}")
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"home:        {x.GRAY}Returns you to home page.{c.END}")
     print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"refr:        {x.GRAY}Refreshes current page.{c.END}")
@@ -1722,8 +1739,9 @@ def helpBJKF():
     output.note(f"There you can choose whether Hit-on-Soft-17 is applied or not.", sign="D")
     output.note(f"The game control menu is self-explanatory so I won't get into it.", sign="D")
     output.note(f"But an additional tip: You don't have to use the first letter, you can type its place number.", sign="D")
-    output.note(f"Cards look like: {bjk}", sign="D")
-    output.note(f"                ", sign="D")
+    output.note(f"Cards look like: {bjk.PROTO[random.randint(0,(len(bjk.PROTO)-1))]['s']}", sign="D")
+    output.note(f"  ({x.LETTUCE}The Card Value{x.GRAY})┘│", sign="D")
+    output.note(f"  ({x.LETTUCE}The Card Suits{x.GRAY})─┘", sign="D")
     enterContinue()
 
 #==================================================================#
