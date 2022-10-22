@@ -9,11 +9,11 @@ import os, time, glob, shutil, pip, subprocess, random, re
 
 
 class intake():
-    def prompt():
+    def prompt(arrow = x.YELLOW, text = x.GREEN, arrow2 = x.VIOLET, text2 = x.LETTUCE):
         try:
             if random.randint(1,20) == 1:
-                return input(f"{x.VIOLET}\n>{x.GREEN} ")
-            return input(f"{x.YELLOW}\n>{x.GREEN} ")
+                return input(f"\n{arrow2}>{text2} ")
+            return input(f"\n{arrow}>{text} ")
         except EOFError:
             print()
             output.error("Please don't EOF me...")

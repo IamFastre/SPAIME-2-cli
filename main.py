@@ -19,6 +19,7 @@ import apps.ttt as ttt
 import apps.rps as rps
 import apps.rnd as rnd
 import apps.msp as msp
+import apps.bjk as bjk
 
 #==================================================================#
 
@@ -148,6 +149,12 @@ def resetMSP():
     resetPICKLE(mspBD)
     writeYAML()
 
+#==================================================================#
+
+def resetBJK():
+    global apps
+    apps['bjk'] = {'balance': 0, 'soft17': False}
+    writeYAML()
 #==================================================================#
 
 def readPICKLE():
@@ -521,6 +528,12 @@ def choiceCheck(thing:str):
                         clear()
                         output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         back()
+                    except SyntaxError:
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        enterContinue()
+                        clear()
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        back()
                     else:
                         debug1()
 
@@ -545,6 +558,12 @@ def choiceCheck(thing:str):
                         print(exec(dev))
                         print("")
                     except NameError:
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        enterContinue()
+                        clear()
+                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        back()
+                    except SyntaxError:
                         output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
                         enterContinue()
                         clear()
@@ -594,49 +613,53 @@ def mainMenu():
     output.note(1, settings['prefix'])
     print()
 
-    output.option(1, f"{x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}] Repeat")
-    output.option(2, f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] Math & Logic")
-    output.option(3, f"{x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}] Randomeur")
-    output.option(4, f"{x.GRAY}[{x.LETTUCE}$${x.GRAY}] RockPaperScissors")
-    output.option(5, f"{x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}] TicTacToe")
-    output.option(6, f"{x.GRAY}[{msp.flagS}{msp.bombS}{x.GRAY}] Minesweeper")
-    output.option(7, f"{x.GRAY}[{x.YELLOW}{bricks}{x.GRAY}] Options")
-    output.option(8, f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] Credits")
-    output.option(9, f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] Refresh")
-    output.option(0, f"{x.GRAY}[{x.RED}xx{x.GRAY}] Exit")
+    output.option("R", f"{x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}epeat")
+    output.option("M", f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] {c.URL}M{c.END}{x.GRAY}ath & Logic")
+    output.option("A", f"{x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}] R{c.URL}a{c.END}{x.GRAY}ndomeur")
+    output.option("O", f"{x.GRAY}[{x.LETTUCE}$${x.GRAY}] R{c.URL}o{c.END}{x.GRAY}ckPaperScissors")
+    output.option("T", f"{x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}] {c.URL}T{c.END}{x.GRAY}icTacToe")
+    output.option("I", f"{x.GRAY}[{msp.flagS}{msp.bombS}{x.GRAY}] M{c.URL}i{c.END}{x.GRAY}nesweeper")
+    output.option("B", f"{x.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{x.GRAY}] {c.URL}B{c.END}{x.GRAY}lackJack")
+    output.option("P", f"{x.GRAY}[{x.YELLOW}{bricks}{x.GRAY}] O{c.URL}p{c.END}{x.GRAY}tions")
+    output.option("C", f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] {c.URL}C{c.END}{x.GRAY}redits")
+    output.option("E", f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}efresh")
+    output.option("X", f"{x.GRAY}[{x.RED}xx{x.GRAY}] Exit")
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
 
     # El Menus
-    if choice == "1":
+    if choice.upper() in ("1", "R", "REPEAT"):
         clear()
         repeatMenu()
-    if choice == "2":
+    if choice.upper() in ("2", "M", "MATH"):
         clear()
         mathMenu()
-    if choice == "3":
+    if choice.upper() in ("3", "A", "RND"):
         clear()
         rndMenu()
-    if choice == "4":
+    if choice.upper() in ("4", "O", "RPS"):
         clear()
         rpsMenu()
-    if choice == "5":
+    if choice.upper() in ("5", "T", "TTT"):
         clear()
         tttMenu()
-    if choice == "6":
+    if choice.upper() in ("6", "I", "MSP"):
         clear()
         mspMenu()
-    if choice == "7":
+    if choice.upper() in ("7", "B", "BJK"):
+        clear()
+        bjkMenu()
+    if choice.upper() in ("8", "P", "OPTIONS"):
         clear()
         optionsMenu()
-    if choice == "8":
+    if choice.upper() in ("9", "C", "CREDITS"):
         clear()
         infoF()
-    if choice == "9":
+    if choice.upper() in ("10", "E", "REFRESH"):
         clear()
         refreshF()
-    if choice == "0":
+    if choice.upper() in ("0", "X", "EXIT"):
         clear()
         exitF()
 
@@ -1167,7 +1190,6 @@ def mspMenu():
 
         clear()
         lastCheck(choice)
-        back(-2)
 
     def statsMenu():
         print()
@@ -1228,7 +1250,7 @@ def mspMenu():
     elif choice == "2" or choice.casefold() == "config":
         clear()
         mspConfMenu()
-        back()
+        back(-2)
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
@@ -1249,6 +1271,77 @@ def mspMenu():
         lastCheck(choice)
 
     back(-2)
+
+#==================================================================#
+
+def bjkMenu():
+    updateWindow(f"bjk")
+
+    def bjkConfMenu():
+        global bjkConfSubMenu
+        bjkConfSubMenu = bjkConfMenu
+        updateWindow("bjkConfSub")
+
+        print()
+        output.stamp("BlackJack Config:")
+        output.note(1, settings['prefix'])
+        print()
+        output.option(1, "Hit on Soft 17: " + (f"{x.LETTUCE}Yes" if apps['bjk']['soft17'] else f"{x.RED}No") + c.END)
+        output.option(0, "Back")
+
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+        
+        if choice == "1":
+            clear()
+            output.stamp("Hit on Soft 17? " + f"{x.GRAY}({x.LETTUCE}Y{x.GRAY},{x.RED}N{x.GRAY})")
+            output.note(1, settings['prefix'])
+            output.note(f"To explain, this option is to either make the dealer hit on 17 or not.")
+            output.note(f"")
+            output.note(f"Current is {(f'{x.LETTUCE}Yes' if apps['bjk']['soft17'] else f'{x.RED}No')}")
+
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+
+            if goThro(choice, "YNyn12"):
+                if choice.upper() in ("Y", "1"):
+                    apps['bjk']['soft17'] = True
+                if choice.upper() in ("N", "2"):
+                    apps['bjk']['soft17'] = False
+                writeYAML()
+                clear()
+                output.success("Changes saved.")
+                back()
+
+        if choice == "0":
+            clear()
+            back(-2)
+
+        clear()
+        lastCheck(choice)
+
+    output.stamp("Welcome to BlackJack!")
+    output.note(1, settings['prefix'])
+    print()
+    output.option(1, "Start a Game")
+    output.option(2, "Config")
+    output.option(8, "Help")
+    output.option(9, "Reset BJK Statistics & Config")
+    output.option(0, "Home")
+
+    choice = intake.prompt()
+    choice = choiceCheck(choice)
+
+    if choice == "1":
+        pass
+    if choice == "2":
+        clear()
+        bjkConfMenu()
+        back(-2)
+    if choice == "8":
+        clear()
+        helpBJKF()
+        back()
 
 #==================================================================#
 
@@ -1618,6 +1711,19 @@ def helpMSPF():
     output.note(f"{msp.bombS} {x.LETTUCE}->{x.GRAY} Bomb", sign="D")
     output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
+    enterContinue()
+
+#==================================================================#
+
+def helpBJKF():
+    print()
+    output.stamp("BlackJack Help:")
+    output.note(f"Let's start by talking about the Config page.", sign="D")
+    output.note(f"There you can choose whether Hit-on-Soft-17 is applied or not.", sign="D")
+    output.note(f"The game control menu is self-explanatory so I won't get into it.", sign="D")
+    output.note(f"But an additional tip: You don't have to use the first letter, you can type its place number.", sign="D")
+    output.note(f"Cards look like: {bjk}", sign="D")
+    output.note(f"                ", sign="D")
     enterContinue()
 
 #==================================================================#

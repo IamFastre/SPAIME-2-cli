@@ -13,7 +13,7 @@ ttt:
 
   x-wins: 0
   o-wins: 0
-  ties: 0
+  ties:   0
 
   diff: 'M'
 
@@ -41,7 +41,7 @@ rnd:
   heads: 0
   tails: 0
   flips: 0
-  ties: 0
+  ties:  0
 
   last-heads: 0
   last-tails: 0
@@ -58,3 +58,9 @@ msp:
 
   bombC: 10
   dim: 10
+
+
+
+bjk:
+  balance: 0
+  soft17: false

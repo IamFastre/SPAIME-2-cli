@@ -1,7 +1,6 @@
 import os, sys
 from os.path import dirname, join, abspath
 from time import sleep
-from tkinter.font import BOLD
 
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
@@ -60,8 +59,11 @@ def newVars(deckN = 2):
     global player
     global dealer
     global gameRevealed
+    global bet
 
     gameRevealed = False
+    bet = 0
+
     deck   = genCards() * deckN
     random.shuffle(deck)
 
@@ -105,7 +107,7 @@ def displayHand(WHO):
     for CARD in WHO['hidden']:
         HIDDEN += card['#'] + " "
 
-    print(f"{WHO['name']} {x.neNOIR}>{x.RED}>{x.neNOIR}> {HAND}{HIDDEN}=> {valuate(WHO)}")
+    print(f"{WHO['name']} {x.neNOIR}>{x.RED}>{x.neNOIR}> {HAND}{HIDDEN}{x.neNOIR}=> {valuate(WHO)}")
 
 
 def revealHidden(WHO):
@@ -114,23 +116,226 @@ def revealHidden(WHO):
 
 
 def takeAction():
+
+    choice = intake.prompt(arrow=x.RED,text=x.neNOIR,arrow2=x.neNOIR,text2=x.RED)
+    if choice == "exit":
+        print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+        enterContinue(False)
+        clear()
+        return False
+
+    if choice.casefold() in ("h", "hit", "1"):
+        return "H"
+    if choice.casefold() in ("s", "stand", "2"):
+        return "S"
+    if choice.casefold() in ("d", "double", "3"):
+        return "D"
+    if choice.casefold() in ("r", "surrender", "4"):
+        return "R"
+    return "Banana"
+
+
+def check(WHO):
+    global gameRevealed
+    global bet
+
+    VALUE = valuate(WHO, True)
+
+    if VALUE == 21 and len(WHO['hand'] + WHO['hidden']) == 2:
+        revealHidden(WHO)
+        gameRevealed = True
+        return "jack"
+    if VALUE == 21:
+        revealHidden(WHO)
+        gameRevealed = True
+        return "win"
+    if VALUE > 21:
+        revealHidden(dealer)
+        gameRevealed = True
+        return "bust" 
+
+
+def compare(WHO1, WHO2):
+    VALUE1 = valuate(WHO1, True)
+    VALUE2 = valuate(WHO2, True)
+
+    if VALUE1 > 21:
+        return WHO2
+    if VALUE2 > 21:
+        return WHO1
+
+    if VALUE1  > VALUE2:
+        return WHO1
+    if VALUE1  < VALUE2:
+        return WHO2
+
+    if VALUE1 == VALUE2:
+        return "tie"    
+
+
+def dealerDecide(soft17 = True):
+
+    while valuate(dealer, True) <= 16:
+        hit(dealer['hidden'], deck, 1)
+
+
+def playerJack():
     pass
 
 
-def startGame(N = 2):
+def playerWon():
+    pass
+
+
+def playerTied():
+    pass
+
+
+def playerLost():
+    pass
+
+
+def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
     global gameRevealed
+    global bet
+
+    def allDisplay(dur = 0.75, con = True):
+        displayHand(dealer)
+        displayHand(player)
+        print(f"{x.RED}Balance{x.neNOIR}: {x.LETTUCE}{BALANCE}{c.END}")
+        print(f"{x.RED}Bet{x.neNOIR}:     {x.LETTUCE}{bet}{c.END}")
+        print()
+        if con:
+            print(f"> [{x.LETTUCE}H{c.END}] {x.GOLD}Hit{c.END}    | [{x.LETTUCE}S{c.END}] {x.GOLD}Stand{c.END}     <")
+            print(f"> [{x.LETTUCE}D{c.END}] {x.GOLD}Double{c.END} | [{x.LETTUCE}R{c.END}] {x.GOLD}Surrender{c.END} <")
+        sleep(dur)
 
     clear()
     newVars(N)
 
-    hit(player['hand']  , deck, 2)
+    while bet == 0:
+        output.notify("How much do you wanna bet on?")
+        output.note(f"Balance: {x.LETTUCE}{BALANCE}{c.END}")
+
+        choice = intake.prompt()
+
+        if choice == "exit":
+            print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+            enterContinue(False)
+            clear()
+            return False
+        if goThro(choice, "0123456789") and len(choice) > 0:
+            if int(choice) <= BALANCE:
+                bet = int(choice)
+                BALANCE -= bet
+            else:
+                clear()
+                output.error("Insufficient funds.")
+                print()
+        else:
+            clear()
+            output.error("Invalid input.")
+            print()
+    clear()
+
+    hit(player['hand']  , deck, 1)
+    clear()
+    allDisplay()
 
     hit(dealer['hand']  , deck, 1)
+    clear()
+    allDisplay()
+
+    hit(player['hand']  , deck, 1)
+    clear()
+    allDisplay()
+
     hit(dealer['hidden'], deck, 1)
 
-    displayHand(player)
-    displayHand(dealer)
+    clear()
+    while not gameRevealed:
 
+        allDisplay(0)
+        if check(dealer) == "jack" and check(player) == "jack":
+            clear()
+            playerTied()
+            output.warn("Tied!\n")
+            allDisplay(0, 0)
+            break
+        if check(dealer) == "jack":
+            clear()
+            playerLost()
+            output.error("Lost!\n")
+            allDisplay(0, 0)
+            break
+        if check(player) == "jack":
+            clear()
+            playerJack()
+            output.success("Blackjack!\n")
+            allDisplay(0, 0)
+            break
+
+        i = takeAction()
+        if i == False:
+            break
+
+        if i == "H":
+            clear()
+            hit(player['hand'], deck, 1)
+            if check(player) == "win":
+                clear()
+                playerWon()
+                output.success("Win!\n")
+                allDisplay(0, 0)
+                break
+            if check(player) == "bust":
+                clear()
+                playerLost()
+                output.error("Bust!\n")
+                allDisplay(0, 0)
+                break
+
+        if i == "S":
+            clear()
+
+            dealerDecide(SOFT17)
+            revealHidden(dealer)
+
+            winner = compare(player, dealer)
+
+            if winner == player:
+                clear()
+                playerWon()
+                output.success("Win!\n")
+                allDisplay(0, 0)
+                break
+
+            if winner == dealer:
+                clear()
+                playerLost()
+                output.error("Lost!\n")
+                allDisplay(0, 0)
+                break
+
+            if winner == "tie":
+                clear()
+                playerTied()
+                output.warn("Tied!\n")
+                allDisplay(0, 0)
+                break
+
+        if i == "D":
+            clear()
+
+        if i == "R":
+            clear()
+
+        if not i in "HSDR":
+            clear()
+            output.error("Invalid input.\n")
+            continue
+
+    return (BALANCE)
 
 if __name__ == "__main__":
-    startGame()
+    startGame(2500)

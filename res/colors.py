@@ -68,6 +68,7 @@ class x():
     GRAY        =  RGB(145,145,145)
     ORANGE      =  RGB(244,136,17)
     REDANGE     =  RGB(220,67,0)
+    GOLD        =  RGB(255,173,33)
 
     WHITEBG     =  RGB(255,255,255, True)
     BLACKBG     =  RGB(0,0,0, True)
@@ -80,9 +81,10 @@ class x():
     GRAYBG      =  RGB(145,145,145, True)
     ORANGEBG    =  RGB(244,136,17, True)
     REDANGEBG   =  RGB(220,67,0, True)
+    GOLDBG      =  RGB(255,173,33, True)
     
     neRED       =  RGB(153, 50, 51)
-    neNOIR      =  RGB(25, 25, 25)
+    neNOIR      =  RGB(57, 57, 57)
     
     neREDA      =  RGB(153, 50, 51, True) + RGB(153, 50, 51)
     neNOIRA     =  RGB(25, 25, 25, True) + RGB(25, 25, 25)
