@@ -68,8 +68,8 @@ def newVars(deckN = 2):
     deck   = genCards() * deckN
     random.shuffle(deck)
 
-    player = {'name': c.BOLD + x.LETTUCE + 'Player' + c.END, 'hand': list(), 'hidden': list()}
-    dealer = {'name': c.BOLD + x.ORANGE  + 'Dealer' + c.END, 'hand': list(), 'hidden': list()}
+    player = {'name': c.BOLD + x.GOLD + 'Player' + c.END, 'hand': list(), 'hidden': list()}
+    dealer = {'name': c.BOLD + x.GOLD + 'Dealer' + c.END, 'hand': list(), 'hidden': list()}
 
 
 def valuate(WHO:list, FULL:bool = False):
