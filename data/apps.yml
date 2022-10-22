@@ -5,14 +5,14 @@ msp:
   spots-dug: 0
   wins: 0
 rnd:
-  flips: 21930
-  heads: 10957
-  last-flips: 10000
-  last-heads: 5044
-  last-tails: 4956
-  last-winner: "\e[38;2;226;226;46mHeads\e[0m"
-  tails: 10973
-  ties: 1
+  flips: 0
+  heads: 0
+  last-flips: 0
+  last-heads: 0
+  last-tails: 0
+  last-winner: "\u2014"
+  tails: 0
+  ties: 0
 rps:
   cpu:
     last-choice: "\u2014"
@@ -28,16 +28,16 @@ rps:
 ttt:
   diff: H
   last-board:
-  - "\e[38;2;251;80;83m\e[1mX\e[0m"
-  - "\e[38;2;166;226;46m\e[1mO\e[0m"
-  - "\e[38;2;251;80;83m\e[1mX\e[0m"
-  - "\e[38;2;251;80;83m\e[1mX\e[0m"
-  - "\e[38;2;166;226;46m\e[1mO\e[0m"
-  - "\e[38;2;166;226;46m\e[1mO\e[0m"
-  - "\e[38;2;166;226;46m\e[1mO\e[0m"
-  - "\e[38;2;251;80;83m\e[1mX\e[0m"
-  - "\e[38;2;251;80;83m\e[1mX\e[0m"
-  last-winner: No one
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  - "\u2014"
+  last-winner: "\u2014"
   o-wins: 0
-  ties: 8
+  ties: 0
   x-wins: 0

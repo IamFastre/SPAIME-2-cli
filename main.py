@@ -750,7 +750,7 @@ def rndMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetTTT()
+            resetRND()
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -783,7 +783,7 @@ def rndMenu():
             apps['rnd']['ties'] += 1
         writeYAML()
 
-        apps['rnd']['last-heads']       = rnd.heads  
+        apps['rnd']['last-heads']       = rnd.heads
         apps['rnd']['last-tails']       = rnd.tails
         apps['rnd']['last-flips']       = rnd.flips
         writeYAML()
@@ -855,7 +855,7 @@ def rpsMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetTTT()
+            resetRPS()
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -998,10 +998,13 @@ def tttMenu():
             output.note(1, settings['prefix'])
             output.note(f"Current is {x.LETTUCE}{apps['ttt']['diff']}{c.END}")
             print()
-            allowed = "HME"
+            allowed = "HME123"
             choice = intake.prompt()
             choice = choiceCheck(choice)
             if goThro(choice.upper(), allowed) and len(choice) == 1:
+                if choice == "1": choice = "H"
+                if choice == "2": choice = "M"
+                if choice == "3": choice = "E"
                 apps['ttt']['diff'] = choice.upper()
                 writeYAML()
                 clear()
