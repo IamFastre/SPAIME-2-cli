@@ -174,9 +174,9 @@ def compare(WHO1, WHO2):
         return "tie"    
 
 
-def dealerDecide(soft17 = True):
+def dealerDecide(soft17 = False):
 
-    while valuate(dealer, True) <= 16:
+    while valuate(dealer, True) <= 16 + soft17:
         hit(dealer['hidden'], deck, 1)
 
 
