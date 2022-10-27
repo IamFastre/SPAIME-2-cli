@@ -1,6 +1,6 @@
 bjk:
   balance: 99999
-  soft-17: true
+  soft-17: false
 msp:
   bombC: 10
   defeats: 0

@@ -133,7 +133,7 @@ def takeAction():
         return "D"
     if choice.casefold() in ("r", "surrender", "4"):
         return "R"
-    return "Banana"
+    return "thisisathrowawaystring"
 
 
 def check(WHO):
@@ -153,7 +153,7 @@ def check(WHO):
     if VALUE > 21:
         revealHidden(dealer)
         gameRevealed = True
-        return "bust" 
+        return "bust"
 
 
 def compare(WHO1, WHO2):
@@ -171,7 +171,7 @@ def compare(WHO1, WHO2):
         return WHO2
 
     if VALUE1 == VALUE2:
-        return "tie"    
+        return "tie"
 
 
 def dealerDecide(soft17 = False):
@@ -180,24 +180,24 @@ def dealerDecide(soft17 = False):
         hit(dealer['hidden'], deck, 1)
 
 
-def playerJack():
+def playerJack(BET):
     revealHidden(dealer)
-    pass
+    return BET * 3 / 2 + BET
 
 
-def playerWon():
+def playerWon(BET):
     revealHidden(dealer)
-    pass
+    return BET * 2
 
 
-def playerTied():
+def playerTied(BET):
     revealHidden(dealer)
-    pass
+    return BET * 1
 
 
-def playerLost():
+def playerLost(BET):
     revealHidden(dealer)
-    pass
+    return BET * 0
 
 
 def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
@@ -263,19 +263,19 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
         allDisplay(0)
         if check(dealer) == "jack" and check(player) == "jack":
             clear()
-            playerTied()
+            BALANCE += playerTied(bet)
             output.warn("Tied!\n")
             allDisplay(0, 0)
             break
         if check(dealer) == "jack":
             clear()
-            playerLost()
+            BALANCE += playerLost(bet)
             output.error("Lost!\n")
             allDisplay(0, 0)
             break
         if check(player) == "jack":
             clear()
-            playerJack()
+            BALANCE += playerJack(bet)
             output.success("Blackjack!\n")
             allDisplay(0, 0)
             break
@@ -289,13 +289,13 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             hit(player['hand'], deck, 1)
             if check(player) == "win":
                 clear()
-                playerWon()
+                BALANCE += playerWon(bet)
                 output.success("Win!\n")
                 allDisplay(0, 0)
                 break
             if check(player) == "bust":
                 clear()
-                playerLost()
+                BALANCE += playerLost(bet)
                 output.error("Bust!\n")
                 allDisplay(0, 0)
                 break
@@ -310,21 +310,21 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
 
             if winner == player:
                 clear()
-                playerWon()
+                BALANCE += playerWon(bet)
                 output.success("Win!\n")
                 allDisplay(0, 0)
                 break
 
             if winner == dealer:
                 clear()
-                playerLost()
+                BALANCE += playerLost(bet)
                 output.error("Lost!\n")
                 allDisplay(0, 0)
                 break
 
             if winner == "tie":
                 clear()
-                playerTied()
+                BALANCE += playerTied(bet)
                 output.warn("Tied!\n")
                 allDisplay(0, 0)
                 break
@@ -339,9 +339,9 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             clear()
             output.error("Invalid input.\n")
             continue
-    
+
     enterContinue()
-    return (BALANCE)
+    return (BALANCE, bet)
 
 if __name__ == "__main__":
     startGame(2500)
