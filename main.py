@@ -5,6 +5,7 @@
 ####################################################################
 
 import os, sys, random, shutil, subprocess, time, pickle, re
+from datetime import datetime, date
 
 # Importing the other py files.
 from res.colors import *
@@ -214,6 +215,10 @@ readPICKLE()
 
 window = None
 windowHistory = [window]
+
+today   = datetime.now().strftime("%y%m%d")
+settings['last-date'] = today
+
 admins = (f"fastre", "neria", "mahmoud")
 passes = (576957, None)
 
@@ -264,6 +269,8 @@ placeholders = {
 
     ''   : '{' + '' + '}',
 }
+
+writeYAML()
 
 #==================================================================#
 
@@ -350,8 +357,12 @@ def updateWindow(string):
 
     window = string
     if window == windowHistory[-1]:
-        return
-    windowHistory.append(string)
+        pass
+    else:
+        windowHistory.append(string)
+    
+    readYAML()
+    readPICKLE()
 
 #==================================================================#
 
@@ -1328,9 +1339,11 @@ def bjkMenu():
     print()
     output.stamp("Welcome to BlackJack!")
     output.note(1, settings['prefix'])
+    output.note(f"Current Balance is {x.LETTUCE}{apps['bjk']['balance']}C")
     print()
     output.option(1, "Start a Game")
-    output.option(2, "Config")
+    output.option(2, "la Banque")
+    output.option(3, "Config")
     output.option(8, "Help")
     output.option(9, "Reset BJK Statistics & Config")
     output.option(0, "Home")
@@ -1349,7 +1362,71 @@ def bjkMenu():
         writeYAML()
 
         back()
+
     elif choice == "2":
+
+        available = apps['bjk']['reward'] != today
+        clear()
+
+        print()
+        output.stamp(f"Bienvenue à la Banque de {x.LETTUCE}SPAIME²{x.VIOLET}!")
+        output.note(1, settings['prefix'])
+        output.note("Reward " + ((f"{x.LETTUCE}available") if available else (f"{x.RED}not available")) + f"{x.GRAY}.")
+        print()
+        output.option(1, (c.STRIKE if not available else "") + "Claim Daily")
+        output.option(2, "Debt")
+        output.option(0, "Back")
+
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+
+        if choice == "1" and available:
+            clear() 
+
+            apps['bjk']['reward'] = today
+            luck = random.randint(1,10)
+            h1,h2,h3,h4 = ("",)*4
+
+            if 1 <= luck <= 4:
+                reward = 500
+                h1 = x.GOLDBG + x.BLACK
+            if 5 <= luck <= 7:
+                reward = 1000
+                h2 = x.GOLDBG + x.BLACK
+            if 8 <= luck <= 9:
+                reward = 2000
+                h3 = x.GOLDBG + x.BLACK
+            if 10 <= luck <= 10:
+                reward = 5000
+                h4 = x.GOLDBG + x.BLACK
+
+            output.notify("Hey, hey there, High-Roller!")
+            print(
+                f"> {h1}{x.GRAY}[{x.LETTUCE}500C{x.GRAY}]{c.END} "
+                + f"{h2}{x.GRAY}[{x.LETTUCE}1000C{x.GRAY}]{c.END} "
+                + f"{h3}{x.GRAY}[{x.LETTUCE}2000C{x.GRAY}]{c.END} "
+                + f"{h4}{x.GRAY}[{x.LETTUCE}5000C{x.GRAY}]{c.END} <")
+            if available:
+                apps['bjk']['balance'] += reward
+            writeYAML()
+            enterContinue()
+        elif choice == "1":
+            clear()
+            output.error("That's greedy.")
+            back()
+        elif choice == "2":
+            clear()
+            output.notify("Coming soon!")
+            back()
+        else:
+            clear()
+            output.error("Invalid input.")
+            back()
+        clear()
+        back()
+
+
+    elif choice == "3":
         clear()
         bjkConfMenu()
         back(-2)
@@ -1357,6 +1434,8 @@ def bjkMenu():
         clear()
         helpBJKF()
         back()
+    elif choice == "9":
+        pass
     elif choice == "0":
         clear()
         mainMenu()
@@ -1364,7 +1443,7 @@ def bjkMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    mainMenu()
 
 #==================================================================#
 

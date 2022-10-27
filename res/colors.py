@@ -15,6 +15,7 @@ class c():
     BLINK2      =  '\33[6m'
     SELECTED    =  '\33[7m'
     INVISIBLE   =  '\33[8m'
+    STRIKE      =  '\33[9m'
 
     BLACK       =  '\33[30m'
     RED         =  '\33[31m'
@@ -84,7 +85,7 @@ class x():
     GOLDBG      =  RGB(255,173,33, True)
     
     neRED       =  RGB(153, 50, 51)
-    neNOIR      =  RGB(57, 57, 57)
+    neNOIR      =  RGB(88, 88, 88)
     
     neREDA      =  RGB(153, 50, 51, True) + RGB(153, 50, 51)
     neNOIRA     =  RGB(25, 25, 25, True) + RGB(25, 25, 25)

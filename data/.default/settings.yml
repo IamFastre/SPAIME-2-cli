@@ -1,2 +1,3 @@
-prefix: .
 first-time: True
+prefix: .
+last-date: "000000"

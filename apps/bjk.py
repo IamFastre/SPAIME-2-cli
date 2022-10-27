@@ -108,7 +108,7 @@ def displayHand(WHO):
     for CARD in WHO['hidden']:
         HIDDEN += card['#'] + " "
 
-    print(f"{WHO['name']} {x.neNOIR}>{x.RED}>{x.neNOIR}> {HAND}{HIDDEN}{x.neNOIR}=> {valuate(WHO)}")
+    print(f"{WHO['name']} {x.neNOIR}>{x.RED}>{x.neNOIR}> {HAND}{HIDDEN}{x.neNOIR}=> {valuate(WHO)}{c.END}")
 
 
 def revealHidden(WHO):
@@ -205,10 +205,10 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
     global bet
 
     def allDisplay(dur = 0.75, con = True):
+        print(f"{x.RED}Balance{x.neNOIR}: {x.LETTUCE}{BALANCE}C{c.END} | {x.RED}Bet{x.neNOIR}: {x.ORANGE}{bet}C{c.END}")
+        print()
         displayHand(dealer)
         displayHand(player)
-        print(f"{x.RED}Balance{x.neNOIR}: {x.LETTUCE}{BALANCE}{c.END}")
-        print(f"{x.RED}Bet{x.neNOIR}:     {x.LETTUCE}{bet}{c.END}")
         print()
         if con:
             print(f"> [{x.LETTUCE}H{c.END}] {x.GOLD}Hit{c.END}    | [{x.LETTUCE}S{c.END}] {x.GOLD}Stand{c.END}     <")
@@ -220,7 +220,7 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
 
     while bet == 0:
         output.notify("How much do you wanna bet on?")
-        output.note(f"Balance: {x.LETTUCE}{BALANCE}{c.END}")
+        output.note(f"Balance: {x.LETTUCE}{BALANCE}C{c.END}")
 
         choice = intake.prompt()
 
@@ -228,7 +228,7 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
             enterContinue(False)
             clear()
-            return False
+            return (BALANCE, bet)
         if goThro(choice, "0123456789") and len(choice) > 0:
             if int(choice) <= BALANCE:
                 bet = int(choice)
@@ -240,6 +240,10 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
         else:
             clear()
             output.error("Invalid input.")
+            print()
+        if choice == "0":
+            clear()
+            output.error("You're wasting my time...")
             print()
     clear()
 
@@ -264,7 +268,7 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
         if check(dealer) == "jack" and check(player) == "jack":
             clear()
             BALANCE += playerTied(bet)
-            output.warn("Tied!\n")
+            output.warn("Push!\n")
             allDisplay(0, 0)
             break
         if check(dealer) == "jack":
@@ -325,7 +329,7 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             if winner == "tie":
                 clear()
                 BALANCE += playerTied(bet)
-                output.warn("Tied!\n")
+                output.warn("Push!\n")
                 allDisplay(0, 0)
                 break
 
