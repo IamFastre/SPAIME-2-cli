@@ -62,5 +62,6 @@ msp:
 
 
 bjk:
-  balance: 5000
+  balance: 500
+  last-bet: 0
   soft-17: false

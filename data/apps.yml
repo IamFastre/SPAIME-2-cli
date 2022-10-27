@@ -1,5 +1,6 @@
 bjk:
-  balance: 99999
+  balance: 1000
+  last-bet: 500
   soft-17: false
 msp:
   bombC: 10
@@ -29,7 +30,7 @@ rps:
     wins: 0
   ties: 0
 ttt:
-  diff: H
+  diff: M
   last-board:
   - "\u2014"
   - "\u2014"

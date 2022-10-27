@@ -1340,7 +1340,11 @@ def bjkMenu():
 
     if choice == "1":
         clear()
-        bjk.startGame(apps['bjk']['balance'], 1, apps['bjk']['soft-17'])
+        result    = bjk.startGame(apps['bjk']['balance'], 1, apps['bjk']['soft-17'])
+
+        apps['bjk']['balance']  = result[0]
+        apps['bjk']['last-bet'] = result[1]
+        writeYAML()
         back()
     elif choice == "2":
         clear()
