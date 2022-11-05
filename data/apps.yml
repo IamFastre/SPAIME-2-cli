@@ -1,7 +1,7 @@
 bjk:
-  balance: 5000000
+  balance: 1000
   last-bet: 0
-  reward: '221028'
+  reward: '221031'
   soft-17: false
 msp:
   bombC: 10

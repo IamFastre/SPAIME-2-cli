@@ -100,7 +100,7 @@ def writeYAML():
 #==================================================================#
 
 def resetYAML(YAML = None):
-
+    # Resets YAML files
     global settings
     global user
     global apps
@@ -124,6 +124,7 @@ def resetYAML(YAML = None):
 #==================================================================#
 
 def resetTTT():
+    # Resets TicTacToes in apps.yml
     global apps
     apps['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0, 'diff': 'M'}
     writeYAML()
@@ -131,6 +132,7 @@ def resetTTT():
 #==================================================================#
 
 def resetRPS():
+    # Resets RockPaperScissors in apps.yml
     global apps
     apps['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
     writeYAML()
@@ -138,6 +140,7 @@ def resetRPS():
 #==================================================================#
 
 def resetRND():
+    # Resets Randomeur in apps.yml
     global apps
     apps['rnd'] = {'ties': 0, 'heads': 0, 'tails': 0, 'flips': 0, 'last-heads': 0, 'last-tails': 0, 'last-flips': 0, 'last-winner': '—'}
     writeYAML()
@@ -145,6 +148,7 @@ def resetRND():
 #==================================================================#
 
 def resetMSP():
+    # Resets Minesweeper in apps.yml
     global apps
     apps['msp'] = {'wins': 0, 'defeats': 0, 'spots-dug': 0, 'bombC': 10, 'dim': 10}
     resetPICKLE(mspBD)
@@ -153,8 +157,9 @@ def resetMSP():
 #==================================================================#
 
 def resetBJK():
+    # Resets BlackJack in apps.yml
     global apps
-    apps['bjk'] = {'balance': 0, 'soft-17': False}
+    apps['bjk'] = {'balance': 500, 'soft-17': False, 'last-bet': 0, 'reward': '000000'}
     writeYAML()
 #==================================================================#
 
@@ -215,6 +220,8 @@ readPICKLE()
 
 window = None
 windowHistory = [window]
+
+bricks = "{}"
 
 today   = datetime.now().strftime("%y%m%d")
 settings['last-date'] = today
@@ -619,7 +626,6 @@ def lastCheck(choice):
 
 def mainMenu():
     updateWindow(f"main")
-    bricks = "{}"
 
     print()
     if user['name'] in ('', None):
@@ -1336,6 +1342,17 @@ def bjkMenu():
         clear()
         lastCheck(choice)
 
+    def statsReset():
+        if confirm(output.notify(f"Are you sure?", Print= False)):
+            resetBJK()
+            clear()
+            output.success(f"All done, good as new.")
+            back()
+        else:
+            clear()
+            output.error(f"Okay then.")
+            back()
+
     print()
     output.stamp("Welcome to BlackJack!")
     output.note(1, settings['prefix'])
@@ -1435,7 +1452,9 @@ def bjkMenu():
         helpBJKF()
         back()
     elif choice == "9":
-        pass
+        clear()
+        statsReset()
+        back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1802,12 +1821,12 @@ def helpTTTF():
 def helpMSPF():
     print()
     output.stamp("Minesweeper Help:")
-    output.note(f"Boom!! {msp.bombS}", sign="D")
+    output.note(f"{msp.bombS} {x.GRAY}Boom!!", sign="D")
     output.note(f"Let's start by talking about the Config page.", sign="D")
     output.note(f"There you can choose the map size and the amount of bombs.", sign="D")
     output.note(f"To dig a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]'{c.END}{x.GRAY} of that spot.", sign="D")
     output.note(f"To flag a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]{msp.flagS}'{c.END}{x.GRAY} of that spot.", sign="D")
-    output.note("Any brackets like (), [] or {}, and spaces are ignored.", sign="D")
+    output.note(f"Any brackets like {x.LETTUCE}(){x.GRAY}, {x.LETTUCE}[]{x.GRAY} or {x.LETTUCE}{bricks}{x.GRAY}, and spaces are ignored.", sign="D")
     output.note(f"{msp.emptyS} {x.LETTUCE}->{x.GRAY} Not Dug", sign="D")
     output.note(f"{msp.nS[ random.randint(0,len(msp.nS)) -1 ]} {x.LETTUCE}->{x.GRAY} Dug", sign="D")
     output.note(f"{msp.flagS} {x.LETTUCE}->{x.GRAY} Flagged", sign="D")
@@ -1822,7 +1841,7 @@ def helpBJKF():
     print()
     output.stamp("BlackJack Help:")
     output.note(f"Let's start by talking about the Config page.", sign="D")
-    output.note(f"There you can choose whether Hit-on-Soft-17 is applied or not.", sign="D")
+    output.note(f"There you can choose whether {x.LETTUCE}Hit-on-Soft-17{x.GRAY} is applied or not.", sign="D")
     output.note(f"The game control menu is self-explanatory so I won't get into it.", sign="D")
     output.note(f"But an additional tip: You don't have to use the first letter, you can type its place number.", sign="D")
     output.note(f"Cards look like: {bjk.PROTO[random.randint(0,(len(bjk.PROTO)-1))]['s']}", sign="D")
