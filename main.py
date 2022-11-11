@@ -1477,24 +1477,30 @@ def bfiMenu():
     output.stamp("Welcome to BrainFuck Interpreter!")
     output.note(1, settings['prefix'])
     print()
-    output.option(1, "Read Files")
-    output.option(2, "Write Live")
+    output.option(1, "Run a File")
+    output.option(2, "View Files")
+    output.option(3, "Compile")
     output.option(0, "Home")
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
 
-    if choice == "1":
+    if   choice == "1":
         clear()
         bfi.startApp('R')
 
     elif choice == "2":
         clear()
+        bfi.startApp('D')
+
+    elif choice == "3":
+        clear()
         bfi.startApp('C')
-        
+
     elif choice == "0":
         clear()
         mainMenu()
+
     else:
         clear()
         lastCheck(choice)
