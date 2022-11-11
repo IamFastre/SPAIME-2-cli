@@ -188,3 +188,10 @@ def enterContinue(Space=True):
 
 def pipInstall(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
+def curPath():
+    return os.path.abspath(os.getcwd())
+
+def folPath(file):
+    return os.path.dirname(os.path.abspath(file))

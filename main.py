@@ -21,6 +21,7 @@ import apps.rps as rps
 import apps.rnd as rnd
 import apps.msp as msp
 import apps.bjk as bjk
+import apps.bfi as bfi
 
 #==================================================================#
 
@@ -642,6 +643,7 @@ def mainMenu():
     output.option("T", f"{x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}] {c.URL}T{c.END}{x.GRAY}icTacToe")
     output.option("I", f"{x.GRAY}[{msp.flagS}{msp.bombS}{x.GRAY}] M{c.URL}i{c.END}{x.GRAY}nesweeper")
     output.option("B", f"{x.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{x.GRAY}] {c.URL}B{c.END}{x.GRAY}lackJack")
+    output.option("F", f"{x.GRAY}[{x.LETTUCE}+{x.ORANGE}.{x.GRAY}] Brain{c.URL}F{c.END}{x.GRAY}uck")
     output.option("P", f"{x.GRAY}[{x.YELLOW}{bricks}{x.GRAY}] O{c.URL}p{c.END}{x.GRAY}tions")
     output.option("C", f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] {c.URL}C{c.END}{x.GRAY}redits")
     output.option("E", f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}efresh")
@@ -672,13 +674,16 @@ def mainMenu():
     if choice.upper() in ("7", "B", "BJK"):
         clear()
         bjkMenu()
-    if choice.upper() in ("8", "P", "OPTIONS"):
+    if choice.upper() in ("8", "F", "BFI"):
+        clear()
+        bfiMenu()
+    if choice.upper() in ("9", "P", "OPTIONS"):
         clear()
         optionsMenu()
-    if choice.upper() in ("9", "C", "CREDITS"):
+    if choice.upper() in ("10", "C", "CREDITS"):
         clear()
         infoF()
-    if choice.upper() in ("10", "E", "REFRESH"):
+    if choice.upper() in ("11", "E", "REFRESH"):
         clear()
         refreshF()
     if choice.upper() in ("0", "X", "EXIT"):
@@ -1463,6 +1468,38 @@ def bjkMenu():
         lastCheck(choice)
 
     mainMenu()
+
+#==================================================================#
+
+def bfiMenu():
+    updateWindow(f"bfi")
+
+    output.stamp("Welcome to BrainFuck Interpreter!")
+    output.note(1, settings['prefix'])
+    print()
+    output.option(1, "Read Files")
+    output.option(2, "Write Live")
+    output.option(0, "Home")
+
+    choice = intake.prompt()
+    choice = choiceCheck(choice)
+
+    if choice == "1":
+        clear()
+        bfi.startApp('R')
+
+    elif choice == "2":
+        clear()
+        bfi.startApp('C')
+        
+    elif choice == "0":
+        clear()
+        mainMenu()
+    else:
+        clear()
+        lastCheck(choice)
+
+    back()
 
 #==================================================================#
 
