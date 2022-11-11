@@ -17,23 +17,23 @@ sys.setrecursionlimit(100000)
 
 game   = {'status': 'running', 'mode': None}
 
-p1     = {'input': None, 'name': f"{x.LETTUCE}P-1{c.END}"}
-p2     = {'input': None, 'name': f"{x.SKY}P-2{c.END}"}
-cpu    = {'input': None, 'name': f"{x.RED}CPU{c.END}"}
+p1     = {'input': None, 'name': f"{X0.LETTUCE}P-1{C0.END}"}
+p2     = {'input': None, 'name': f"{X0.SKY}P-2{C0.END}"}
+cpu    = {'input': None, 'name': f"{X0.RED}CPU{C0.END}"}
 pN     = {'input': None, 'name': None}
 winner = {'input': None, 'name': None}
 
 class s:
-    r = f"{c.DIM}{c.GRAY}Rock{c.END}"
-    p = f"{x.WHITE}Paper{c.END}"
-    s = f"{x.RED}Scissors{c.END}"
+    r = f"{C0.DIM}{X0.GRAY}Rock{C0.END}"
+    p = f"{X0.WHITE}Paper{C0.END}"
+    s = f"{X0.RED}Scissors{C0.END}"
 
 
 def playerRPC(player):
-    print(f"\n{x.YELLOW}>>> {player['name']}, {x.VIOLET}Make a choice:{c.END}")
-    print(f"{x.GRAY}1: {s.r}")
-    print(f"{x.GRAY}2: {s.p}")
-    print(f"{x.GRAY}3: {s.s}")
+    print(f"\n{X0.YELLOW}>>> {player['name']}, {X0.VIOLET}Make a choice:{C0.END}")
+    print(f"{X0.GRAY}1: {s.r}")
+    print(f"{X0.GRAY}2: {s.p}")
+    print(f"{X0.GRAY}3: {s.s}")
 
     choice = intake.prompt()
     if choice == "exit":
@@ -101,14 +101,14 @@ def compareRPC(player1,player2):
 def result(player1,player2,winner):
 
     clear()
-    print(f"\n{x.YELLOW}>>> {player1['name']}{x.VIOLET} chose {player1['input']}{c.END}")
-    print(f"{x.YELLOW}>>> {player2['name']}{x.VIOLET} chose {player2['input']}{c.END}")
+    print(f"\n{X0.YELLOW}>>> {player1['name']}{X0.VIOLET} chose {player1['input']}{C0.END}")
+    print(f"{X0.YELLOW}>>> {player2['name']}{X0.VIOLET} chose {player2['input']}{C0.END}")
     print("")
 
     if winner['name'] != None:
-        print(f"{x.YELLOW}>> {winner['name']}{x.VIOLET} won!{c.END}")
+        print(f"{X0.YELLOW}>> {winner['name']}{X0.VIOLET} won!{C0.END}")
     else:
-        print(f"{x.YELLOW}>>{x.VIOLET} It's a tie!{c.END}")
+        print(f"{X0.YELLOW}>>{X0.VIOLET} It's a tie!{C0.END}")
 
     enterContinue()
 
@@ -151,9 +151,9 @@ def duoMode():
     result(p1,p2,winner)
 
 def chooseMode():
-    print(f"\n{x.YELLOW}>>> {x.VIOLET}2-Player or Solo Mode?{c.END}")
-    print(f"{x.GRAY}1: {x.GRAY}Solo Mode{c.END}")
-    print(f"{x.GRAY}2: {x.GRAY}2P Mode{c.END}")
+    print(f"\n{X0.YELLOW}>>> {X0.VIOLET}2-Player or Solo Mode?{C0.END}")
+    print(f"{X0.GRAY}1: {X0.GRAY}Solo Mode{C0.END}")
+    print(f"{X0.GRAY}2: {X0.GRAY}2P Mode{C0.END}")
 
     choice = intake.prompt()
 

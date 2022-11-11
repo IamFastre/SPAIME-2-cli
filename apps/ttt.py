@@ -16,23 +16,23 @@ sys.setrecursionlimit(100000)
 
 
 class s():
-    n  = x.YELLOW+ c.BLINK  + "No one" + x.END
-    o  = x.GREEN + c.BOLD   + "O" + x.END
-    x  = x.RED   + c.BOLD   + "X" + x.END
+    n  = X0.YELLOW+ C0.BLINK  + "No one" + X0.END
+    o  = X0.GREEN + C0.BOLD   + "O" + X0.END
+    x  = X0.RED   + C0.BOLD   + "X" + X0.END
 
 
 ns = [
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "1" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "2" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "3" + x.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "1" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "2" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "3" + X0.END,
 
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "4" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "5" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "6" + x.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "4" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "5" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "6" + X0.END,
 
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "7" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "8" + x.END,
-        x.GRAY + c.DIM + c.ITALIC + c.BLINK + "9" + x.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "7" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "8" + X0.END,
+        X0.GRAY + C0.DIM + C0.ITALIC + C0.BLINK + "9" + X0.END,
 ]
 
 
@@ -60,9 +60,9 @@ def renewVars():
     p1 = None
     p2 = None
 
-    user1         = {'name': f"{x.LETTUCE}P-1{c.END}", 'mark': None}
-    user2         = {'name': f"{x.SKY}P-2{c.END}"    , 'mark': None}
-    cpu           = {'name': f"{x.RED}CPU{c.END}"    , 'mark': None}
+    user1         = {'name': f"{X0.LETTUCE}P-1{C0.END}", 'mark': None}
+    user2         = {'name': f"{X0.SKY}P-2{C0.END}"    , 'mark': None}
+    cpu           = {'name': f"{X0.RED}CPU{C0.END}"    , 'mark': None}
 
     currentPlayer = {'name': None                    , 'mark': None} 
     winner        = {'name': None                    , 'mark': None}
@@ -83,7 +83,7 @@ renewVars()
 
 
 def chooseMark():
-    output.notify(f"Wanna start with {s.x} {x.GRAY}or {s.o}?")
+    output.notify(f"Wanna start with {s.x} {X0.GRAY}or {s.o}?")
 
     choice = intake.prompt()
 
@@ -111,55 +111,55 @@ def displayBoard(board, returnBoard=False, left=""):
     # Highlight winner line if game is done.
     if gameStatus == "done":
         if winnerLine == "r1":
-            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
-            board[1] = c.BOLD + c.URL + c.BLINK + board[1] + x.END
-            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
+            board[0] = C0.BOLD + C0.URL + C0.BLINK + board[0] + X0.END
+            board[1] = C0.BOLD + C0.URL + C0.BLINK + board[1] + X0.END
+            board[2] = C0.BOLD + C0.URL + C0.BLINK + board[2] + X0.END
         if winnerLine == "r2":
-            board[3] = c.BOLD + c.URL + c.BLINK + board[3] + x.END
-            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
-            board[5] = c.BOLD + c.URL + c.BLINK + board[5] + x.END
+            board[3] = C0.BOLD + C0.URL + C0.BLINK + board[3] + X0.END
+            board[4] = C0.BOLD + C0.URL + C0.BLINK + board[4] + X0.END
+            board[5] = C0.BOLD + C0.URL + C0.BLINK + board[5] + X0.END
         if winnerLine == "r3":
-            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
-            board[7] = c.BOLD + c.URL + c.BLINK + board[7] + x.END
-            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+            board[6] = C0.BOLD + C0.URL + C0.BLINK + board[6] + X0.END
+            board[7] = C0.BOLD + C0.URL + C0.BLINK + board[7] + X0.END
+            board[8] = C0.BOLD + C0.URL + C0.BLINK + board[8] + X0.END
         if winnerLine == "c1":
-            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
-            board[3] = c.BOLD + c.URL + c.BLINK + board[3] + x.END
-            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
+            board[0] = C0.BOLD + C0.URL + C0.BLINK + board[0] + X0.END
+            board[3] = C0.BOLD + C0.URL + C0.BLINK + board[3] + X0.END
+            board[6] = C0.BOLD + C0.URL + C0.BLINK + board[6] + X0.END
         if winnerLine == "c2":
-            board[1] = c.BOLD + c.URL + c.BLINK + board[1] + x.END
-            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
-            board[7] = c.BOLD + c.URL + c.BLINK + board[7] + x.END
+            board[1] = C0.BOLD + C0.URL + C0.BLINK + board[1] + X0.END
+            board[4] = C0.BOLD + C0.URL + C0.BLINK + board[4] + X0.END
+            board[7] = C0.BOLD + C0.URL + C0.BLINK + board[7] + X0.END
         if winnerLine == "c3":
-            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
-            board[5] = c.BOLD + c.URL + c.BLINK + board[5] + x.END
-            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+            board[2] = C0.BOLD + C0.URL + C0.BLINK + board[2] + X0.END
+            board[5] = C0.BOLD + C0.URL + C0.BLINK + board[5] + X0.END
+            board[8] = C0.BOLD + C0.URL + C0.BLINK + board[8] + X0.END
         if winnerLine == "d1":
-            board[0] = c.BOLD + c.URL + c.BLINK + board[0] + x.END
-            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
-            board[8] = c.BOLD + c.URL + c.BLINK + board[8] + x.END
+            board[0] = C0.BOLD + C0.URL + C0.BLINK + board[0] + X0.END
+            board[4] = C0.BOLD + C0.URL + C0.BLINK + board[4] + X0.END
+            board[8] = C0.BOLD + C0.URL + C0.BLINK + board[8] + X0.END
         if winnerLine == "d2":
-            board[2] = c.BOLD + c.URL + c.BLINK + board[2] + x.END
-            board[4] = c.BOLD + c.URL + c.BLINK + board[4] + x.END
-            board[6] = c.BOLD + c.URL + c.BLINK + board[6] + x.END
+            board[2] = C0.BOLD + C0.URL + C0.BLINK + board[2] + X0.END
+            board[4] = C0.BOLD + C0.URL + C0.BLINK + board[4] + X0.END
+            board[6] = C0.BOLD + C0.URL + C0.BLINK + board[6] + X0.END
 
 
-    Left = str(left) + x.END
-    board_look = f"""{Left}{x.LETTUCE}=============
-{Left}{x.LETTUCE}| {board[0]} {x.LETTUCE}| {board[1]} {x.LETTUCE}| {board[2]} {x.LETTUCE}|
-{Left}{x.LETTUCE}|———|———|———|
-{Left}{x.LETTUCE}| {board[3]} {x.LETTUCE}| {board[4]} {x.LETTUCE}| {board[5]} {x.LETTUCE}|
-{Left}{x.LETTUCE}|———|———|———|
-{Left}{x.LETTUCE}| {board[6]} {x.LETTUCE}| {board[7]} {x.LETTUCE}| {board[8]} {x.LETTUCE}|
-{Left}{x.LETTUCE}============={c.END}"""
+    Left = str(left) + X0.END
+    board_look = f"""{Left}{X0.LETTUCE}=============
+{Left}{X0.LETTUCE}| {board[0]} {X0.LETTUCE}| {board[1]} {X0.LETTUCE}| {board[2]} {X0.LETTUCE}|
+{Left}{X0.LETTUCE}|———|———|———|
+{Left}{X0.LETTUCE}| {board[3]} {X0.LETTUCE}| {board[4]} {X0.LETTUCE}| {board[5]} {X0.LETTUCE}|
+{Left}{X0.LETTUCE}|———|———|———|
+{Left}{X0.LETTUCE}| {board[6]} {X0.LETTUCE}| {board[7]} {X0.LETTUCE}| {board[8]} {X0.LETTUCE}|
+{Left}{X0.LETTUCE}============={C0.END}"""
 
     # Print or return the Board?!
     if not returnBoard:
         if winner['name'] == None:
-            output.notify(f"{currentPlayer['name']}{x.GRAY}({currentPlayer['mark']}{x.GRAY})'s Turn:\n")
+            output.notify(f"{currentPlayer['name']}{X0.GRAY}({currentPlayer['mark']}{X0.GRAY})'s Turn:\n")
             print(board_look)
         elif winner['mark'] in (s.x, s.o):
-            output.notify(f"{winner['name']}{x.GRAY}({winner['mark']}{x.GRAY}) won!\n")
+            output.notify(f"{winner['name']}{X0.GRAY}({winner['mark']}{X0.GRAY}) won!\n")
             print(board_look)
         else:
             output.notify(f"It's a tie!\n")
@@ -472,9 +472,9 @@ def soloMode(diff):
 
 
 def chooseMode():
-    print(f"\n{x.YELLOW}>>> {x.VIOLET}2-Player or Solo Mode?{c.END}")
-    print(f"{x.GRAY}1: {x.GRAY}Solo Mode{c.END}")
-    print(f"{x.GRAY}2: {x.GRAY}2P Mode{c.END}")
+    print(f"\n{X0.YELLOW}>>> {X0.VIOLET}2-Player or Solo Mode?{C0.END}")
+    print(f"{X0.GRAY}1: {X0.GRAY}Solo Mode{C0.END}")
+    print(f"{X0.GRAY}2: {X0.GRAY}2P Mode{C0.END}")
 
     choice = intake.prompt()
 

@@ -4,7 +4,8 @@ from os.path import dirname, join, abspath
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
-class c():
+class C0():
+
     END         =  '\33[0m'
     RESET       =  '\33[0m'
     BOLD        =  '\33[1m'
@@ -16,6 +17,8 @@ class c():
     SELECTED    =  '\33[7m'
     INVISIBLE   =  '\33[8m'
     STRIKE      =  '\33[9m'
+
+class D0():
 
     BLACK       =  '\33[30m'
     RED         =  '\33[31m'
@@ -44,7 +47,7 @@ class c():
     BEIGE2      =  '\33[96m'
     WHITE2      =  '\33[97m'
 
-class x():
+class X0():
 
     def RGB(r, g, b, background=False):
         return '\33[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
@@ -53,7 +56,7 @@ class x():
         r = int(hexcolor[0:2], base=16)
         g = int(hexcolor[2:4], base=16)
         b = int(hexcolor[4:6], base=16)
-        return x.RGB(r, g, b, background)
+        return X0.RGB(r, g, b, background)
 
     END         =  '\33[0m'
     RESET       =  '\33[0m'

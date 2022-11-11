@@ -15,12 +15,12 @@ from res.libs import *
 sys.setrecursionlimit(100000)
 
 
-cardS = x.WHITEBG + x.GRAY
+cardS = X0.WHITEBG + X0.GRAY
 suitS = {
-    'C': x.neNOIR + c.BOLD + '♣' + c.END,
-    'H': x.RED    + c.BOLD + '♥' + c.END,
-    'S': x.neNOIR + c.BOLD + '♠' + c.END,
-    'D': x.RED    + c.BOLD + '♦' + c.END,
+    'C': X0.neNOIR + C0.BOLD + '♣' + C0.END,
+    'H': X0.RED    + C0.BOLD + '♥' + C0.END,
+    'S': X0.neNOIR + C0.BOLD + '♠' + C0.END,
+    'D': X0.RED    + C0.BOLD + '♦' + C0.END,
 }
 numS  = {
     'A': 1,
@@ -43,12 +43,12 @@ def genCards():
     global card
     CARDS = list()
     card  = dict()
-    card['#'] = (cardS +'['+ x.neNOIR + '##' + cardS + ']'+ c.END)
+    card['#'] = (cardS +'['+ X0.neNOIR + '##' + cardS + ']'+ C0.END)
 
     for SUIT in suitS:
         for NUM in numS:
             card[NUM + SUIT] = dict()
-            card[NUM + SUIT]['s'] = (cardS +'['+ x.neNOIR + NUM+suitS[SUIT] + cardS + ']'+ c.END)
+            card[NUM + SUIT]['s'] = (cardS +'['+ X0.neNOIR + NUM+suitS[SUIT] + cardS + ']'+ C0.END)
             card[NUM + SUIT]['v'] = (numS[NUM])
             CARDS.append(card[NUM + SUIT])
     return CARDS
@@ -68,8 +68,8 @@ def newVars(deckN = 2):
     deck   = genCards() * deckN
     random.shuffle(deck)
 
-    player = {'name': c.BOLD + x.GOLD + 'Player' + c.END, 'hand': list(), 'hidden': list()}
-    dealer = {'name': c.BOLD + x.GOLD + 'Dealer' + c.END, 'hand': list(), 'hidden': list()}
+    player = {'name': C0.BOLD + X0.GOLD + 'Player' + C0.END, 'hand': list(), 'hidden': list()}
+    dealer = {'name': C0.BOLD + X0.GOLD + 'Dealer' + C0.END, 'hand': list(), 'hidden': list()}
 
 
 def valuate(WHO:list, FULL:bool = False):
@@ -108,7 +108,7 @@ def displayHand(WHO):
     for CARD in WHO['hidden']:
         HIDDEN += card['#'] + " "
 
-    print(f"{WHO['name']} {x.neNOIR}>{x.RED}>{x.neNOIR}> {HAND}{HIDDEN}{x.neNOIR}=> {valuate(WHO)}{c.END}")
+    print(f"{WHO['name']} {X0.neNOIR}>{X0.RED}>{X0.neNOIR}> {HAND}{HIDDEN}{X0.neNOIR}=> {valuate(WHO)}{C0.END}")
 
 
 def revealHidden(WHO):
@@ -118,7 +118,7 @@ def revealHidden(WHO):
 
 def takeAction():
 
-    choice = intake.prompt(arrow=x.RED,text=x.neNOIR,arrow2=x.neNOIR,text2=x.RED)
+    choice = intake.prompt(arrow=X0.RED,text=X0.neNOIR,arrow2=X0.neNOIR,text2=X0.RED)
     if choice == "exit":
         print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
         enterContinue(False)
@@ -205,14 +205,14 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
     global bet
 
     def allDisplay(dur = 0.75, con = True):
-        print(f"{x.RED}Balance{x.neNOIR}: {x.LETTUCE}{BALANCE}C{c.END} | {x.RED}Bet{x.neNOIR}: {x.ORANGE}{bet}C{c.END}")
+        print(f"{X0.RED}Balance{X0.neNOIR}: {X0.LETTUCE}{BALANCE}C{C0.END} | {X0.RED}Bet{X0.neNOIR}: {X0.ORANGE}{bet}C{C0.END}")
         print()
         displayHand(dealer)
         displayHand(player)
         print()
         if con:
-            print(f"> [{x.LETTUCE}H{c.END}] {x.GOLD}Hit{c.END}    | [{x.LETTUCE}S{c.END}] {x.GOLD}Stand{c.END}     <")
-            print(f"> [{x.LETTUCE}D{c.END}] {x.GOLD}Double{c.END} | [{x.LETTUCE}R{c.END}] {x.GOLD}Surrender{c.END} <")
+            print(f"> [{X0.LETTUCE}H{C0.END}] {X0.GOLD}Hit{C0.END}    | [{X0.LETTUCE}S{C0.END}] {X0.GOLD}Stand{C0.END}     <")
+            print(f"> [{X0.LETTUCE}D{C0.END}] {X0.GOLD}Double{C0.END} | [{X0.LETTUCE}R{C0.END}] {X0.GOLD}Surrender{C0.END} <")
         sleep(dur)
 
     clear()
@@ -220,7 +220,7 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
 
     while bet == 0:
         output.notify("How much do you wanna bet on?")
-        output.note(f"Balance: {x.LETTUCE}{BALANCE}C{c.END}")
+        output.note(f"Balance: {X0.LETTUCE}{BALANCE}C{C0.END}")
 
         choice = intake.prompt()
 

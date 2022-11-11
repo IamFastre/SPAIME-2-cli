@@ -16,17 +16,17 @@ sys.setrecursionlimit(100000)
 
 def synHL(Str:str):
     styleD = {
-        '+': x.GREEN   + '+' + x.VIOLET,
-        '-': x.RED     + '-' + x.VIOLET,
+        '+': X0.GREEN   + '+' + X0.VIOLET,
+        '-': X0.RED     + '-' + X0.VIOLET,
 
-        '>': x.LETTUCE + '>' + x.VIOLET,
-        '<': x.SKY     + '<' + x.VIOLET,
+        '>': X0.LETTUCE + '>' + X0.VIOLET,
+        '<': X0.SKY     + '<' + X0.VIOLET,
 
-        ',': x.YELLOW  + ',' + x.VIOLET,
-        '.': x.GOLD    + '.' + x.VIOLET,
+        ',': X0.YELLOW  + ',' + X0.VIOLET,
+        '.': X0.GOLD    + '.' + X0.VIOLET,
 
-        '[': x.ORANGE + '[' + x.VIOLET,
-        ']': x.ORANGE + ']' + x.VIOLET,
+        '[': X0.ORANGE + '[' + X0.VIOLET,
+        ']': X0.ORANGE + ']' + X0.VIOLET,
     }
     styleL = list(styleD.keys())
 

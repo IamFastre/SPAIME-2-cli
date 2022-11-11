@@ -325,14 +325,14 @@ class decoded():
 
         if random.randint(0,1) == 1:
             if user['name'] == '':
-                print(f"\n{x.YELLOW}>> {x.VIOLETBG}{c.WHITE}{decoded.n69}{c.END}")
+                print(f"\n{X0.YELLOW}>> {X0.VIOLETBG}{C0.WHITE}{decoded.n69}{C0.END}")
             else:
-                print(f"\n{x.YELLOW}>>{x.GREEN} {user['name']}{c.END}, {x.VIOLETBG}{c.WHITE}{decoded.n69}{c.END}")
+                print(f"\n{X0.YELLOW}>>{X0.GREEN} {user['name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n69}{C0.END}")
         else:
             if user['name'] == '':
-                print(f"\n{x.YELLOW}>> {x.VIOLETBG}{c.WHITE}{decoded.n70}{c.END}")
+                print(f"\n{X0.YELLOW}>> {X0.VIOLETBG}{C0.WHITE}{decoded.n70}{C0.END}")
             else:
-                print(f"\n{x.YELLOW}>>{x.GREEN} {user['name']}{c.END}, {x.VIOLETBG}{c.WHITE}{decoded.n70}{c.END}")
+                print(f"\n{X0.YELLOW}>>{X0.GREEN} {user['name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n70}{C0.END}")
         sleep(0.2)
         clear()
 
@@ -381,9 +381,9 @@ def choiceCheck(thing:str):
     # Placeholders:
     if "{" in thing and "}" in thing:
         if placeholders['nl'] in thing:
-            thing = thing.replace(placeholders['nl'], f"\n{x.YELLOW}>>{x.VIOLET}=============================={x.YELLOW}<<{c.END}\n{x.VIOLET}>>{x.GRAY} ")
+            thing = thing.replace(placeholders['nl'], f"\n{X0.YELLOW}>>{X0.VIOLET}=============================={X0.YELLOW}<<{C0.END}\n{X0.VIOLET}>>{X0.GRAY} ")
         if placeholders['br'] in thing:
-            thing = thing.replace(placeholders['br'], "\n" + output.notify(f"", Print = False) + x.GRAY)
+            thing = thing.replace(placeholders['br'], "\n" + output.notify(f"", Print = False) + X0.GRAY)
 
         if placeholders['name'] in thing:
             thing = thing.replace(placeholders['name'], str(user['name']))
@@ -394,49 +394,49 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
 
         if placeholders['lastTTTWinner'] in thing:
-            thing = thing.replace(placeholders['lastTTTWinner'], str(apps['ttt']['last-winner']) + x.GRAY) 
+            thing = thing.replace(placeholders['lastTTTWinner'], str(apps['ttt']['last-winner']) + X0.GRAY) 
         if placeholders['xWins'] in thing:
-            thing = thing.replace(placeholders['xWins'], str(apps['ttt']['x-wins']) + x.GRAY)
+            thing = thing.replace(placeholders['xWins'], str(apps['ttt']['x-wins']) + X0.GRAY)
         if placeholders['oWins'] in thing:
-            thing = thing.replace(placeholders['oWins'], str(apps['ttt']['o-wins']) + x.GRAY)
+            thing = thing.replace(placeholders['oWins'], str(apps['ttt']['o-wins']) + X0.GRAY)
         if placeholders['tttTies'] in thing:
-            thing = thing.replace(placeholders['tttTies'], str(apps['ttt']['ties']) + x.GRAY)
+            thing = thing.replace(placeholders['tttTies'], str(apps['ttt']['ties']) + X0.GRAY)
         if placeholders['lastTTTBoard'] in thing:
-            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(apps['ttt']['last-board'], True, left=f'{x.VIOLET}>>{c.END} ')}{x.VIOLET}>>{x.GRAY} ")
+            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(apps['ttt']['last-board'], True, left=f'{X0.VIOLET}>>{C0.END} ')}{X0.VIOLET}>>{X0.GRAY} ")
 
         if placeholders['p1Last'] in thing:
-            thing = thing.replace(placeholders['p1Last'], str(apps['rps']['p1']['last-choice']) + x.GRAY)
+            thing = thing.replace(placeholders['p1Last'], str(apps['rps']['p1']['last-choice']) + X0.GRAY)
         if placeholders['p2Last'] in thing:
-            thing = thing.replace(placeholders['p2Last'], str(apps['rps']['p2']['last-choice']) + x.GRAY)
+            thing = thing.replace(placeholders['p2Last'], str(apps['rps']['p2']['last-choice']) + X0.GRAY)
         if placeholders['cpuLast'] in thing:
-            thing = thing.replace(placeholders['cpuLast'], str(apps['rps']['cpu']['last-choice']) + x.GRAY)
+            thing = thing.replace(placeholders['cpuLast'], str(apps['rps']['cpu']['last-choice']) + X0.GRAY)
         if placeholders['p1Wins'] in thing:
-            thing = thing.replace(placeholders['p1Wins'], str(apps['rps']['p1']['wins']) + x.GRAY)
+            thing = thing.replace(placeholders['p1Wins'], str(apps['rps']['p1']['wins']) + X0.GRAY)
         if placeholders['p2Wins'] in thing:
-            thing = thing.replace(placeholders['p2Wins'], str(apps['rps']['p2']['wins']) + x.GRAY)
+            thing = thing.replace(placeholders['p2Wins'], str(apps['rps']['p2']['wins']) + X0.GRAY)
         if placeholders['cpuWins'] in thing:
-            thing = thing.replace(placeholders['cpuWins'], str(apps['rps']['cpu']['wins']) + x.GRAY)
+            thing = thing.replace(placeholders['cpuWins'], str(apps['rps']['cpu']['wins']) + X0.GRAY)
         if placeholders['rpsTies'] in thing:
-            thing = thing.replace(placeholders['rpsTies'], str(apps['rps']['ties']) + x.GRAY)
+            thing = thing.replace(placeholders['rpsTies'], str(apps['rps']['ties']) + X0.GRAY)
         if placeholders['lastRPSWinner'] in thing:
-            thing = thing.replace(placeholders['lastRPSWinner'], str(apps['rps']['last-winner']) + x.GRAY)
+            thing = thing.replace(placeholders['lastRPSWinner'], str(apps['rps']['last-winner']) + X0.GRAY)
 
         if placeholders['heads'] in thing:
-            thing = thing.replace(placeholders['heads'], str(apps['rnd']['heads']) + x.GRAY)
+            thing = thing.replace(placeholders['heads'], str(apps['rnd']['heads']) + X0.GRAY)
         if placeholders['tails'] in thing:
-            thing = thing.replace(placeholders['tails'], str(apps['rnd']['tails']) + x.GRAY)
+            thing = thing.replace(placeholders['tails'], str(apps['rnd']['tails']) + X0.GRAY)
         if placeholders['flips'] in thing:
-            thing = thing.replace(placeholders['flips'], str(apps['rnd']['flips']) + x.GRAY)
+            thing = thing.replace(placeholders['flips'], str(apps['rnd']['flips']) + X0.GRAY)
         if placeholders['rndTies'] in thing:
-            thing = thing.replace(placeholders['rndTies'], str(apps['rnd']['ties']) + x.GRAY)
+            thing = thing.replace(placeholders['rndTies'], str(apps['rnd']['ties']) + X0.GRAY)
         if placeholders['lastHeads'] in thing:
-            thing = thing.replace(placeholders['lastHeads'], str(apps['rnd']['last-heads']) + x.GRAY)
+            thing = thing.replace(placeholders['lastHeads'], str(apps['rnd']['last-heads']) + X0.GRAY)
         if placeholders['lastTails'] in thing:
-            thing = thing.replace(placeholders['lastTails'], str(apps['rnd']['last-tails']) + x.GRAY)
+            thing = thing.replace(placeholders['lastTails'], str(apps['rnd']['last-tails']) + X0.GRAY)
         if placeholders['lastFlips'] in thing:
-            thing = thing.replace(placeholders['lastFlips'], str(apps['rnd']['last-flips']) + x.GRAY)
+            thing = thing.replace(placeholders['lastFlips'], str(apps['rnd']['last-flips']) + X0.GRAY)
         if placeholders['lastRNDWinner'] in thing:
-            thing = thing.replace(placeholders['lastRNDWinner'], str(apps['rnd']['last-winner']) + x.GRAY)
+            thing = thing.replace(placeholders['lastRNDWinner'], str(apps['rnd']['last-winner']) + X0.GRAY)
 
         if placeholders['g'] in thing:
             thing = thing.replace(placeholders['g'], "9.8")
@@ -467,11 +467,11 @@ def choiceCheck(thing:str):
 
     # Easter Eggs:
     if "SPAIME" in thing:
-        thing = thing.replace("SPAIME", f"{x.YELLOW}[{x.VIOLET}SPAIME{x.YELLOW}]" + x.GRAY)
+        thing = thing.replace("SPAIME", f"{X0.YELLOW}[{X0.VIOLET}SPAIME{X0.YELLOW}]" + X0.GRAY)
     if "SPAIME-2" in thing:
-        thing = thing.replace("SPAIME-2", f"{x.YELLOW}[{x.VIOLET}SPAIME{x.YELLOW}]²" + x.GRAY)
+        thing = thing.replace("SPAIME-2", f"{X0.YELLOW}[{X0.VIOLET}SPAIME{X0.YELLOW}]²" + X0.GRAY)
     if "Shrek" in thing:
-        thing = thing.replace("Shrek", x.GREEN + "Shrek" + x.GRAY)
+        thing = thing.replace("Shrek", X0.GREEN + "Shrek" + X0.GRAY)
 
     #==============================================================#
 
@@ -539,9 +539,9 @@ def choiceCheck(thing:str):
                 clear()
 
                 def debug1():
-                    print(f"\n{x.ORANGE}>>>{x.VIOLET} Hey boss! What do you wish to do?{c.END}")
-                    dev = input(f"\n{x.ORANGE}1 >{x.LETTUCE} ")
-                    print(c.END)
+                    print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
+                    dev = input(f"\n{X0.ORANGE}1 >{X0.LETTUCE} ")
+                    print(C0.END)
 
                     try:
                         print(eval(dev))
@@ -574,9 +574,9 @@ def choiceCheck(thing:str):
                 clear()
 
                 def debug1():
-                    print(f"\n{x.ORANGE}>>>{x.VIOLET} Hey boss! What do you wish to do?{c.END}")
-                    dev = input(f"\n{x.ORANGE}2 >{x.LETTUCE} ")
-                    print(c.END)
+                    print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
+                    dev = input(f"\n{X0.ORANGE}2 >{X0.LETTUCE} ")
+                    print(C0.END)
 
                     try:
                         print(exec(dev))
@@ -632,22 +632,22 @@ def mainMenu():
     if user['name'] in ('', None):
         output.stamp(f"Hey there! Whatcha wanna do?!")
     else:
-        output.stamp(f"Hey there, {x.GREEN}{user['name']}{x.VIOLET}! Whatcha wanna do?!")
+        output.stamp(f"Hey there, {X0.GREEN}{user['name']}{X0.VIOLET}! Whatcha wanna do?!")
     output.note(1, settings['prefix'])
     print()
 
-    output.option("R", f"{x.GRAY}[{x.LETTUCE}↑↓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}epeat")
-    output.option("M", f"{x.GRAY}[{x.LETTUCE}π*{x.GRAY}] {c.URL}M{c.END}{x.GRAY}ath & Logic")
-    output.option("A", f"{x.GRAY}[{x.LETTUCE}☘{x.YELLOW}%{x.GRAY}] R{c.URL}a{c.END}{x.GRAY}ndomeur")
-    output.option("O", f"{x.GRAY}[{x.LETTUCE}$${x.GRAY}] R{c.URL}o{c.END}{x.GRAY}ckPaperScissors")
-    output.option("T", f"{x.GRAY}[{ttt.s.x}{ttt.s.o}{x.GRAY}] {c.URL}T{c.END}{x.GRAY}icTacToe")
-    output.option("I", f"{x.GRAY}[{msp.flagS}{msp.bombS}{x.GRAY}] M{c.URL}i{c.END}{x.GRAY}nesweeper")
-    output.option("B", f"{x.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{x.GRAY}] {c.URL}B{c.END}{x.GRAY}lackJack")
-    output.option("F", f"{x.GRAY}[{x.LETTUCE}+{x.ORANGE}.{x.GRAY}] Brain{c.URL}F{c.END}{x.GRAY}uck")
-    output.option("P", f"{x.GRAY}[{x.YELLOW}{bricks}{x.GRAY}] O{c.URL}p{c.END}{x.GRAY}tions")
-    output.option("C", f"{x.GRAY}[{x.VIOLET}>>{x.GRAY}] {c.URL}C{c.END}{x.GRAY}redits")
-    output.option("E", f"{x.GRAY}[{x.RED}x{x.GREEN}✓{x.GRAY}] {c.URL}R{c.END}{x.GRAY}efresh")
-    output.option("X", f"{x.GRAY}[{x.RED}xx{x.GRAY}] E{c.URL}x{c.END}{x.GRAY}it")
+    output.option("R", f"{X0.GRAY}[{X0.LETTUCE}↑↓{X0.GRAY}] {C0.URL}R{C0.END}{X0.GRAY}epeat")
+    output.option("M", f"{X0.GRAY}[{X0.LETTUCE}π*{X0.GRAY}] {C0.URL}M{C0.END}{X0.GRAY}ath & Logic")
+    output.option("A", f"{X0.GRAY}[{X0.LETTUCE}☘{X0.YELLOW}%{X0.GRAY}] R{C0.URL}a{C0.END}{X0.GRAY}ndomeur")
+    output.option("O", f"{X0.GRAY}[{X0.LETTUCE}$${X0.GRAY}] R{C0.URL}o{C0.END}{X0.GRAY}ckPaperScissors")
+    output.option("T", f"{X0.GRAY}[{ttt.s.x}{ttt.s.o}{X0.GRAY}] {C0.URL}T{C0.END}{X0.GRAY}icTacToe")
+    output.option("I", f"{X0.GRAY}[{msp.flagS}{msp.bombS}{X0.GRAY}] M{C0.URL}i{C0.END}{X0.GRAY}nesweeper")
+    output.option("B", f"{X0.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{X0.GRAY}] {C0.URL}B{C0.END}{X0.GRAY}lackJack")
+    output.option("F", f"{X0.GRAY}[{X0.LETTUCE}+{X0.ORANGE}.{X0.GRAY}] Brain{C0.URL}F{C0.END}{X0.GRAY}uck")
+    output.option("P", f"{X0.GRAY}[{X0.YELLOW}{bricks}{X0.GRAY}] O{C0.URL}p{C0.END}{X0.GRAY}tions")
+    output.option("C", f"{X0.GRAY}[{X0.VIOLET}>>{X0.GRAY}] {C0.URL}C{C0.END}{X0.GRAY}redits")
+    output.option("E", f"{X0.GRAY}[{X0.RED}x{X0.GREEN}✓{X0.GRAY}] {C0.URL}R{C0.END}{X0.GRAY}efresh")
+    output.option("X", f"{X0.GRAY}[{X0.RED}xx{X0.GRAY}] E{C0.URL}x{C0.END}{X0.GRAY}it")
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -787,15 +787,15 @@ def rndMenu():
     def statsMenu():
         print()
         output.stamp(f"Randomeur Statistics:\n")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.headsStyle}{c.END}: {x.GRAY}{apps['rnd']['heads']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tailsStyle}{c.END}: {x.GRAY}{apps['rnd']['tails']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.flipsStyle}{c.END}: {x.GRAY}{apps['rnd']['flips']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total {rnd.tieStyle}{x.RED}s{c.END}:  {x.GRAY}{apps['rnd']['ties']}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.headsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['heads']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tailsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['tails']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.flipsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['flips']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tieStyle}{X0.RED}s{C0.END}:  {X0.GRAY}{apps['rnd']['ties']}{C0.END}")
         print(f"")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.headsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-heads']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.tailsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-tails']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last {rnd.flipsStyle}{c.END}:  {x.GRAY}{apps['rnd']['last-flips']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Winner{c.END}: {x.GRAY}{apps['rnd']['last-winner']}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.headsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-heads']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.tailsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-tails']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.flipsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-flips']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner{C0.END}: {X0.GRAY}{apps['rnd']['last-winner']}{C0.END}")
         enterContinue()
 
     def statsReset():
@@ -890,17 +890,17 @@ def rpsMenu():
     def statsMenu():
         print()
         output.stamp(f"RockPaperScissors Statistics:\n")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Wins        : {x.GRAY}{apps['rps']['p1']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p1['name']} Last Choice : {x.GRAY}{apps['rps']['p1']['last-choice']}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Wins        : {X0.GRAY}{apps['rps']['p1']['wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Last Choice : {X0.GRAY}{apps['rps']['p1']['last-choice']}{C0.END}")
         print()
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Wins        : {x.GRAY}{apps['rps']['p2']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.p2['name']} Last Choice : {x.GRAY}{apps['rps']['p2']['last-choice']}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Wins        : {X0.GRAY}{apps['rps']['p2']['wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Last Choice : {X0.GRAY}{apps['rps']['p2']['last-choice']}{C0.END}")
         print()
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Wins        : {x.GRAY}{apps['rps']['cpu']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"{rps.cpu['name']} Last Choice : {x.GRAY}{apps['rps']['cpu']['last-choice']}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Wins        : {X0.GRAY}{apps['rps']['cpu']['wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Last Choice : {X0.GRAY}{apps['rps']['cpu']['last-choice']}{C0.END}")
         print()
-        print(f" {x.YELLOW}-{c.END} " + f"Ties : {x.GRAY}{apps['rps']['ties']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Best : {x.GRAY}{whosBest()}{c.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Ties : {X0.GRAY}{apps['rps']['ties']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Best : {X0.GRAY}{whosBest()}{C0.END}")
         enterContinue()
 
     def statsReset():
@@ -1010,7 +1010,7 @@ def tttMenu():
         output.note(1, settings['prefix'])
         print()
         output.option(1, "Start Game")
-        output.option(2, "Difficulty: " + x.LETTUCE + apps['ttt']['diff'])
+        output.option(2, "Difficulty: " + X0.LETTUCE + apps['ttt']['diff'])
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1044,9 +1044,9 @@ def tttMenu():
         if choice == "2":
             clear()
             print()
-            output.stamp(f"What do you want the difficulty to be? {x.LETTUCE}(H,M,E)")
+            output.stamp(f"What do you want the difficulty to be? {X0.LETTUCE}(H,M,E)")
             output.note(1, settings['prefix'])
-            output.note(f"Current is {x.LETTUCE}{apps['ttt']['diff']}{c.END}")
+            output.note(f"Current is {X0.LETTUCE}{apps['ttt']['diff']}{C0.END}")
             print()
             allowed = "HME123"
             choice = intake.prompt()
@@ -1070,13 +1070,13 @@ def tttMenu():
 
     def statsMenu():
         print()
-        output.stamp(f"TicTacToe Statistics:\n{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"X Wins     : {x.GRAY}{apps['ttt']['x-wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"O Wins     : {x.GRAY}{apps['ttt']['o-wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Ties       : {x.GRAY}{apps['ttt']['ties']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Winner: {x.GRAY}{apps['ttt']['last-winner']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Board :-\n")
-        print(ttt.displayBoard(apps['ttt']['last-board'], True, left=f' {x.YELLOW}-{c.END} '))
+        output.stamp(f"TicTacToe Statistics:\n{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"X Wins     : {X0.GRAY}{apps['ttt']['x-wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"O Wins     : {X0.GRAY}{apps['ttt']['o-wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Ties       : {X0.GRAY}{apps['ttt']['ties']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner: {X0.GRAY}{apps['ttt']['last-winner']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Board :-\n")
+        print(ttt.displayBoard(apps['ttt']['last-board'], True, left=f' {X0.YELLOW}-{C0.END} '))
         enterContinue()
 
     def statsReset():
@@ -1160,8 +1160,8 @@ def mspMenu():
         output.stamp("Minesweeper Config:")
         output.note(1, settings['prefix'])
         print()
-        output.option(1, "Map Size: " + x.LETTUCE + str(apps['msp']['dim']) + c.END)
-        output.option(2, "Bomb Count: " + x.LETTUCE + str(apps['msp']['bombC']) + c.END)
+        output.option(1, "Map Size: " + X0.LETTUCE + str(apps['msp']['dim']) + C0.END)
+        output.option(2, "Bomb Count: " + X0.LETTUCE + str(apps['msp']['bombC']) + C0.END)
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1172,9 +1172,9 @@ def mspMenu():
             print()
             output.stamp("What do you want the map size to be?")
             output.note(1, settings['prefix'])
-            output.note(f"Map size ranges from {x.YELLOW}1:99{c.END}")
+            output.note(f"Map size ranges from {X0.YELLOW}1:99{C0.END}")
             output.note(f"I don't recommend anything above 25 for your machine's health, also I do not recommend anything above 10 for the looks of it.")
-            output.note(f"Current is {x.LETTUCE}{apps['msp']['dim']}{c.END}")
+            output.note(f"Current is {X0.LETTUCE}{apps['msp']['dim']}{C0.END}")
             print()
 
             choice = intake.prompt()
@@ -1195,8 +1195,8 @@ def mspMenu():
             print()
             output.stamp("How many bombs do you want there to be?")
             output.note(1, settings['prefix'])
-            output.note(f"Bombs count ranges from {x.YELLOW}1:{apps['msp']['dim']**2}{x.END}")
-            output.note(f"Current is {x.LETTUCE}{apps['msp']['bombC']}{c.END}")
+            output.note(f"Bombs count ranges from {X0.YELLOW}1:{apps['msp']['dim']**2}{X0.END}")
+            output.note(f"Current is {X0.LETTUCE}{apps['msp']['bombC']}{C0.END}")
             print()
 
             choice = intake.prompt()
@@ -1221,10 +1221,10 @@ def mspMenu():
     def statsMenu():
         print()
         output.stamp(f"Minesweeper Statistics:\n")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Wins :     {x.GRAY}{apps['msp']['wins']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Loses:     {x.GRAY}{apps['msp']['defeats']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Total Dug Spots: {x.GRAY}{apps['msp']['spots-dug']}{c.END}")
-        print(f" {x.YELLOW}-{c.END} " + f"Last Map:-")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{apps['msp']['wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Loses:     {X0.GRAY}{apps['msp']['defeats']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Dug Spots: {X0.GRAY}{apps['msp']['spots-dug']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
 
         mspBD.print(True)
@@ -1313,7 +1313,7 @@ def bjkMenu():
         output.stamp("BlackJack Config:")
         output.note(1, settings['prefix'])
         print()
-        output.option(1, "Hit on Soft 17: " + (f"{x.LETTUCE}Yes" if apps['bjk']['soft-17'] else f"{x.RED}No") + c.END)
+        output.option(1, "Hit on Soft 17: " + (f"{X0.LETTUCE}Yes" if apps['bjk']['soft-17'] else f"{X0.RED}No") + C0.END)
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1321,11 +1321,11 @@ def bjkMenu():
         
         if choice == "1":
             clear()
-            output.stamp("Hit on Soft 17? " + f"{x.GRAY}({x.LETTUCE}Y{x.GRAY},{x.RED}N{x.GRAY})")
+            output.stamp("Hit on Soft 17? " + f"{X0.GRAY}({X0.LETTUCE}Y{X0.GRAY},{X0.RED}N{X0.GRAY})")
             output.note(1, settings['prefix'])
             output.note(f"To explain, this option is to either make the dealer hit on 17 or not.")
             output.note(f"")
-            output.note(f"Current is {(f'{x.LETTUCE}Yes' if apps['bjk']['soft-17'] else f'{x.RED}No')}")
+            output.note(f"Current is {(f'{X0.LETTUCE}Yes' if apps['bjk']['soft-17'] else f'{X0.RED}No')}")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1361,7 +1361,7 @@ def bjkMenu():
     print()
     output.stamp("Welcome to BlackJack!")
     output.note(1, settings['prefix'])
-    output.note(f"Current Balance is {x.LETTUCE}{apps['bjk']['balance']}C")
+    output.note(f"Current Balance is {X0.LETTUCE}{apps['bjk']['balance']}C")
     print()
     output.option(1, "Start a Game")
     output.option(2, "la Banque")
@@ -1391,11 +1391,11 @@ def bjkMenu():
         clear()
 
         print()
-        output.stamp(f"Bienvenue à la Banque de {x.LETTUCE}SPAIME²{x.VIOLET}!")
+        output.stamp(f"Bienvenue à la Banque de {X0.LETTUCE}SPAIME²{X0.VIOLET}!")
         output.note(1, settings['prefix'])
-        output.note("Reward " + ((f"{x.LETTUCE}available") if available else (f"{x.RED}not available")) + f"{x.GRAY}.")
+        output.note("Reward " + ((f"{X0.LETTUCE}available") if available else (f"{X0.RED}not available")) + f"{X0.GRAY}.")
         print()
-        output.option(1, (c.STRIKE if not available else "") + "Claim Daily")
+        output.option(1, (C0.STRIKE if not available else "") + "Claim Daily")
         output.option(2, "Debt")
         output.option(0, "Back")
 
@@ -1411,23 +1411,23 @@ def bjkMenu():
 
             if 1 <= luck <= 4:
                 reward = 500
-                h1 = x.GOLDBG + x.BLACK
+                h1 = X0.GOLDBG + X0.BLACK
             if 5 <= luck <= 7:
                 reward = 1000
-                h2 = x.GOLDBG + x.BLACK
+                h2 = X0.GOLDBG + X0.BLACK
             if 8 <= luck <= 9:
                 reward = 2000
-                h3 = x.GOLDBG + x.BLACK
+                h3 = X0.GOLDBG + X0.BLACK
             if 10 <= luck <= 10:
                 reward = 5000
-                h4 = x.GOLDBG + x.BLACK
+                h4 = X0.GOLDBG + X0.BLACK
 
             output.notify("Hey, hey there, High-Roller!")
             print(
-                f"> {h1}{x.GRAY}[{x.LETTUCE}500C{x.GRAY}]{c.END} "
-                + f"{h2}{x.GRAY}[{x.LETTUCE}1000C{x.GRAY}]{c.END} "
-                + f"{h3}{x.GRAY}[{x.LETTUCE}2000C{x.GRAY}]{c.END} "
-                + f"{h4}{x.GRAY}[{x.LETTUCE}5000C{x.GRAY}]{c.END} <")
+                f"> {h1}{X0.GRAY}[{X0.LETTUCE}500C{X0.GRAY}]{C0.END} "
+                + f"{h2}{X0.GRAY}[{X0.LETTUCE}1000C{X0.GRAY}]{C0.END} "
+                + f"{h3}{X0.GRAY}[{X0.LETTUCE}2000C{X0.GRAY}]{C0.END} "
+                + f"{h4}{X0.GRAY}[{X0.LETTUCE}5000C{X0.GRAY}]{C0.END} <")
             if available:
                 apps['bjk']['balance'] += reward
             writeYAML()
@@ -1591,10 +1591,10 @@ def optionsMenu():
     output.stamp(f"Options:")
     output.note(1, settings['prefix'])
     print()
-    output.option(1, f"Name: {x.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
-    output.option(2, f"Gender: {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
-    output.option(3, f"Age: {x.GREEN}{user['age']}")
-    output.option(4, f"Prefix: {x.GREEN}{settings['prefix']}")
+    output.option(1, f"Name: {X0.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
+    output.option(2, f"Gender: {X0.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
+    output.option(3, f"Age: {X0.GREEN}{user['age']}")
+    output.option(4, f"Prefix: {X0.GREEN}{settings['prefix']}")
     output.option(8, f"Rest Games' Stats")
     output.option(9, f"Rest Application")
     output.option(0, f"Home")
@@ -1608,7 +1608,7 @@ def optionsMenu():
         print()
         output.stamp(f"What do you wanna be called?")
         output.note(1, settings['prefix'])
-        output.note(f"Current is {x.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
+        output.note(f"Current is {X0.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1623,7 +1623,7 @@ def optionsMenu():
         print()
         output.stamp(f"How old are you?")
         output.note(1, settings['prefix'])
-        output.note(f"Current is {x.GREEN}{user['age']}")
+        output.note(f"Current is {X0.GREEN}{user['age']}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1635,9 +1635,9 @@ def optionsMenu():
 
         clear()
         print()
-        output.stamp(f"Cation, Anion or Zwitterion? {x.LETTUCE}(M,F,N)")
+        output.stamp(f"Cation, Anion or Zwitterion? {X0.LETTUCE}(M,F,N)")
         output.note(1, settings['prefix'])
-        output.note(f"Current is {x.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
+        output.note(f"Current is {X0.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1651,7 +1651,7 @@ def optionsMenu():
         print()
         output.stamp(f"Set prefix to what?")
         output.note(1, settings['prefix'])
-        output.note(f"Current is {x.GREEN}{settings['prefix']}")
+        output.note(f"Current is {X0.GREEN}{settings['prefix']}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1665,7 +1665,7 @@ def optionsMenu():
         output.notify(f"Continuing would mean you want to reset statistics to default.")
         if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{x.LETTUCE}{settings['prefix']}reset{x.GRAY}\"{c.END}{x.GRAY} to further confirm.")
+            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{settings['prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1690,7 +1690,7 @@ def optionsMenu():
         output.notify(f"Continuing would mean you want to reset statistics to default.")
         if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {x.GRAY}{c.ITALIC}\"{x.LETTUCE}{settings['prefix']}reset{x.GRAY}\"{c.END}{x.GRAY} to further confirm.")
+            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{settings['prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1699,7 +1699,7 @@ def optionsMenu():
                 resetYAML()
                 resetPICKLE()
                 clear()
-                output.success(f"All done, good as new. {c.END}")
+                output.success(f"All done, good as new. {C0.END}")
                 back()
             else:
                 clear()
@@ -1738,65 +1738,65 @@ def helpF():
     print()
     output.stamp(f"Commands:")
     # The available SPAIME commands.
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"help [┬]   : {x.GRAY}Shows this menu.{c.END}")
-    print(                                          f"          ├math: {x.GRAY}Shows help about Math & Logic.{c.END}")
-    print(                                          f"          ├rnd : {x.GRAY}Shows help about Randomeur.{c.END}")
-    print(                                          f"          ├rps : {x.GRAY}Shows help about RockPaperScissors.{c.END}")
-    print(                                          f"          ├ttt : {x.GRAY}Shows help about TicTacToe.{c.END}")
-    print(                                          f"          ├msp : {x.GRAY}Shows help about Minesweeper.{c.END}")
-    print(                                          f"          └bjk : {x.GRAY}Shows help about BlackJack.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"back:        {x.GRAY}Returns you a page back.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"home:        {x.GRAY}Returns you to home page.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"refr:        {x.GRAY}Refreshes current page.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"exit:        {x.GRAY}To safely exit the app.{c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"dev1:        {x.GRAY}Enters eval() mode. {x.RED}{c.DIM}(dev-only){c.END}")
-    print(f" {x.YELLOW}-{c.END} {settings['prefix']}" + f"dev2:        {x.GRAY}Enters exec() mode. {x.RED}{c.DIM}(dev-only){c.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"help [┬]   : {X0.GRAY}Shows this menu.{C0.END}")
+    print(                                          f"          ├math: {X0.GRAY}Shows help about Math & Logic.{C0.END}")
+    print(                                          f"          ├rnd : {X0.GRAY}Shows help about Randomeur.{C0.END}")
+    print(                                          f"          ├rps : {X0.GRAY}Shows help about RockPaperScissors.{C0.END}")
+    print(                                          f"          ├ttt : {X0.GRAY}Shows help about TicTacToe.{C0.END}")
+    print(                                          f"          ├msp : {X0.GRAY}Shows help about Minesweeper.{C0.END}")
+    print(                                          f"          └bjk : {X0.GRAY}Shows help about BlackJack.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"back:        {X0.GRAY}Returns you a page back.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"home:        {X0.GRAY}Returns you to home page.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"refr:        {X0.GRAY}Refreshes current page.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"exit:        {X0.GRAY}To safely exit the app.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"dev1:        {X0.GRAY}Enters eval() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"dev2:        {X0.GRAY}Enters exec() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
     print("\n")
     output.stamp(f"Placeholders:")
     # The available placeholders.
                # The syntax ones.
-    print(f" {x.YELLOW}-{c.END}" + " {nl}: " + f"           {x.GRAY}Makes a lovely line separator, not useful.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {br}: " + f"           {x.GRAY}Makes a new line, useful in repeat, I guess.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {nl}: " + f"           {X0.GRAY}Makes a lovely line separator, not useful.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {br}: " + f"           {X0.GRAY}Makes a new line, useful in repeat, I guess.{C0.END}")
     print(f"") # The user & settings ones.
-    print(f" {x.YELLOW}-{c.END}" + " {name}: " + f"         {x.GRAY}Returns your name.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {age}: " + f"          {x.GRAY}Returns your age.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {prefix}: " + f"       {x.GRAY}Returns set prefix{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {name}: " + f"         {X0.GRAY}Returns your name.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {age}: " + f"          {X0.GRAY}Returns your age.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {prefix}: " + f"       {X0.GRAY}Returns set prefix{C0.END}")
     print(f"") # The math & physics ones.
-    print(f" {x.YELLOW}-{c.END}" + " {e}: " + f"            {x.GRAY}Returns Euler's number's value.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {g}: " + f"            {x.GRAY}Returns gravitational acceleration constant's value.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {pi}: " + f"           {x.GRAY}Returns pi's value.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {tau}: " + f"          {x.GRAY}Returns tau's value.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {phi}: " + f"          {x.GRAY}Returns the golden ratio's value.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {e}: " + f"            {X0.GRAY}Returns Euler's number's value.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {g}: " + f"            {X0.GRAY}Returns gravitational acceleration constant's value.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {pi}: " + f"           {X0.GRAY}Returns pi's value.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {tau}: " + f"          {X0.GRAY}Returns tau's value.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {phi}: " + f"          {X0.GRAY}Returns the golden ratio's value.{C0.END}")
     print(f"") # The Randomeur ones.
-    print(f" {x.YELLOW}-{c.END}" + " {heads}: " + f"        {x.GRAY}Returns the total amount of {rnd.headsStyle}{x.GRAY}.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {tails}: " + f"        {x.GRAY}Returns the total amount of {rnd.tailsStyle}{x.GRAY}.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {rndTies}: " + f"      {x.GRAY}Returns the total amount of RND {rnd.tieStyle}{x.RED}s{x.GRAY}.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {flips}: " + f"        {x.GRAY}Returns the total amount of RND {rnd.flipsStyle}{x.GRAY}.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastHeads}: " + f"    {x.GRAY}Returns the last {rnd.headsStyle}{x.GRAY} count.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastTails}: " + f"    {x.GRAY}Returns the last {rnd.tailsStyle}{x.GRAY} count.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastFlips}: " + f"    {x.GRAY}Returns the last {rnd.flipsStyle}{x.GRAY} count.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastRNDWinner}: " + f"{x.GRAY}Returns the last RND winner.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {heads}: " + f"        {X0.GRAY}Returns the total amount of {rnd.headsStyle}{X0.GRAY}.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {tails}: " + f"        {X0.GRAY}Returns the total amount of {rnd.tailsStyle}{X0.GRAY}.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {rndTies}: " + f"      {X0.GRAY}Returns the total amount of RND {rnd.tieStyle}{X0.RED}s{X0.GRAY}.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {flips}: " + f"        {X0.GRAY}Returns the total amount of RND {rnd.flipsStyle}{X0.GRAY}.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastHeads}: " + f"    {X0.GRAY}Returns the last {rnd.headsStyle}{X0.GRAY} count.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastTails}: " + f"    {X0.GRAY}Returns the last {rnd.tailsStyle}{X0.GRAY} count.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastFlips}: " + f"    {X0.GRAY}Returns the last {rnd.flipsStyle}{X0.GRAY} count.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastRNDWinner}: " + f"{X0.GRAY}Returns the last RND winner.{C0.END}")
     print(f"") # The RockPaperScissors ones.
-    print(f" {x.YELLOW}-{c.END}" + " {p1Last}: " + f"       {x.GRAY}Returns {rps.p1['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p2Last}: " + f"       {x.GRAY}Returns {rps.p2['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {cpuLast}: " + f"      {x.GRAY}Returns {rps.cpu['name']}{x.GRAY} last move.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p1Wins}: " + f"       {x.GRAY}Returns how many times {rps.p1['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {p2Wins}: " + f"       {x.GRAY}Returns how many times {rps.p2['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {cpuWins}: " + f"      {x.GRAY}Returns how many times {rps.cpu['name']}{x.GRAY} won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {rpsTies}: " + f"      {x.GRAY}Returns how many times RPS ties happened.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastRPSWinner}: " + f"{x.GRAY}Returns the last RPS winner.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {p1Last}: " + f"       {X0.GRAY}Returns {rps.p1['name']}{X0.GRAY} last move.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {p2Last}: " + f"       {X0.GRAY}Returns {rps.p2['name']}{X0.GRAY} last move.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {cpuLast}: " + f"      {X0.GRAY}Returns {rps.cpu['name']}{X0.GRAY} last move.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {p1Wins}: " + f"       {X0.GRAY}Returns how many times {rps.p1['name']}{X0.GRAY} won.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {p2Wins}: " + f"       {X0.GRAY}Returns how many times {rps.p2['name']}{X0.GRAY} won.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {cpuWins}: " + f"      {X0.GRAY}Returns how many times {rps.cpu['name']}{X0.GRAY} won.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {rpsTies}: " + f"      {X0.GRAY}Returns how many times RPS ties happened.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastRPSWinner}: " + f"{X0.GRAY}Returns the last RPS winner.{C0.END}")
     print(f"") # The TicTacToe ones.
-    print(f" {x.YELLOW}-{c.END}" + " {lastTTTWinner}: " + f"{x.GRAY}Returns the last TTT winner.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {lastTTTBoard}: " + f" {x.GRAY}Returns the last TTT board.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {xWins}: " + f"        {x.GRAY}Returns how many times x won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {oWins}: " + f"        {x.GRAY}Returns how many times o won.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {tttTies}: " + f"      {x.GRAY}Returns how many TTT ties happened.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastTTTWinner}: " + f"{X0.GRAY}Returns the last TTT winner.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {lastTTTBoard}: " + f" {X0.GRAY}Returns the last TTT board.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {xWins}: " + f"        {X0.GRAY}Returns how many times x won.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {oWins}: " + f"        {X0.GRAY}Returns how many times o won.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {tttTies}: " + f"      {X0.GRAY}Returns how many TTT ties happened.{C0.END}")
     print(f"") # The Minesweeper ones.
-    print(f" {x.YELLOW}-{c.END}" + " {mspWins}: " + f"      {x.GRAY}Returns how many times you won at MSP.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {mspDefeats}: " + f"   {x.GRAY}Returns how many times you lost at MSP.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {mspDug}: " + f"       {x.GRAY}Returns how many times you dug manually at MSP.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {mspBombs}: " + f"     {x.GRAY}Returns how many bombs are in MSP config.{c.END}")
-    print(f" {x.YELLOW}-{c.END}" + " {mspSize}: " + f"      {x.GRAY}Returns how big the map is in MSP config.{c.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {mspWins}: " + f"      {X0.GRAY}Returns how many times you won at MSP.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {mspDefeats}: " + f"   {X0.GRAY}Returns how many times you lost at MSP.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {mspDug}: " + f"       {X0.GRAY}Returns how many times you dug manually at MSP.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {mspBombs}: " + f"     {X0.GRAY}Returns how many bombs are in MSP config.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END}" + " {mspSize}: " + f"      {X0.GRAY}Returns how big the map is in MSP config.{C0.END}")
 
     enterContinue()
 
@@ -1808,14 +1808,14 @@ def helpMathF():
     output.stamp("Math & Logic Help:")
 
     output.note(f"You can use basic math and logic gates.", sign="D")
-    output.note(f'Allowed Input: "{x.LETTUCE}0123456789+-*×x/\\÷^.,()%=TF!&| {c.END}{x.GRAY}".', sign="D")
-    output.note(f"T  {x.LETTUCE}->{x.GRAY} True", sign="D")
-    output.note(f"F  {x.LETTUCE}->{x.GRAY} False", sign="D")
-    output.note(f"!  {x.LETTUCE}->{x.GRAY} not", sign="D")
-    output.note(f"&  {x.LETTUCE}->{x.GRAY} and", sign="D")
-    output.note(f"|  {x.LETTUCE}->{x.GRAY} or", sign="D")
-    output.note(f"== {x.LETTUCE}->{x.GRAY} equal-to", sign="D")
-    output.note(f"!= {x.LETTUCE}->{x.GRAY} not-equal-to", sign="D")
+    output.note(f'Allowed Input: "{X0.LETTUCE}0123456789+-*×x/\\÷^.,()%=TF!&| {C0.END}{X0.GRAY}".', sign="D")
+    output.note(f"T  {X0.LETTUCE}->{X0.GRAY} True", sign="D")
+    output.note(f"F  {X0.LETTUCE}->{X0.GRAY} False", sign="D")
+    output.note(f"!  {X0.LETTUCE}->{X0.GRAY} not", sign="D")
+    output.note(f"&  {X0.LETTUCE}->{X0.GRAY} and", sign="D")
+    output.note(f"|  {X0.LETTUCE}->{X0.GRAY} or", sign="D")
+    output.note(f"== {X0.LETTUCE}->{X0.GRAY} equal-to", sign="D")
+    output.note(f"!= {X0.LETTUCE}->{X0.GRAY} not-equal-to", sign="D")
 
     enterContinue()
 
@@ -1829,8 +1829,8 @@ def helpRNDF():
     print()
     output.notify("Flipeur:")
 
-    output.note(f"Flip a coin for [{x.LETTUCE}x-amount{x.GRAY}] of times.", sign="D")
-    output.note(f"[{x.LETTUCE}x-amount{x.GRAY}] must be between {x.LETTUCE}1:10000.", sign="D")
+    output.note(f"Flip a coin for [{X0.LETTUCE}x-amount{X0.GRAY}] of times.", sign="D")
+    output.note(f"[{X0.LETTUCE}x-amount{X0.GRAY}] must be between {X0.LETTUCE}1:10000.", sign="D")
     output.note(f"That is so you don't smell a grilled CPU core.", sign="D")
     output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
@@ -1842,8 +1842,8 @@ def helpRPSF():
     print()
     output.stamp("RockPaperScissors Help:")
     output.note(f"There're two main modes:", sign="D")
-    output.note(f"You choose rock, paper or scissors and the CPU randomizes a choice.", sign=f"{x.YELLOW}Solo:")
-    output.note(f"You choose rock, paper or scissors and call a friend to choose too.", sign=f"{x.YELLOW}Duo :")
+    output.note(f"You choose rock, paper or scissors and the CPU randomizes a choice.", sign=f"{X0.YELLOW}Solo:")
+    output.note(f"You choose rock, paper or scissors and call a friend to choose too.", sign=f"{X0.YELLOW}Duo :")
     output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
     enterContinue()
@@ -1853,7 +1853,7 @@ def helpRPSF():
 def helpTTTF():
     print()
     output.stamp("TicTacToe Help:")
-    output.note(f"First, choose whether to start with {ttt.s.x}{x.GRAY} or {ttt.s.o}{x.GRAY}.", sign="D")
+    output.note(f"First, choose whether to start with {ttt.s.x}{X0.GRAY} or {ttt.s.o}{X0.GRAY}.", sign="D")
     output.note(f"Next, just type the position number you want to play at.", sign="D")
     output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
@@ -1864,16 +1864,16 @@ def helpTTTF():
 def helpMSPF():
     print()
     output.stamp("Minesweeper Help:")
-    output.note(f"{msp.bombS} {x.GRAY}Boom!!", sign="D")
+    output.note(f"{msp.bombS} {X0.GRAY}Boom!!", sign="D")
     output.note(f"Let's start by talking about the Config page.", sign="D")
     output.note(f"There you can choose the map size and the amount of bombs.", sign="D")
-    output.note(f"To dig a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]'{c.END}{x.GRAY} of that spot.", sign="D")
-    output.note(f"To flag a spot just type {c.ITALIC}'[{x.LETTUCE}x,y{x.GRAY}]{msp.flagS}'{c.END}{x.GRAY} of that spot.", sign="D")
-    output.note(f"Any brackets like {x.LETTUCE}(){x.GRAY}, {x.LETTUCE}[]{x.GRAY} or {x.LETTUCE}{bricks}{x.GRAY}, and spaces are ignored.", sign="D")
-    output.note(f"{msp.emptyS} {x.LETTUCE}->{x.GRAY} Not Dug", sign="D")
-    output.note(f"{msp.nS[ random.randint(0,len(msp.nS)) -1 ]} {x.LETTUCE}->{x.GRAY} Dug", sign="D")
-    output.note(f"{msp.flagS} {x.LETTUCE}->{x.GRAY} Flagged", sign="D")
-    output.note(f"{msp.bombS} {x.LETTUCE}->{x.GRAY} Bomb", sign="D")
+    output.note(f"To dig a spot just type {C0.ITALIC}'[{X0.LETTUCE}x,y{X0.GRAY}]'{C0.END}{X0.GRAY} of that spot.", sign="D")
+    output.note(f"To flag a spot just type {C0.ITALIC}'[{X0.LETTUCE}x,y{X0.GRAY}]{msp.flagS}'{C0.END}{X0.GRAY} of that spot.", sign="D")
+    output.note(f"Any brackets like {X0.LETTUCE}(){X0.GRAY}, {X0.LETTUCE}[]{X0.GRAY} or {X0.LETTUCE}{bricks}{X0.GRAY}, and spaces are ignored.", sign="D")
+    output.note(f"{msp.emptyS} {X0.LETTUCE}->{X0.GRAY} Not Dug", sign="D")
+    output.note(f"{msp.nS[ random.randint(0,len(msp.nS)) -1 ]} {X0.LETTUCE}->{X0.GRAY} Dug", sign="D")
+    output.note(f"{msp.flagS} {X0.LETTUCE}->{X0.GRAY} Flagged", sign="D")
+    output.note(f"{msp.bombS} {X0.LETTUCE}->{X0.GRAY} Bomb", sign="D")
     output.note(f"Check on the statistics to see some cool figures.", sign="D")
 
     enterContinue()
@@ -1884,12 +1884,12 @@ def helpBJKF():
     print()
     output.stamp("BlackJack Help:")
     output.note(f"Let's start by talking about the Config page.", sign="D")
-    output.note(f"There you can choose whether {x.LETTUCE}Hit-on-Soft-17{x.GRAY} is applied or not.", sign="D")
+    output.note(f"There you can choose whether {X0.LETTUCE}Hit-on-Soft-17{X0.GRAY} is applied or not.", sign="D")
     output.note(f"The game control menu is self-explanatory so I won't get into it.", sign="D")
     output.note(f"But an additional tip: You don't have to use the first letter, you can type its place number.", sign="D")
     output.note(f"Cards look like: {bjk.PROTO[random.randint(0,(len(bjk.PROTO)-1))]['s']}", sign="D")
-    output.note(f"  ({x.LETTUCE}The Card Value{x.GRAY})┘│", sign="D")
-    output.note(f"  ({x.LETTUCE}The Card Suits{x.GRAY})─┘", sign="D")
+    output.note(f"  ({X0.LETTUCE}The Card Value{X0.GRAY})┘│", sign="D")
+    output.note(f"  ({X0.LETTUCE}The Card Suits{X0.GRAY})─┘", sign="D")
     enterContinue()
 
 #==================================================================#
@@ -1908,25 +1908,25 @@ def infoF():
 
     # ASCII art for the logo, that shows on first launch.
     print( ""
-        + x.LETTUCE + logo_art + c.END
-        + x.VIOLET + logo_text + c.END
-        + c.DIM
-        + x.GRAY + logo_motto + c.END
+        + X0.LETTUCE + logo_art + C0.END
+        + X0.VIOLET + logo_text + C0.END
+        + C0.DIM
+        + X0.GRAY + logo_motto + C0.END
         )
 
     # Your usual yadda yadda.
     print()
     output.stamp(f"SPAIME²")
-    output.option(f"Version", f"x.x.x{c.END}")
-    output.option(f"Author", f" Fastre{c.END}")
-    output.option(f"Github", f" {c.URL}{c.ITALIC}https://github.com/IamFastre{c.END}")
-    output.option(f"Discord", f"{c.URL}{c.ITALIC}https://discord.gg/kkzmxkG{c.END}")
-    output.option(f"Note", f"   There was never a SPAIME¹{c.END}")
+    output.option(f"Version", f"x.x.x{C0.END}")
+    output.option(f"Author", f" Fastre{C0.END}")
+    output.option(f"Github", f" {C0.URL}{C0.ITALIC}https://github.com/IamFastre{C0.END}")
+    output.option(f"Discord", f"{C0.URL}{C0.ITALIC}https://discord.gg/kkzmxkG{C0.END}")
+    output.option(f"Note", f"   There was never a SPAIME¹{C0.END}")
     choice = enterContinue()
 
     # An easter egg!
     if choice.casefold() in admins:
-        output.success(f"Yes, {x.RED}♥{x.GRAY}.{c.END}")
+        output.success(f"Yes, {X0.RED}♥{X0.GRAY}.{C0.END}")
     back()
 
 #==================================================================#
@@ -1946,15 +1946,15 @@ def refreshF():
 def exitF():
     """Delete annoying cache files and turn the app off."""
 
-    print(f"{x.YELLOW}>>{x.GRAY} Okie!{c.END}")
+    print(f"{X0.YELLOW}>>{X0.GRAY} Okie!{C0.END}")
     sleep(0.5)
     clear()
 
     # Telling you sweet goodbyes.
     if user['name'] == '':
-        output.notify(f"Bye-bye{x.VIOLET}!")
+        output.notify(f"Bye-bye{X0.VIOLET}!")
     else:
-        output.notify(f"Bye-bye, {x.GREEN}{user['name']}{x.VIOLET}!")
+        output.notify(f"Bye-bye, {X0.GREEN}{user['name']}{X0.VIOLET}!")
 
     # Deleting pycache, it makes the app run faster but screw it, am I right?
     delCache()

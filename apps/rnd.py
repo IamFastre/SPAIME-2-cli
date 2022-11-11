@@ -14,10 +14,10 @@ from res.libs import *
 # So we can happily fry your device
 sys.setrecursionlimit(100000)
 
-flipsStyle = x.GREEN + "Flips" + x.END
-headsStyle = x.YELLOW + "Heads" + x.END
-tailsStyle = x.ORANGE + "Tails" + x.END
-tieStyle = x.RED + "Tie" + x.END
+flipsStyle = X0.GREEN + "Flips" + X0.END
+headsStyle = X0.YELLOW + "Heads" + X0.END
+tailsStyle = X0.ORANGE + "Tails" + X0.END
+tieStyle = X0.RED + "Tie" + X0.END
 
 heads = 0
 tails = 0
@@ -39,7 +39,7 @@ def roll(num):
     return [heads, tails]
 
 def getNum():
-    print(f"\n{x.YELLOW}>>>{x.VIOLET} How many times do you wanna flip the coin?")
+    print(f"\n{X0.YELLOW}>>>{X0.VIOLET} How many times do you wanna flip the coin?")
     choice = intake.prompt()
     if choice == "exit":
         print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
@@ -108,11 +108,11 @@ def resultDisplay(result, stats):
         tailsPer = int(tailsPer)
 
     clear()
-    print(f"\n{x.YELLOW}>>>{x.VIOLET} Results:")
-    print(f" {x.YELLOW}-{c.END} {x.GRAY}You rolled:{x.LETTUCE} {flips} {'times' if flips > 1 else 'time'}{c.END}")
-    print(f" {x.YELLOW}-{c.END} {x.GRAY}Heads: {x.LETTUCE}{heads}{' ' * (tallrLen - headsLen)} {x.SKY}>> {x.LETTUCE}{headsPer}%{c.END}")
-    print(f" {x.YELLOW}-{c.END} {x.GRAY}Tails: {x.LETTUCE}{tails}{' ' * (tallrLen - tailsLen)} {x.SKY}>> {x.LETTUCE}{tailsPer}%{c.END}")
-    print(f" {x.YELLOW}-{c.END} {x.GRAY}So {winner}{x.GRAY}, it is.{c.END}")
+    print(f"\n{X0.YELLOW}>>>{X0.VIOLET} Results:")
+    print(f" {X0.YELLOW}-{C0.END} {X0.GRAY}You rolled:{X0.LETTUCE} {flips} {'times' if flips > 1 else 'time'}{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {X0.GRAY}Heads: {X0.LETTUCE}{heads}{' ' * (tallrLen - headsLen)} {X0.SKY}>> {X0.LETTUCE}{headsPer}%{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {X0.GRAY}Tails: {X0.LETTUCE}{tails}{' ' * (tallrLen - tailsLen)} {X0.SKY}>> {X0.LETTUCE}{tailsPer}%{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {X0.GRAY}So {winner}{X0.GRAY}, it is.{C0.END}")
 
     enterContinue()
 

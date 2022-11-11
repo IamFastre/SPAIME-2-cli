@@ -15,20 +15,20 @@ from res.libs import *
 sys.setrecursionlimit(100000)
 
 # Declaring spot tiles looks
-emptyS = x.VIOLET + "#" + x.END
-flagS  = x.SKY    + "F" + x.END
-bombS  = x.RED    + "*" + x.END
-spS    = x.VIOLET + "|" + c.END
+emptyS = X0.VIOLET + "#" + X0.END
+flagS  = X0.SKY    + "F" + X0.END
+bombS  = X0.RED    + "*" + X0.END
+spS    = X0.VIOLET + "|" + C0.END
 nS = [
-    x.GRAY+c.DIM   + "0" + x.END,
-    x.GREEN        + "1" + x.END,
-    x.YELLOW       + "2" + x.END,
-    x.ORANGE       + "3" + x.END,
-    x.REDANGE      + "4" + x.END,
-    x.REDANGE      + "5" + x.END,
-    x.neRED        + "6" + x.END,
-    x.neRED+c.BOLD + "7" + x.END,
-    x.neRED+c.BOLD + "8" + x.END
+    X0.GRAY+C0.DIM   + "0" + X0.END,
+    X0.GREEN        + "1" + X0.END,
+    X0.YELLOW       + "2" + X0.END,
+    X0.ORANGE       + "3" + X0.END,
+    X0.REDANGE      + "4" + X0.END,
+    X0.REDANGE      + "5" + X0.END,
+    X0.neRED        + "6" + X0.END,
+    X0.neRED+C0.BOLD + "7" + X0.END,
+    X0.neRED+C0.BOLD + "8" + X0.END
 ]
 # Declaring Other stuff
 gameWon     = False
@@ -172,33 +172,33 @@ class BOARD:
 
         lineL = len(this.mapView) * 2 + 1
 
-        lineH = f"\n{x.SKY}x{x.VIOLET},{x.LETTUCE}y{c.END} "
+        lineH = f"\n{X0.SKY}x{X0.VIOLET},{X0.LETTUCE}y{C0.END} "
         for i in range(this.dim):
-            SO = x.SKY + " " + str(i) + c.END
+            SO = X0.SKY + " " + str(i) + C0.END
             lineH = lineH + SO
 
         print(lineH)
-        print( x.VIOLET + "    " + ("_"*lineL) + c.END)
+        print( X0.VIOLET + "    " + ("_"*lineL) + C0.END)
 
         II = 0
         for row in this.mapView:
-            SI = x.LETTUCE + "" + str(II) + c.END
-            lineV = x.VIOLET + SI + (f"   {spS}" if len(str(II)) < 2 else f"  {spS}") + c.END
+            SI = X0.LETTUCE + "" + str(II) + C0.END
+            lineV = X0.VIOLET + SI + (f"   {spS}" if len(str(II)) < 2 else f"  {spS}") + C0.END
             II += 1
             for spot in row:
                 lineV = f"{lineV}{spot}{spS}"
             print(lineV)
             #print("—"*lineL)
 
-        print( x.VIOLET + "    " + ("‾"*lineL) + c.END)
+        print( X0.VIOLET + "    " + ("‾"*lineL) + C0.END)
 
         if not onlyMap:
             print()
-            print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(x.YELLOW, x.VIOLET, x.YELLOW, c.END))
-        print(f"{x.YELLOW}>>{x.VIOLET} Board Size  : {x.LETTUCE}{this.dim} {x.YELLOW}u{c.END}")
-        print(f"{x.YELLOW}>>{x.VIOLET} Bomb Count  : {x.LETTUCE}{this.bombC} {bombS}{c.END}")
+            print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(X0.YELLOW, X0.VIOLET, X0.YELLOW, C0.END))
+        print(f"{X0.YELLOW}>>{X0.VIOLET} Board Size  : {X0.LETTUCE}{this.dim} {X0.YELLOW}u{C0.END}")
+        print(f"{X0.YELLOW}>>{X0.VIOLET} Bomb Count  : {X0.LETTUCE}{this.bombC} {bombS}{C0.END}")
         if not onlyMap:
-            print(f"{x.YELLOW}>>{x.VIOLET} Flags to use: {x.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{c.END}")
+            print(f"{X0.YELLOW}>>{X0.VIOLET} Flags to use: {X0.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{C0.END}")
 
 
 def startGame(SIZE: int, BOMBS: int):

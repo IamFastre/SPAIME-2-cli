@@ -84,17 +84,17 @@ def Interpreter(Program:str, Input:str = ''):
 
 def synHL(Str:str):
     styleD = {
-        '+': x.GREEN   + '+' + x.VIOLET,
-        '-': x.RED     + '-' + x.VIOLET,
+        '+': X0.GREEN   + '+' + X0.VIOLET,
+        '-': X0.RED     + '-' + X0.VIOLET,
 
-        '>': x.SKY     + '>' + x.VIOLET,
-        '<': x.SKY     + '<' + x.VIOLET,
+        '>': X0.SKY     + '>' + X0.VIOLET,
+        '<': X0.SKY     + '<' + X0.VIOLET,
 
-        ',': x.YELLOW  + ',' + x.VIOLET,
-        '.': x.GOLD    + '.' + x.VIOLET,
+        ',': X0.YELLOW  + ',' + X0.VIOLET,
+        '.': X0.GOLD    + '.' + X0.VIOLET,
 
-        '[': x.ORANGE  + '[' + x.VIOLET,
-        ']': x.ORANGE  + ']' + x.VIOLET,
+        '[': X0.ORANGE  + '[' + X0.VIOLET,
+        ']': X0.ORANGE  + ']' + X0.VIOLET,
     }
     styleL = list(styleD.keys())
 
@@ -121,7 +121,7 @@ def readBF():
         inpCount = Prog.count(',')
         if inpCount > 0:
             clear()
-            output.notify('Provide some input! -> {} characters'.format(f'{x.LETTUCE}{c.DIM}{inpCount}{c.END}{x.GRAY}'))
+            output.notify('Provide some input! -> {} characters'.format(f'{X0.LETTUCE}{C0.DIM}{inpCount}{C0.END}{X0.GRAY}'))
 
             choice = intake.prompt()
             if choice == "exit":
@@ -132,12 +132,12 @@ def readBF():
 
         clear()
 
-        output.stamp(f'Running {x.LETTUCE}{File}{x.VIOLET}:')
+        output.stamp(f'Running {X0.LETTUCE}{File}{X0.VIOLET}:')
         print()
 
         if inpCount > 0:
             output.notify('Input:')
-            print(f'{c.DIM}{c.ITALIC}{x.RED}empty{c.END}' if len(choice) == 0 else choice)
+            print(f'{C0.DIM}{C0.ITALIC}{X0.RED}empty{C0.END}' if len(choice) == 0 else choice)
             print()
 
         output.notify('Output:')
@@ -157,7 +157,7 @@ def readBF():
     
     if len(bfFiles) == 0:
         output.error("Seems like there's not much options.")
-        output.error("No {0}.bf or {0}.b in /addons/BrainFuck/ directory.".format(f'{c.ITALIC}{c.DIM}file-name{c.END}{x.GRAY}'))
+        output.error("No {0}.bf or {0}.b in /addons/BrainFuck/ directory.".format(f'{C0.ITALIC}{C0.DIM}file-name{C0.END}{X0.GRAY}'))
 
     if len(bfFiles) == 1:
         do(bfFiles[0])
@@ -168,7 +168,7 @@ def readBF():
         for everyFile in bfFiles:
             output.note(f"{everyFile}", sign= f"{bfFiles.index(everyFile)}:")
 
-        choice = intake.prompt(arrow=x.VIOLET)
+        choice = intake.prompt(arrow=X0.VIOLET)
         if choice == "exit":
             print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
             enterContinue(False)
@@ -188,7 +188,7 @@ def clliBF():
     global TapeS
 
     output.stamp('Ooh, you can write this shit?!')
-    output.note(f"Allowed chars: '{x.LETTUCE}+-.,<>[]{x.GRAY}' anything else is considered a comment")
+    output.note(f"Allowed chars: '{X0.LETTUCE}+-.,<>[]{X0.GRAY}' anything else is considered a comment")
     ProgInput = intake.prompt()
     if ProgInput == "exit":
         print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
@@ -202,7 +202,7 @@ def clliBF():
 
     if inpCount > 0:
         clear()
-        output.notify('Provide some input! -> {} characters'.format(f'{x.LETTUCE}{c.DIM}{inpCount}{c.END}{x.GRAY}'))
+        output.notify('Provide some input! -> {} characters'.format(f'{X0.LETTUCE}{C0.DIM}{inpCount}{C0.END}{X0.GRAY}'))
         inp = intake.prompt()
         if inp == "exit":
             print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
@@ -216,7 +216,7 @@ def clliBF():
 
     if inpCount > 0:
         output.notify('Input:')
-        print(f'{c.DIM}{c.ITALIC}{x.RED}empty{c.END}' if len(Prog) == 0 else inp)
+        print(f'{C0.DIM}{C0.ITALIC}{X0.RED}empty{C0.END}' if len(Prog) == 0 else inp)
         print()
 
     output.notify('Output:')
@@ -239,7 +239,7 @@ def viewBF():
             Prog = synHL(Prog)
 
         clear()
-        output.stamp(f'Viewing {x.LETTUCE}{File}{x.VIOLET}:')
+        output.stamp(f'Viewing {X0.LETTUCE}{File}{X0.VIOLET}:')
         print()
         print(Prog)
         enterContinue()
@@ -251,7 +251,7 @@ def viewBF():
     
     if len(bfFiles) == 0:
         output.error("Seems like there's not much options.")
-        output.error("No {0}.bf or {0}.b in /addons/BrainFuck/ directory.".format(f'{c.ITALIC}{c.DIM}file-name{c.END}{x.GRAY}'))
+        output.error("No {0}.bf or {0}.b in /addons/BrainFuck/ directory.".format(f'{C0.ITALIC}{C0.DIM}file-name{C0.END}{X0.GRAY}'))
 
     if len(bfFiles) == 1:
         do(bfFiles[0])
@@ -262,7 +262,7 @@ def viewBF():
         for everyFile in bfFiles:
             output.note(f"{everyFile}", sign= f"{bfFiles.index(everyFile)}:")
 
-        choice = intake.prompt(arrow=x.VIOLET)
+        choice = intake.prompt(arrow=X0.VIOLET)
         if choice == "exit":
             print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
             enterContinue(False)

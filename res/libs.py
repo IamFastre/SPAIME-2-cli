@@ -9,7 +9,7 @@ import os, time, glob, shutil, pip, subprocess, random, re
 
 
 class intake():
-    def prompt(arrow = x.YELLOW, text = x.GREEN, arrow2 = x.VIOLET, text2 = x.LETTUCE):
+    def prompt(arrow = X0.YELLOW, text = X0.GREEN, arrow2 = X0.VIOLET, text2 = X0.LETTUCE):
         try:
             if random.randint(1,20) == 1:
                 return input(f"\n{arrow2}>{text2} ")
@@ -34,7 +34,7 @@ class output():
 
     def stamp(string, Print = True):
         """Prints violet text with yellow arrows."""
-        out = f"{c.BOLD}{x.YELLOW}>>>{x.VIOLET} {string}{c.END}"
+        out = f"{C0.BOLD}{X0.YELLOW}>>>{X0.VIOLET} {string}{C0.END}"
 
         if Print:
             print(out)
@@ -43,7 +43,7 @@ class output():
 
     def option(string1, string2, Print = True):
         """Prints white number with the text."""
-        out = f"{x.END}{string1}:{c.END}{x.GRAY} {string2}{c.END}"
+        out = f"{X0.END}{string1}:{C0.END}{X0.GRAY} {string2}{C0.END}"
 
         if Print:
             print(out)
@@ -52,7 +52,7 @@ class output():
         
     def warn(string, Print = True):
         """Prints yellow arrows with the text."""
-        out = f"{x.YELLOW}>>{x.GRAY} {string}{c.END}"
+        out = f"{X0.YELLOW}>>{X0.GRAY} {string}{C0.END}"
 
         if Print:
             print(out)
@@ -61,7 +61,7 @@ class output():
         
     def notify(string, Print = True):
         """Prints violet arrows with the text."""
-        out = f"{x.VIOLET}>>{x.GRAY} {string}{c.END}"
+        out = f"{X0.VIOLET}>>{X0.GRAY} {string}{C0.END}"
 
         if Print:
             print(out)
@@ -70,7 +70,7 @@ class output():
 
     def error(string, Print = True):
         """Prints red arrows with the text."""
-        out = f"{x.RED}>>{x.GRAY} {string}{c.END}"
+        out = f"{X0.RED}>>{X0.GRAY} {string}{C0.END}"
 
         if Print:
             print(out)
@@ -79,7 +79,7 @@ class output():
         
     def success(string, Print = True):
         """Prints green arrows with the text."""
-        out = f"{x.GREEN}>>{x.GRAY} {string}{c.END}"
+        out = f"{X0.GREEN}>>{X0.GRAY} {string}{C0.END}"
 
         if Print:
             print(out)
@@ -89,15 +89,15 @@ class output():
     def note(Note, pref = "", sign = "E", Print = True):
         """Prints a note like "!!: {note}"."""
         if sign == "E":
-            Sign = f"{x.WHITE}!!:"
+            Sign = f"{X0.WHITE}!!:"
         elif sign == "D":
-            Sign = f"{x.YELLOW}-"
+            Sign = f"{X0.YELLOW}-"
         else:
             Sign = sign
         if Note == 1:
-            out = f'''{Sign} {x.GRAY}Type {c.ITALIC}"{x.LETTUCE}{c.DIM}{pref}help{x.END}{x.GRAY}{c.ITALIC}"{c.END}{x.GRAY} to get a list of available commands.{c.END}'''
+            out = f'''{Sign} {X0.GRAY}Type {C0.ITALIC}"{X0.LETTUCE}{C0.DIM}{pref}help{X0.END}{X0.GRAY}{C0.ITALIC}"{C0.END}{X0.GRAY} to get a list of available commands.{C0.END}'''
         else:
-            out = f'''{Sign} {x.GRAY}{Note}{c.END}'''
+            out = f'''{Sign} {X0.GRAY}{Note}{C0.END}'''
 
         if Print:
             print(out)
@@ -114,7 +114,7 @@ def confirm(string):
 
     string = str(string)
 
-    print(string + f" {c.YELLOW}({x.GREEN}y{c.YELLOW}/{x.RED}n{c.YELLOW}){c.END}")
+    print(string + f" {C0.YELLOW}({X0.GREEN}y{C0.YELLOW}/{X0.RED}n{C0.YELLOW}){C0.END}")
     confirmation = intake.prompt()
 
     if confirmation.casefold() in ("y", "yes", "true", "1"):
@@ -134,7 +134,7 @@ def asciiToChar(string):
 
 
 def clear():
-    print(c.END)
+    print(C0.END)
     if os.name == 'nt':
         _ = os.system('cls')
     else:
@@ -165,9 +165,9 @@ def goThro(thing, allowed):
 def enterContinue(Space=True):
     if Space:
         print()
-    print(f"{x.YELLOW}>> {x.GRAY}Press Enter to continue...{c.END}")
+    print(f"{X0.YELLOW}>> {X0.GRAY}Press Enter to continue...{C0.END}")
     try:
-        choice = input(f"{c.DIM + c.ITALIC + x.GRAY}")
+        choice = input(f"{C0.DIM + C0.ITALIC + X0.GRAY}")
     except EOFError:
         print()
         output.error("Please don't EOF me...")
@@ -181,7 +181,7 @@ def enterContinue(Space=True):
         delCache()
         enterContinue()
         sys.exit(0)
-    print(c.END)
+    print(C0.END)
     clear()
     return choice
 
