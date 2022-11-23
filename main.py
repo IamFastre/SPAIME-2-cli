@@ -69,10 +69,10 @@ def readYAML():
         settings = yaml.safe_load(SETTINGS)
 
     with open('./data/user.yml', 'rb') as USER:
-        user = yaml.safe_load(USER)
+        user     = yaml.safe_load(USER)
 
     with open('./data/apps.yml', 'rb') as APPS:
-        apps = yaml.safe_load(APPS)
+        apps     = yaml.safe_load(APPS)
 
     YAMLS = (settings, user, apps)
 

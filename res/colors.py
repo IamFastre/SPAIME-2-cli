@@ -60,7 +60,7 @@ class X0():
 
     END         =  '\33[0m'
     RESET       =  '\33[0m'
-
+    C = 9
     WHITE       =  RGB(255,255,255)
     BLACK       =  RGB(0,0,0)
     YELLOW      =  RGB(226,226,46)

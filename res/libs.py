@@ -114,7 +114,7 @@ def confirm(string):
 
     string = str(string)
 
-    print(string + f" {C0.YELLOW}({X0.GREEN}y{C0.YELLOW}/{X0.RED}n{C0.YELLOW}){C0.END}")
+    print(string + f" {D0.YELLOW}({D0.GREEN}y{D0.YELLOW}/{D0.RED}n{D0.YELLOW}){C0.END}")
     confirmation = intake.prompt()
 
     if confirmation.casefold() in ("y", "yes", "true", "1"):
