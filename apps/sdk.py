@@ -15,8 +15,8 @@ from res.libs import *
 sys.setrecursionlimit(100000)
 
 
-N    = [
-    X0.GRAY + C0.BOLD + '.' + X0.END,
+C1    = [
+    X0.YELLOW + C0.BOLD + '•' + X0.END,
     X0.GRAY + C0.BOLD + '1' + X0.END,
     X0.GRAY + C0.BOLD + '2' + X0.END,
     X0.GRAY + C0.BOLD + '3' + X0.END,
@@ -28,8 +28,8 @@ N    = [
     X0.GRAY + C0.BOLD + '9' + X0.END,
          ]
 
-M    = [
-    X0.GRAY + C0.BOLD + '.' + X0.END,
+O1    = [
+    X0.GRAY + C0.BOLD + '•' + X0.END,
     X0.GOLD + C0.BOLD + '1' + X0.END,
     X0.GOLD + C0.BOLD + '2' + X0.END,
     X0.GOLD + C0.BOLD + '3' + X0.END,
@@ -39,6 +39,32 @@ M    = [
     X0.GOLD + C0.BOLD + '7' + X0.END,
     X0.GOLD + C0.BOLD + '8' + X0.END,
     X0.GOLD + C0.BOLD + '9' + X0.END,
+         ]
+
+G1    = [
+    X0.GRAY  + C0.BOLD + '•' + X0.END,
+    X0.GREEN + C0.BOLD + '1' + X0.END,
+    X0.GREEN + C0.BOLD + '2' + X0.END,
+    X0.GREEN + C0.BOLD + '3' + X0.END,
+    X0.GREEN + C0.BOLD + '4' + X0.END,
+    X0.GREEN + C0.BOLD + '5' + X0.END,
+    X0.GREEN + C0.BOLD + '6' + X0.END,
+    X0.GREEN + C0.BOLD + '7' + X0.END,
+    X0.GREEN + C0.BOLD + '8' + X0.END,
+    X0.GREEN + C0.BOLD + '9' + X0.END,
+         ]
+
+R1    = [
+    X0.GRAY + C0.BOLD + '•' + X0.END,
+    X0.RED  + C0.BOLD + '1' + X0.END,
+    X0.RED  + C0.BOLD + '2' + X0.END,
+    X0.RED  + C0.BOLD + '3' + X0.END,
+    X0.RED  + C0.BOLD + '4' + X0.END,
+    X0.RED  + C0.BOLD + '5' + X0.END,
+    X0.RED  + C0.BOLD + '6' + X0.END,
+    X0.RED  + C0.BOLD + '7' + X0.END,
+    X0.RED  + C0.BOLD + '8' + X0.END,
+    X0.RED  + C0.BOLD + '9' + X0.END,
          ]
 
 V = X0.VIOLET + '|' + X0.END
@@ -52,6 +78,9 @@ class Sudoku():
         this.table    = this.makeTable()
         this.puzzle   = copy.deepcopy(this.table)
         this.byPlayer = set()
+        this.pinched  = set()
+        this.timesVal = 0
+        this.mistakes = 0
         this.pinchTable(amnt)
         
 
@@ -75,8 +104,13 @@ class Sudoku():
 
     def pinchTable(this, n:int):
 
-        for _ in range(n):
-            this.table[random.randint(0,8)][random.randint(0,8)] = 0
+        while n:
+            row, col = random.randint(0,8), random.randint(0,8)
+            if (row, col) not in this.pinched:
+                this.pinched.add((row, col))
+                this.table[row][col] = 0
+                n -= 1
+                
 
 
     def rows(this, n = None):
@@ -103,15 +137,15 @@ class Sudoku():
 
         t = copy.deepcopy(this.table)
 
-        c1 = [t[0][0], t[0][1], t[0][2], t[0][3], t[0][4], t[0][5], t[0][6], t[0][7], t[0][8]]
-        c2 = [t[1][0], t[1][1], t[1][2], t[1][3], t[1][4], t[1][5], t[1][6], t[1][7], t[1][8]]
-        c3 = [t[2][0], t[2][1], t[2][2], t[2][3], t[2][4], t[2][5], t[2][6], t[2][7], t[2][8]]
-        c4 = [t[3][0], t[3][1], t[3][2], t[3][3], t[3][4], t[3][5], t[3][6], t[3][7], t[3][8]]
-        c5 = [t[4][0], t[4][1], t[4][2], t[4][3], t[4][4], t[4][5], t[4][6], t[4][7], t[4][8]]
-        c6 = [t[5][0], t[5][1], t[5][2], t[5][3], t[5][4], t[5][5], t[5][6], t[5][7], t[5][8]]
-        c7 = [t[6][0], t[6][1], t[6][2], t[6][3], t[6][4], t[6][5], t[6][6], t[6][7], t[6][8]]
-        c8 = [t[7][0], t[7][1], t[7][2], t[7][3], t[7][4], t[7][5], t[7][6], t[7][7], t[7][8]]
-        c9 = [t[8][0], t[8][1], t[8][2], t[8][3], t[8][4], t[8][5], t[8][6], t[8][7], t[8][8]]
+        c1 = [t[0][0], t[1][0], t[2][0], t[3][0], t[4][0], t[5][0], t[6][0], t[7][0], t[8][0]]
+        c2 = [t[0][1], t[1][1], t[2][1], t[3][1], t[4][1], t[5][1], t[6][1], t[7][1], t[8][1]]
+        c3 = [t[0][2], t[1][2], t[2][2], t[3][2], t[4][2], t[5][2], t[6][2], t[7][2], t[8][2]]
+        c4 = [t[0][3], t[1][3], t[2][3], t[3][3], t[4][3], t[5][3], t[6][3], t[7][3], t[8][3]]
+        c5 = [t[0][4], t[1][4], t[2][4], t[3][4], t[4][4], t[5][4], t[6][4], t[7][4], t[8][4]]
+        c6 = [t[0][5], t[1][5], t[2][5], t[3][5], t[4][5], t[5][5], t[6][5], t[7][5], t[8][5]]
+        c7 = [t[0][6], t[1][6], t[2][6], t[3][6], t[4][6], t[5][6], t[6][6], t[7][6], t[8][6]]
+        c8 = [t[0][7], t[1][7], t[2][7], t[3][7], t[4][7], t[5][7], t[6][7], t[7][7], t[8][7]]
+        c9 = [t[0][8], t[1][8], t[2][8], t[3][8], t[4][8], t[5][8], t[6][8], t[7][8], t[8][8]]
         Cols = [c1, c2, c3, c4, c5, c6, c7, c8, c9]
 
         if n == None : return Cols
@@ -133,12 +167,34 @@ class Sudoku():
         s9 = [t[6][6], t[6][7], t[6][8], t[7][6], t[7][7], t[7][8], t[8][6], t[8][7], t[8][8]]
         Subs = [s1, s2, s3, s4, s5, s6, s7, s8, s9]
 
-        if n == None: return Subs
-        else: return Subs[n % 9]
+        p1 = [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+        p2 = [(0,3), (0,4), (0,5), (1,3), (1,4), (1,5), (2,3), (2,4), (2,5)]
+        p3 = [(0,6), (0,7), (0,8), (1,6), (1,7), (1,8), (2,6), (2,7), (2,8)]
+        p4 = [(3,0), (3,1), (3,2), (4,0), (4,1), (4,2), (5,0), (5,1), (5,2)]
+        p5 = [(3,3), (3,4), (3,5), (4,3), (4,4), (4,5), (5,3), (5,4), (5,5)]
+        p6 = [(3,6), (3,7), (3,8), (4,6), (4,7), (4,8), (5,6), (5,7), (5,8)]
+        p7 = [(6,0), (6,1), (6,2), (7,0), (7,1), (7,2), (8,0), (8,1), (8,2)]
+        p8 = [(6,3), (6,4), (6,5), (7,3), (7,4), (7,5), (8,3), (8,4), (8,5)]
+        p9 = [(6,6), (6,7), (6,8), (7,6), (7,7), (7,8), (8,6), (8,7), (8,8)]
+        Pos = [p1, p2, p3, p4, p5, p6, p7, p8, p9]
+
+        if   type(n) == type(None): return Subs
+        elif type(n) == int:        return Subs[n % 9]
+        elif type(n) == tuple:
+            for sut in Pos:
+                if n in sut:
+                    return Subs[Pos.index(sut)]
 
 
-    def print(this, S:str = 'casual'):
+    def countEmpty(this):
+        n = 0
+        for row in this.table:
+            for spt in row:
+                if spt == 0: n += 1
+        return n
 
+
+    def print(this, S:str = 'casual', D:bool = True):
         def expandLine(line):
             return line[0]+line[5:9].join([line[1:5]*(3-1)]*3)+line[9:13]
 
@@ -150,23 +206,49 @@ class Sudoku():
         left1  =  X0.neNOIR + '    ' + X0.VIOLET
         left2  =  X0.neNOIR + '[{}] ' + X0.VIOLET
 
-        T = copy.deepcopy(this.table)
+        nums = copy.deepcopy(this.table)
+        if S == 'validate': this.timesVal += 1
 
-        if S == 'correct':
-            nums   = [ [""]+[X0.END + (M[n] if this.table[this.table.index(row)][row.index(n)] == this.puzzle[this.table.index(row)][row.index(n)] else N[n]) + X0.VIOLET for n in row] for row in this.table ]
-        if S == 'casual':
-            nums   = [ [""]+[X0.END + (M[n] if (this.table.index(row), row.index(n)) in this.byPlayer else N[n]) + X0.VIOLET for n in row] for row in this.table ]
+        for row in range(len(nums)):
+            for col in range(len(nums)):
+                val = nums[row][col]
 
+                if S == 'casual':
+                    if (row, col) in this.byPlayer:
+                        nums[row][col] = O1[val]
+                    else:
+                        nums[row][col] = C1[val]
+                if S == 'validate':
+                    if nums[row].count(val) > 1 or this.cols(col).count(val) > 1 or this.subs((row,col)).count(val) > 1:
+                        nums[row][col] = R1[val]
+                        this.mistakes += 1
+                    else:
+                        nums[row][col] = G1[val]
+
+        for row in nums: row.insert(0, '')
+
+        #if S == 'validate':
+        #    nums   = [ [""]+[X0.END + (M[n] if this.table[this.table.index(row)][row.index(n)] == this.puzzle[this.table.index(row)][row.index(n)] else N[n]) + X0.VIOLET for n in row] for row in this.table ]
+        #if S == 'casual':
+        #    nums   = [ [""]+[X0.END + (M[n] if (this.table.index(row), row.index(n)) in this.byPlayer else N[n]) + X0.VIOLET for n in row] for row in this.table ]
+        #print(nums); enterContinue()
+
+        print()
         print(left1 + ' {} {} {} {} {} {} {} {} {}'.format(*((X0.neNOIR + '[' + str(_) + ']') for _ in list(range(1,10)))) + C0.END)
         print(left1 + line0 + C0.END)
         for r in range(1,9+1):
-            print(left2.format(r) +  "".join(n+s for n,s in zip(nums[r-1],line1.split("."))))
+            print(left2.format(r) +  "".join(str(n) + X0.VIOLET + str(s) for n,s in zip(nums[r-1], line1.split("."))))
             print(left1 + [line2,line3,line4][(r%9==0)+(r%3==0)] + C0.END)
+        print(' ' * 18 + "{}[{}SUDOKU{}]{}\n".format(X0.YELLOW + C0.BOLD, X0.VIOLET, X0.YELLOW, C0.END))
+        if D:
+            output.notify(f"Times validated: {this.timesVal} {X0.LETTUCE}V")
+            output.notify(f"Empty Spots    : {this.countEmpty()} {X0.YELLOW}•")
+            output.notify(f"Mistakes count : {this.mistakes if S == 'validate' else '#'} {X0.RED}•")
 
     def validateAt(this, s:tuple, n:int):
         T = copy.deepcopy(this.table)
 
-        T[s[0]][s[1]] = N[n]
+        T[s[0]][s[1]] = C1[n]
         return this.validateTable(T)
 
 
@@ -193,32 +275,65 @@ class Sudoku():
         return True
 
 
-    def play(this):
+    def play(this, pref):
         
         choice = intake.prompt()
         choice = choice.replace("[", "").replace("]", "").replace("(", "").replace(")", "").replace("{", "").replace("}", "")
+        if choice == "exit":
+            print( "\033[1A" + output.notify("Oh, bye. :(", Print=False))
+            enterContinue(False)
+            clear()
+            return 'exit'
+
+        if choice.upper() in (pref+'V', pref+'VALIDATE'):
+            clear()
+            output.notify(f"Roger that!")
+            this.print('validate')
+            this.play(pref)
+            return
+        if choice.upper() in (pref+'H', pref+'HELP'):
+            clear()
+            output.notify("Fill a spot by typing: {x-pos,y-pos,number}. Spaces and brackets are ignored.")
+            return
+
         Loc = re.split(" *, *", choice)
 
         clear()
         try:    Loc = list(map(int, Loc))
         except: output.error(f"Invalid position, dummy.")
         else:
-            X = Loc[1] - 1
-            Y = Loc[0] - 1
-            N = Loc[2]
-            try:    this.table[X][Y] = N; this.byPlayer.add((X,Y)) 
-            except: output.error(f"Invalid position, dummy.")
+            if len(Loc) == 3:
+                X = (Loc[1] - 1) % 9
+                Y = (Loc[0] - 1) % 9
+                N = Loc[2]
+            else:
+                output.error(f"Invalid position, dummy.")
+                return
+            if (X,Y) in this.pinched:
+                output.warn("Numbered!")
+                this.table[X][Y] = N
+                this.byPlayer.add((X,Y)) 
+            else: output.error(f"That's the puzzle itself.")
 
 
-if __name__ == "__main__":
-    clear()
+def startGame(n:int = 1, pref:str = '.'):
+    global sudoku
 
-    sudoku = Sudoku(1)
+    sudoku = Sudoku(n)
     gameRunning = True
 
     clear()
-    print()
+    output.notify("Fill a spot by typing: {x-pos,y-pos,number}. Spaces and brackets are ignored.")
+
     while gameRunning:
-        print()
         sudoku.print()
-        sudoku.play()
+        if sudoku.play(pref) == 'exit': return 'exit'
+
+        if sudoku.validateTable() and sudoku.countEmpty() == 0:
+            gameRunning = False
+            clear()
+            output.success("CONGRATULATIONS! You won!")
+            sudoku.print('casual', False)
+
+if __name__ == "__main__":
+    startGame()

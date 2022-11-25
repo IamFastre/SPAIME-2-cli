@@ -194,11 +194,11 @@ class BOARD:
 
         if not onlyMap:
             print()
-            print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(X0.YELLOW, X0.VIOLET, X0.YELLOW, C0.END))
-        print(f"{X0.YELLOW}>>{X0.VIOLET} Board Size  : {X0.LETTUCE}{this.dim} {X0.YELLOW}u{C0.END}")
-        print(f"{X0.YELLOW}>>{X0.VIOLET} Bomb Count  : {X0.LETTUCE}{this.bombC} {bombS}{C0.END}")
+            print(f" "*round((lineL/2) - 2) + "{}[{}MINESWEEPER{}]{}\n".format(X0.YELLOW + C0.BOLD, X0.VIOLET, X0.YELLOW, C0.END))
+        output.notify(f"Board Size  : {X0.LETTUCE}{this.dim} {X0.YELLOW}u{C0.END}")
+        output.notify(f"Bomb Count  : {X0.LETTUCE}{this.bombC} {bombS}{C0.END}")
         if not onlyMap:
-            print(f"{X0.YELLOW}>>{X0.VIOLET} Flags to use: {X0.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{C0.END}")
+            output.notify(f"Flags to use: {X0.LETTUCE}{this.bombC - len(this.flagged)} {flagS}{C0.END}")
 
 
 def startGame(SIZE: int, BOMBS: int):
@@ -212,7 +212,7 @@ def startGame(SIZE: int, BOMBS: int):
 
     flagC = BD.bombC
 
-    output.warn('Dig by typing {x-pos,y-pos}. Spaces are ignored.')
+    output.warn('Dig by typing: {x-pos,y-pos}. Spaces and brackets are ignored.')
 
     while gameRunning:
 
