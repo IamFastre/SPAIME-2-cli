@@ -316,7 +316,7 @@ class Sudoku():
             else: output.error(f"That's the puzzle itself.")
 
 
-def startGame(n:int = 1, pref:str = '.'):
+def startGame(n:int = 25, pref:str = '.'):
     global sudoku
 
     sudoku = Sudoku(n)
@@ -334,6 +334,7 @@ def startGame(n:int = 1, pref:str = '.'):
             clear()
             output.success("CONGRATULATIONS! You won!")
             sudoku.print('casual', False)
+            enterContinue()
 
 if __name__ == "__main__":
-    startGame()
+    startGame(10)
