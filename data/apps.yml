@@ -1,7 +1,7 @@
 bjk:
-  balance: 1000
+  balance: 500
   last-bet: 0
-  reward: '221031'
+  reward: '000000'
   soft-17: false
 msp:
   bombC: 10
@@ -30,6 +30,10 @@ rps:
     last-choice: "\u2014"
     wins: 0
   ties: 0
+sdk:
+  empty: 35
+  validated: 0
+  wins: 0
 ttt:
   diff: M
   last-board:

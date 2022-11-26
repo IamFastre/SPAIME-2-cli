@@ -21,6 +21,7 @@ import apps.rps as rps
 import apps.rnd as rnd
 import apps.msp as msp
 import apps.bjk as bjk
+import apps.sdk as sdk
 import apps.bfi as bfi
 
 #==================================================================#
@@ -127,7 +128,7 @@ def resetYAML(YAML = None):
 def resetTTT():
     # Resets TicTacToes in apps.yml
     global apps
-    apps['ttt'] = {'last-board': '—————————', 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0, 'diff': 'M'}
+    apps['ttt'] = {'last-board': ['—'] * 9, 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0, 'diff': 'M'}
     writeYAML()
 
 #==================================================================#
@@ -135,7 +136,7 @@ def resetTTT():
 def resetRPS():
     # Resets RockPaperScissors in apps.yml
     global apps
-    apps['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0}
+    apps['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0, 'last-winner': '—'}
     writeYAML()
 
 #==================================================================#
@@ -162,25 +163,43 @@ def resetBJK():
     global apps
     apps['bjk'] = {'balance': 500, 'soft-17': False, 'last-bet': 0, 'reward': '000000'}
     writeYAML()
+
+#==================================================================#
+
+def resetSDK():
+    # Resets Sudoku in apps.yml
+    global apps
+    apps['sdk'] = {'wins': 0, 'empty': 35, 'validated': 0}
+    resetPICKLE(sdkBD)
+    writeYAML()
+
 #==================================================================#
 
 def readPICKLE():
     global mspBD
+    global sdkBD
     global PICKLES
 
     with open('./data/mspBD.pkl', 'rb') as MSPBD:
         mspBD = pickle.load(MSPBD)
 
-    PICKLES = (mspBD,)
+    with open('./data/sdkBD.pkl', 'rb') as SDKBD:
+        sdkBD = pickle.load(SDKBD)
+
+    PICKLES = (mspBD, sdkBD)
 
 #==================================================================#
 
 def writePICKLE():
     global mspBD
+    global sdkBD
     global PICKLES
 
     with open('./data/mspBD.pkl', 'wb') as MSPBD:
         pickle.dump(mspBD, MSPBD)
+
+    with open('./data/sdkBD.pkl', 'wb') as SDKBD:
+        pickle.dump(sdkBD, SDKBD)
 
     readPICKLE()
 
@@ -188,6 +207,7 @@ def writePICKLE():
 
 def resetPICKLE(PICKLE = None):
     global mspBD
+    global sdkBD
     global PICKLES
 
     if PICKLE != None:
@@ -195,6 +215,10 @@ def resetPICKLE(PICKLE = None):
 
         if i == 0:
             shutil.copy('./data/.default/mspBD.pkl', './data/')
+
+        if i == 1:
+            shutil.copy('./data/.default/sdkBD.pkl', './data/')
+
     else:
         for file in glob.glob('./data/.default/*.pkl'):
             shutil.copy(file, './data/')
@@ -298,6 +322,7 @@ def isCommand(thing):
         settings['prefix'] + "help ttt",
         settings['prefix'] + "help msp",
         settings['prefix'] + "help bjk",
+        settings['prefix'] + "help sdk",
 
         settings['prefix'] + "back",
         settings['prefix'] + "home",
@@ -519,6 +544,10 @@ def choiceCheck(thing:str):
             clear()
             helpBJKF()
             back()
+        if cmd == "help sdk":
+            clear()
+            helpSDKF()
+            back()
 
 
         if cmd == "back":
@@ -638,11 +667,12 @@ def mainMenu():
 
     output.option("R", f"{X0.GRAY}[{X0.LETTUCE}↑↓{X0.GRAY}] {C0.URL}R{C0.END}{X0.GRAY}epeat")
     output.option("M", f"{X0.GRAY}[{X0.LETTUCE}π*{X0.GRAY}] {C0.URL}M{C0.END}{X0.GRAY}ath & Logic")
-    output.option("A", f"{X0.GRAY}[{X0.LETTUCE}☘{X0.YELLOW}%{X0.GRAY}] R{C0.URL}a{C0.END}{X0.GRAY}ndomeur")
+    output.option("A", f"{X0.GRAY}[{X0.ORANGE}¾{X0.YELLOW}%{X0.GRAY}] R{C0.URL}a{C0.END}{X0.GRAY}ndomeur")
     output.option("O", f"{X0.GRAY}[{X0.LETTUCE}$${X0.GRAY}] R{C0.URL}o{C0.END}{X0.GRAY}ckPaperScissors")
     output.option("T", f"{X0.GRAY}[{ttt.s.x}{ttt.s.o}{X0.GRAY}] {C0.URL}T{C0.END}{X0.GRAY}icTacToe")
     output.option("I", f"{X0.GRAY}[{msp.flagS}{msp.bombS}{X0.GRAY}] M{C0.URL}i{C0.END}{X0.GRAY}nesweeper")
     output.option("B", f"{X0.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{X0.GRAY}] {C0.URL}B{C0.END}{X0.GRAY}lackJack")
+    output.option("S", f"{X0.GRAY}[{X0.YELLOW}✎{X0.VIOLET}#{X0.GRAY}] {C0.URL}S{C0.END}{X0.GRAY}udoku")
     output.option("F", f"{X0.GRAY}[{X0.LETTUCE}+{X0.ORANGE}.{X0.GRAY}] Brain{C0.URL}F{C0.END}{X0.GRAY}uck")
     output.option("P", f"{X0.GRAY}[{X0.YELLOW}{bricks}{X0.GRAY}] O{C0.URL}p{C0.END}{X0.GRAY}tions")
     output.option("C", f"{X0.GRAY}[{X0.VIOLET}>>{X0.GRAY}] {C0.URL}C{C0.END}{X0.GRAY}redits")
@@ -674,16 +704,19 @@ def mainMenu():
     if choice.upper() in ("7", "B", "BJK"):
         clear()
         bjkMenu()
-    if choice.upper() in ("8", "F", "BFI"):
+    if choice.upper() in ("8", "S", "SDK"):
+        clear()
+        sdkMenu()
+    if choice.upper() in ("9", "F", "BFI"):
         clear()
         bfiMenu()
-    if choice.upper() in ("9", "P", "OPTIONS"):
+    if choice.upper() in ("10", "P", "OPTIONS"):
         clear()
         optionsMenu()
-    if choice.upper() in ("10", "C", "CREDITS"):
+    if choice.upper() in ("11", "C", "CREDITS"):
         clear()
         infoF()
-    if choice.upper() in ("11", "E", "REFRESH"):
+    if choice.upper() in ("12", "E", "REFRESH"):
         clear()
         refreshF()
     if choice.upper() in ("0", "X", "EXIT"):
@@ -1471,6 +1504,143 @@ def bjkMenu():
 
 #==================================================================#
 
+def sdkMenu():
+    global sdkBD
+    updateWindow(f"sdk")
+
+    def sdkConfMenu():
+        global sdkConfSubMenu
+        sdkConfSubMenu = sdkConfMenu
+        updateWindow("sdkConfSub")
+
+        print()
+        output.stamp("Sudoku Config:")
+        output.note(1, settings['prefix'])
+        print()
+        output.option(1, f"Empty Spots: {X0.LETTUCE}{apps['sdk']['empty']}{C0.END}")
+        output.option(0, f"Back")
+
+        choice = intake.prompt()
+        choice = choiceCheck(choice)
+        
+        if choice == "1":
+            clear()
+            output.stamp("How many empty spots do you want?!")
+            output.note(1, settings['prefix'])
+            output.note(f"Current is {X0.LETTUCE}{apps['sdk']['empty']}")
+
+            choice = intake.prompt()
+            choice = choiceCheck(choice)
+
+            if goThro(choice, "0123456789"):
+                choice = int(choice)
+
+                if 81 >= choice > 0:
+                    apps['sdk']['empty'] = choice
+
+                    writeYAML()
+                    clear()
+                    output.success("Changes saved.")
+                    back()
+                else:
+                    clear()
+                    output.error("Number needs to be between 0 and 81, 0 not included.")
+                    back()
+
+        if choice == "0":
+            clear()
+            back(-2)
+
+        clear()
+        lastCheck(choice)
+
+    def statsMenu():
+        print()
+        output.stamp(f"Sudoku Statistics:\n")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{apps['sdk']['wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Validations: {X0.GRAY}{apps['sdk']['validated']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Puzzle:-")
+
+        sdkBD.print(D=False)
+
+        enterContinue()
+
+    def statsReset():
+        if confirm(output.notify(f"Are you sure?", Print= False)):
+            resetSDK()
+            clear()
+            output.success(f"All done, good as new.")
+            back()
+        else:
+            clear()
+            output.error(f"Okay then.")
+            back()
+
+    print()
+    output.stamp("Welcome to Sudoku!")
+    output.note(1, settings['prefix'])
+    print()
+    output.option(1, "Continue")
+    output.option(2, "New Game")
+    output.option(3, "Config")
+    output.option(4, "Game Statistics")
+    output.option(8, "Help")
+    output.option(9, "Reset SDK Statistics & Config")
+    output.option(0, "Home")
+
+    choice = intake.prompt()
+    choice = choiceCheck(choice)
+
+    if   choice == "1":
+        clear()
+        sdk.startGame(apps['sdk']['empty'], settings['prefix'], sdkBD)
+
+        sdkBD                    = sdk.sudoku
+        apps['sdk']['wins']     += 1 if sdk.gameWon else 0
+        apps['sdk']['validated'] = sdk.sudoku.timesVal
+
+        writeYAML()
+        writePICKLE()
+        back()
+    elif choice == "2":
+        clear()
+        sdk.startGame(apps['sdk']['empty'], settings['prefix'])
+
+        sdkBD                    = sdk.sudoku
+        apps['sdk']['wins']     += 1 if sdk.gameWon else 0
+        apps['sdk']['validated'] = sdk.sudoku.timesVal
+
+        writeYAML()
+        writePICKLE()
+        back()
+    elif choice == "3":
+        clear()
+        sdkConfMenu()
+        back()
+    elif choice == "4":
+        clear()
+        statsMenu()
+        back()
+    elif choice == "8":
+        clear()
+        helpSDKF()
+        back()
+    elif choice == "9":
+        clear()
+        statsReset()
+        back()
+    elif choice == "0":
+        clear()
+        mainMenu()
+    else:
+        clear()
+        lastCheck(choice)
+
+    mainMenu()
+
+
+#==================================================================#
+
 def bfiMenu():
     updateWindow(f"bfi")
 
@@ -1890,6 +2060,17 @@ def helpBJKF():
     output.note(f"Cards look like: {bjk.PROTO[random.randint(0,(len(bjk.PROTO)-1))]['s']}", sign="D")
     output.note(f"  ({X0.LETTUCE}The Card Value{X0.GRAY})┘│", sign="D")
     output.note(f"  ({X0.LETTUCE}The Card Suits{X0.GRAY})─┘", sign="D")
+    enterContinue()
+
+#==================================================================#
+
+def helpSDKF():
+    thing = "{x-pos,y-pos,number}"
+    print()
+    output.stamp("Sudoku Help:")
+    output.note(f"Try to complete the {X0.LETTUCE}1:9{X0.GRAY} combination of number.", sign="D")
+    output.note(f"Do that, vertically, horizontally and in the subsquares/subregions.", sign="D")
+    output.note(f"Fill a spot by typing: {X0.LETTUCE}{thing}{X0.GRAY}. Spaces and brackets are ignored.", sign="D")
     enterContinue()
 
 #==================================================================#

@@ -67,3 +67,9 @@ bjk:
 
   soft-17: false
   reward: '000000'
+
+
+sdk:
+  wins: 0
+  empty: 35
+  validated: 0

@@ -76,7 +76,6 @@ class Sudoku():
 
     def __init__(this, amnt:int):
         this.table    = this.makeTable()
-        this.puzzle   = copy.deepcopy(this.table)
         this.byPlayer = set()
         this.pinched  = set()
         this.timesVal = 0
@@ -207,7 +206,7 @@ class Sudoku():
         left2  =  X0.neNOIR + '[{}] ' + X0.VIOLET
 
         nums = copy.deepcopy(this.table)
-        if S == 'validate': this.timesVal += 1
+        mistakes = 0
 
         for row in range(len(nums)):
             for col in range(len(nums)):
@@ -219,11 +218,13 @@ class Sudoku():
                     else:
                         nums[row][col] = C1[val]
                 if S == 'validate':
-                    if nums[row].count(val) > 1 or this.cols(col).count(val) > 1 or this.subs((row,col)).count(val) > 1:
+                    if this.rows(row).count(val) > 1 or this.cols(col).count(val) > 1 or this.subs((row,col)).count(val) > 1:
                         nums[row][col] = R1[val]
-                        this.mistakes += 1
+                        mistakes += 1 if val != 0 else 0
                     else:
                         nums[row][col] = G1[val]
+
+                    this.mistakes = mistakes
 
         for row in nums: row.insert(0, '')
 
@@ -239,8 +240,9 @@ class Sudoku():
         for r in range(1,9+1):
             print(left2.format(r) +  "".join(str(n) + X0.VIOLET + str(s) for n,s in zip(nums[r-1], line1.split("."))))
             print(left1 + [line2,line3,line4][(r%9==0)+(r%3==0)] + C0.END)
-        print(' ' * 18 + "{}[{}SUDOKU{}]{}\n".format(X0.YELLOW + C0.BOLD, X0.VIOLET, X0.YELLOW, C0.END))
+        print(' ' * 18 + "{}[{}SUDOKU{}]{}".format(X0.YELLOW + C0.BOLD, X0.VIOLET, X0.YELLOW, C0.END))
         if D:
+            print()
             output.notify(f"Times validated: {this.timesVal} {X0.LETTUCE}V")
             output.notify(f"Empty Spots    : {this.countEmpty()} {X0.YELLOW}•")
             output.notify(f"Mistakes count : {this.mistakes if S == 'validate' else '#'} {X0.RED}•")
@@ -276,7 +278,7 @@ class Sudoku():
 
 
     def play(this, pref):
-        
+
         choice = intake.prompt()
         choice = choice.replace("[", "").replace("]", "").replace("(", "").replace(")", "").replace("{", "").replace("}", "")
         if choice == "exit":
@@ -287,6 +289,7 @@ class Sudoku():
 
         if choice.upper() in (pref+'V', pref+'VALIDATE'):
             clear()
+            this.timesVal += 1
             output.notify(f"Roger that!")
             this.print('validate')
             this.play(pref)
@@ -316,25 +319,38 @@ class Sudoku():
             else: output.error(f"That's the puzzle itself.")
 
 
-def startGame(n:int = 25, pref:str = '.'):
+def startGame(n:int = 25, pref:str = '.', game = None):
     global sudoku
+    global gameWon
+    global plays
 
-    sudoku = Sudoku(n)
+    sudoku      = Sudoku(n) if game == None else game
+    plays       = 0
     gameRunning = True
+    gameWon     = False
 
     clear()
     output.notify("Fill a spot by typing: {x-pos,y-pos,number}. Spaces and brackets are ignored.")
 
     while gameRunning:
+        if (sudoku.countEmpty() == 0 and len(sudoku.byPlayer) == 0) or (sudoku.countEmpty() == 0 and plays == 0):
+            clear()
+            output.notify("Game seems already solved!")
+            sudoku.print()
+            break
+
         sudoku.print()
         if sudoku.play(pref) == 'exit': return 'exit'
+        plays += 1
 
         if sudoku.validateTable() and sudoku.countEmpty() == 0:
             gameRunning = False
             clear()
             output.success("CONGRATULATIONS! You won!")
             sudoku.print('casual', False)
-            enterContinue()
+            gameWon = True
+    enterContinue()
+
 
 if __name__ == "__main__":
-    startGame(10)
+    startGame(35)
