@@ -61,9 +61,11 @@ def newVars(deckN = 2):
     global dealer
     global gameRevealed
     global bet
+    global turns
 
     gameRevealed = False
     bet = 0
+    turns = 0
 
     deck   = genCards() * deckN
     random.shuffle(deck)
@@ -200,19 +202,27 @@ def playerLost(BET):
     return BET * 0
 
 
+def playerSurrender(BET):
+    revealHidden(dealer)
+    return BET / 2
+
+
 def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
     global gameRevealed
     global bet
+    global turns
 
     def allDisplay(dur = 0.75, con = True):
+        st1, st2, st3, st4 = '', '', '', ''
         print(f"{X0.RED}Balance{X0.neNOIR}: {X0.LETTUCE}{BALANCE}C{C0.END} | {X0.RED}Bet{X0.neNOIR}: {X0.ORANGE}{bet}C{C0.END}")
         print()
         displayHand(dealer)
         displayHand(player)
         print()
         if con:
-            print(f"> [{X0.LETTUCE}H{C0.END}] {X0.GOLD}Hit{C0.END}    | [{X0.LETTUCE}S{C0.END}] {X0.GOLD}Stand{C0.END}     <")
-            print(f"> [{X0.LETTUCE}D{C0.END}] {X0.GOLD}Double{C0.END} | [{X0.LETTUCE}R{C0.END}] {X0.GOLD}Surrender{C0.END} <")
+            if turns > 0: st3 = C0.STRIKE + X0.GRAY
+            print(f"> [{X0.LETTUCE}H{C0.END}] {X0.GOLD}{st1}Hit{C0.END}    | [{X0.LETTUCE}S{C0.END}] {X0.GOLD}{st2}Stand{C0.END}     <")
+            print(f"> [{X0.LETTUCE}D{C0.END}] {X0.GOLD}{st3}Double{C0.END} | [{X0.LETTUCE}R{C0.END}] {X0.GOLD}{st4}Surrender{C0.END} <")
         sleep(dur)
 
     clear()
@@ -284,12 +294,13 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
             allDisplay(0, 0)
             break
 
-        i = takeAction()
-        if i == False:
+        action = takeAction()
+        if action == False:
             break
 
-        if i == "H":
+        if action == "H":
             clear()
+            turns += 1
             hit(player['hand'], deck, 1)
             if check(player) == "win":
                 clear()
@@ -304,9 +315,9 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
                 allDisplay(0, 0)
                 break
 
-        if i == "S":
+        if action == "S":
             clear()
-
+            turns += 1
             dealerDecide(SOFT17)
             revealHidden(dealer)
 
@@ -333,13 +344,61 @@ def startGame(BALANCE:int, N:int=2, SOFT17:bool = False):
                 allDisplay(0, 0)
                 break
 
-        if i == "D":
+        if action == "D" and BALANCE >= bet and turns == 0:
             clear()
+            turns += 1
+            bet *= 2
+            BALANCE -= bet
+            output.notify("Doubled!")
+            hit(player['hand'], deck, 1)
 
-        if i == "R":
+            if check(player) == "win":
+                BALANCE += playerWon(bet)
+                output.success("Win!\n")
+                allDisplay(0, 0)
+
+            if check(player) == "bust":
+                BALANCE += playerLost(bet)
+                output.error("Bust!\n")
+                allDisplay(0, 0)
+            dealerDecide(SOFT17)
+            revealHidden(dealer)
+
+            winner = compare(player, dealer)
+
+            if winner == player:
+                BALANCE += playerWon(bet)
+                output.success("Win!\n")
+                allDisplay(0, 0)
+
+            if winner == dealer:
+                BALANCE += playerLost(bet)
+                output.error("Lost!\n")
+                allDisplay(0, 0)
+
+            if winner == "tie":
+                BALANCE += playerTied(bet)
+                output.warn("Push!\n")
+                allDisplay(0, 0)
+            break
+
+        if action == "D" and BALANCE < bet and turns == 0:
             clear()
+            output.error("You broke lol!\n")
 
-        if not i in "HSDR":
+        if action == "D" and turns > 0:
+            clear()
+            output.error("You can only double directly after your initial two cards.\n")            
+
+        if action == "R":
+            clear()
+            turns += 1
+            BALANCE += playerSurrender(bet)
+            output.error("Surrendered!\n")
+            allDisplay(0, 0)
+            break
+
+        if not action in "HSDR":
             clear()
             output.error("Invalid input.\n")
             continue
