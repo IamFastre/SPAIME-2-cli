@@ -67,9 +67,6 @@ R1    = [
     X0.RED  + C0.BOLD + '9' + X0.END,
          ]
 
-V = X0.VIOLET + '|' + X0.END
-H = X0.VIOLET + '—' + X0.END
-
 
 class Sudoku():
     '''Main Sudoku Class'''
