@@ -48,7 +48,7 @@ finally:
 #==================================================================#
 
 
-
+DATA_DIR = "./data/"
 
 
 
@@ -59,175 +59,54 @@ finally:
 ####################################################################
 
 
+YAML:dict = {}
+
+
 def readYAML():
-    # Makes it re-read the YAML files
-    global settings
-    global user
-    global apps
-    global YAMLS
+    """I hate this function so much."""
 
-    with open('./data/settings.yml', 'rb') as SETTINGS:
-        settings = yaml.safe_load(SETTINGS)
+    DATA_LIST  = os.listdir(DATA_DIR)
+    FILE_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
+    YAML_FILES = list(
+        filter(
+            re.compile(FILE_REGEX).match,
+            DATA_LIST
+            )
+        )
 
-    with open('./data/user.yml', 'rb') as USER:
-        user     = yaml.safe_load(USER)
-
-    with open('./data/apps.yml', 'rb') as APPS:
-        apps     = yaml.safe_load(APPS)
-
-    YAMLS = (settings, user, apps)
-
-readYAML()
+    # That's very human-readable:
+    for file in YAML_FILES:
+        with open(DATA_DIR + file, 'r') as yamlFile:
+            index        = re.sub(FILE_REGEX.replace('.*?', ''),'', file)
+            YAML[index]  = yaml.safe_load(yamlFile)
 
 #==================================================================#
 
 def writeYAML():
-    # Makes it write the YAML files
-    global settings
-    global user
-    global apps
-    global YAMLS
+    """I hate this function so much."""
 
-    with open('./data/settings.yml', 'w') as SETTINGS:
-        yaml.dump(settings, SETTINGS)
+    DATA_LIST  = os.listdir(DATA_DIR)
+    FILE_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
+    YAML_FILES = list(
+        filter(
+            re.compile(FILE_REGEX).match,
+            DATA_LIST
+            )
+        )
 
-    with open('./data/user.yml', 'w') as USER:
-        yaml.dump(user, USER)
-
-    with open('./data/apps.yml', 'w') as APPS:
-        yaml.dump(apps, APPS)
-
-    readYAML()
-
-#==================================================================#
-
-def resetYAML(YAML = None):
-    # Resets YAML files
-    global settings
-    global user
-    global apps
-    global YAMLS
-
-    if YAML != None:
-        i = YAMLS.index(YAML)
-
-        if i == 0:
-            shutil.copy('./data/.default/settings.yml', './data/')
-        if i == 1:
-            shutil.copy('./data/.default/user.yml', './data/')
-        if i == 2:
-            shutil.copy('./data/.default/apps.yml', './data/')
-    else:
-        for file in glob.glob('./data/.default/*.yml'):
-            shutil.copy(file, './data/')
-
-    readYAML()
+    # That's very human-readable:
+    for file in YAML_FILES:
+        with open(DATA_DIR + file, 'w') as yamlFile:
+            index        = re.sub(FILE_REGEX.replace('.*?', ''),'', file)
+            yaml.safe_dump(YAML[index], yamlFile)
 
 #==================================================================#
 
-def resetTTT():
-    # Resets TicTacToes in apps.yml
-    global apps
-    apps['ttt'] = {'last-board': ['—'] * 9, 'last-winner': '—', 'x-wins': 0, 'o-wins': 0, 'ties': 0, 'diff': 'M'}
-    writeYAML()
+clear()
 
-#==================================================================#
 
-def resetRPS():
-    # Resets RockPaperScissors in apps.yml
-    global apps
-    apps['rps'] = {'p1': {'wins': 0, 'last-choice': '—'}, 'p2': {'wins': 0, 'last-choice': '—'}, 'cpu': {'wins': 0, 'last-choice': '—'}, 'ties': 0, 'last-winner': '—'}
-    writeYAML()
 
-#==================================================================#
-
-def resetRND():
-    # Resets Randomeur in apps.yml
-    global apps
-    apps['rnd'] = {'ties': 0, 'heads': 0, 'tails': 0, 'flips': 0, 'last-heads': 0, 'last-tails': 0, 'last-flips': 0, 'last-winner': '—'}
-    writeYAML()
-
-#==================================================================#
-
-def resetMSP():
-    # Resets Minesweeper in apps.yml
-    global apps
-    apps['msp'] = {'wins': 0, 'defeats': 0, 'spots-dug': 0, 'bombC': 10, 'dim': 10}
-    resetPICKLE(mspBD)
-    writeYAML()
-
-#==================================================================#
-
-def resetBJK():
-    # Resets BlackJack in apps.yml
-    global apps
-    apps['bjk'] = {'balance': 500, 'soft-17': False, 'last-bet': 0, 'reward': '000000'}
-    writeYAML()
-
-#==================================================================#
-
-def resetSDK():
-    # Resets Sudoku in apps.yml
-    global apps
-    apps['sdk'] = {'wins': 0, 'empty': 35, 'validated': 0}
-    resetPICKLE(sdkBD)
-    writeYAML()
-
-#==================================================================#
-
-def readPICKLE():
-    global mspBD
-    global sdkBD
-    global PICKLES
-
-    with open('./data/mspBD.pkl', 'rb') as MSPBD:
-        mspBD = pickle.load(MSPBD)
-
-    with open('./data/sdkBD.pkl', 'rb') as SDKBD:
-        sdkBD = pickle.load(SDKBD)
-
-    PICKLES = (mspBD, sdkBD)
-
-#==================================================================#
-
-def writePICKLE():
-    global mspBD
-    global sdkBD
-    global PICKLES
-
-    with open('./data/mspBD.pkl', 'wb') as MSPBD:
-        pickle.dump(mspBD, MSPBD)
-
-    with open('./data/sdkBD.pkl', 'wb') as SDKBD:
-        pickle.dump(sdkBD, SDKBD)
-
-    readPICKLE()
-
-#==================================================================#
-
-def resetPICKLE(PICKLE = None):
-    global mspBD
-    global sdkBD
-    global PICKLES
-
-    if PICKLE != None:
-        i = PICKLES.index(PICKLE)
-
-        if i == 0:
-            shutil.copy('./data/.default/mspBD.pkl', './data/')
-
-        if i == 1:
-            shutil.copy('./data/.default/sdkBD.pkl', './data/')
-
-    else:
-        for file in glob.glob('./data/.default/*.pkl'):
-            shutil.copy(file, './data/')
-
-    readPICKLE()
-
-#==================================================================#
-
-readYAML()
+exit()
 readPICKLE()
 
 #==================================================================#
