@@ -1,15 +1,15 @@
 ttt:
   last-board:
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  - '—'
-  last-winner: '—'
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  - \u2014
+  last-winner: \u2014
 
   x-wins: 0
   o-wins: 0
@@ -22,18 +22,18 @@ ttt:
 rps:
   p1:
     wins: 0
-    last-choice: '—'
+    last-choice: \u2014
 
   p2:
     wins: 0
-    last-choice: '—'
+    last-choice: \u2014
 
   cpu:
     wins: 0
-    last-choice: '—'
+    last-choice: \u2014
 
   ties: 0
-  last-winner: '—'
+  last-winner: \u2014
 
 
 
@@ -46,7 +46,7 @@ rnd:
   last-heads: 0
   last-tails: 0
   last-flips: 0
-  last-winner: '—'
+  last-winner: \u2014
 
 
 

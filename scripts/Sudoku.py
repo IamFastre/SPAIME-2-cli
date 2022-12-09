@@ -346,8 +346,10 @@ def startGame(n:int = 25, pref:str = '.', game = None):
             output.success("CONGRATULATIONS! You won!")
             sudoku.print('casual', False)
             gameWon = True
+    
     enterContinue()
+    return sudoku
 
 
 if __name__ == "__main__":
-    startGame(35)
+    startGame(81, ',')

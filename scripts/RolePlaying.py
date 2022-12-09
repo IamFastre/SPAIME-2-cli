@@ -16,19 +16,6 @@ sys.setrecursionlimit(100000)
 
 
 
-def identify(Obj):
-
-    if   type(Obj) == Creature:
-        Type = 'creatures'
-    elif type(Obj) == Block:
-        Type = 'block'
-    elif isinstance(Obj, Item) == Item:
-        Type = 'items'
-    else:
-        Type = 'others'
-
-    return Type
-
 
 def addHP(this, num):
     print(f"{this.name} healed {num} ♥.")
@@ -36,72 +23,114 @@ def addHP(this, num):
 
 
 def remHP(this, num):
-    print(f"{this.name} damaged {num} ♥.")
+    print(f"{this.name} was damaged {num} ♥.")
     this.health -= num
+
+# Funky Constants:
+TYPES:list = ['Creature', 'Block', 'Item', 'Other']
+
+ITEMS:dict    = {}
+CATEGORY:list = ['Weapon', 'Consumable']
+
 
 
 # Things Definition:
 class Thing:
 
+    def isMoveable(this):
+        try: this.position and this.world
+        except: return False
+        return True
+
     def move(this, X, Y):
+        if this.isMoveable():
+            x, y = this.position[0], this.position[1]
 
-        x, y = this.position[0], this.position[1]
-
-        this.position = (X, Y)
-        this.world.map[x][y][identify(this)].remove(this)
-        this.world.map[X][Y][identify(this)].append(this)
+            this.position = (X, Y)
+            this.world.map[x][y][this.type].remove(this)
+            this.world.map[X][Y][this.type].append(this)
 
     def distance(this, Obj):
-        X, Y = this.position[0], this.position[1]
-        x, y = Obj.position [0], Obj.position [1]
+        if this.isMoveable():
+            X, Y = this.position[0], this.position[1]
+            x, y = Obj.position [0], Obj.position [1]
 
-        distance = ((X - x) ** 2 + ( Y - y) ** 2 ) ** 0.5
+            distance = ((X - x) ** 2 + ( Y - y) ** 2 ) ** 0.5
 
-        return distance
+            return distance
+        else:
+            return 'unidentified'
+
 
 
 
 
 # Items Definition:
-ITEMS:dict = {}
 
 class Item(Thing):
-    def __init__(this, name:str, id:int, func:dict, attributes:dict = {}) -> None:
-        this.name  = name
-        this.id    = id
-        this.func = func
-        this.attrs = attributes
-        ITEMS[id]  = this
+    def __init__(this, name:str, id:int, category:str, func:dict, attributes:dict = {}) -> None:
+        this.name      = name
+        this.id        = id
+        this.category  = category
+        this.func      = func
+        this.attrs     = attributes
+        this.type      = 'Item'
+        ITEMS[id]      = this
 
-class Weapon(Item):
-    def __init__(this, name: str, id: int, func:dict, damage:int, attributes:dict = {}) -> None:
-        super().__init__(name, id, func, attributes)
-        this.damage = damage
+
 
 class Apple(Item):
-    def __init__(this, attributes: dict = {}) -> None:
-        super().__init__('Apple', 0, {addHP: [10]}, attributes)
+    def __init__(this,
+
+                name     = 'Apple',
+                id       = 'apple',
+                func     = {addHP: [10]},
+                attributes: dict = {}) -> None:
+
+        super().__init__(name, id, 'Consumable', func, attributes)
+
 
 class Poison(Item):
-    def __init__(this, attributes: dict = {}) -> None:
-        super().__init__('Poison', 1, {remHP: [10]}, attributes)
+    def __init__(this,
+
+                name     = 'Poison',
+                id       = 'poison',
+                func     = {remHP: [10]},
+                attributes: dict = {}) -> None:
+
+        super().__init__(name, id, 'Consumable', func, attributes)
 
 
 
 
 # Blocks Definition:
+BLOCKS:dict = {}
+
 class Block(Item, Thing):
     def __init__(this, name: str, id: int, func:dict, attributes:dict = {}) -> None:
         super().__init__(name, id, func, attributes)
-
+        this.type  = 'Block'
+        BLOCKS[id] = this
 
 
 # Races Definition:
-class Mage():
-    name      = 'Mage'
-    health    = 100
-    attack    = 20
-    inventory = [Poison()]
+RACES:dict = {}
+
+class Race:
+    def __init__(this, name:str, id:int|str, health:int, attack:int, inventory:list) -> None:
+        this.name      = name
+        this.health    = health
+        this.attack    = attack
+        this.inventory = inventory
+
+        RACES[id]      = this
+
+MAGE = Race(
+    'Mage',
+    'mage',
+    80, 20,
+    [Apple(name= 'Bad Apple',func={remHP: [5]})]
+    )
 
 
 
@@ -126,18 +155,18 @@ class World():
     def makeMap(this):
 
         TILE  = {
-            'block'    : [],
-            'creatures': [],
-            'items'    : [],
-            'others'   : []
-        }
+            'Block'   : [],
+            'Creature': [],
+            'Item'    : [],
+            'Others'  : []
+            }
 
         MAP   = [[copy.deepcopy(TILE) for _ in range(this.Y)] for _ in range(this.X)]
         return MAP
 
 
     def addTo(this, obj:Thing, x:int, y:int):
-        objType = identify(obj)
+        objType = obj.type
 
         this.map[x][y][objType].append(obj) 
 
@@ -148,8 +177,9 @@ class World():
 # Characters Definition:
 class Creature(Thing):
 
-    def __init__(this, name:str, race:dict, world:World, position:tuple = (0,0)) -> None:
+    def __init__(this, name:str, race:Race, world:World, position:tuple = (0,0)) -> None:
         this.name      = name
+        this.type      = 'Creature'
         this.race      = race
 
         this.world     = world
@@ -196,21 +226,14 @@ class Creature(Thing):
         else:
             print(f"Item {item.name} not available.")
 
+
+
 if __name__ == '__main__':
 
     clear()
 
     hell    = World('Hell', 10, 10)
-    fastre  = Creature('Fastre', Mage, hell, (0,0))
-    slowre  = Creature('Slowre', Mage, hell, (5,5))
+    fastre  = Creature('Fastre', MAGE, hell, (0,0))
+    slowre  = Creature('Slowre', MAGE, hell, (5,5))
 
     print(fastre, slowre)
-    fastre.use(fastre.inventory[0], slowre)
-    print(fastre, slowre)
-
-
-"""
-attrs = {
-    func: stuff
-}
-"""

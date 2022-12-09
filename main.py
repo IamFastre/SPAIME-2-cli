@@ -16,13 +16,13 @@ from time import *
 #==================================================================#
 
 # Importing the applets
-import apps.ttt as ttt
-import apps.rps as rps
-import apps.rnd as rnd
-import apps.msp as msp
-import apps.bjk as bjk
-import apps.sdk as sdk
-import apps.bfi as bfi
+import scripts.TicTacToe            as ttt
+import scripts.RockPaperScissors    as rps
+import scripts.Randomeur            as rnd
+import scripts.Minesweeper          as msp
+import scripts.Blackjack            as bjk
+import scripts.Sudoku               as sdk
+import scripts.BrainfuckInterpreter as bfi
 
 #==================================================================#
 
@@ -367,9 +367,18 @@ class decoded():
 
 #==================================================================#
 
+def update():
+    readYAML()
+    readPICKLE()
+
+#==================================================================#
+
 def back(num = -1):
     WN = windowHistory[num]
     func = f"{WN}Menu()"
+
+    update()
+
     try:
         exec(func)
     except ValueError:
@@ -394,8 +403,7 @@ def updateWindow(string):
     else:
         windowHistory.append(string)
     
-    readYAML()
-    readPICKLE()
+    update()
 
 #==================================================================#
 
