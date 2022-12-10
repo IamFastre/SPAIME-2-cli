@@ -37,7 +37,10 @@ finally:
 
 
 DATA_DIR   = "./data/"
-DATA_DIR   = "./data/"
+DEFAULTS   = "./data/.default/"
+
+DATA_LIST  = os.listdir(DATA_DIR)
+
 YAML_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
 BIN_REGEX  = r'(?i).*?\.bin(?!.)'
 
@@ -165,22 +168,23 @@ def writeBINARY():
 
 #==================================================================#
 
-def resetYAML(_dict:dict, _key:str = 'Settings'):
-    if _dict == BIN : REGEX = BIN_REGEX
-    if _dict == YAML: REGEX = YAML_REGEX
+def resetDATA(_dict:dict, _key:str):
+    if _dict == BIN : _regex = BIN_REGEX
+    if _dict == YAML: _regex = YAML_REGEX
 
-    Update()
-    DATA_LIST
-
-    shutil.copy()
+    _files = list(
+        filter(
+            re.compile(_regex).match,
+            DATA_LIST
+            )
+        )
+    for file in _files:
+        shutil.copy(DEFAULTS + file, DATA_DIR + file)
 
 #==================================================================#
 
 clear()
-
 Update()
-Update()
-print()
 
 exit()
 
@@ -1618,7 +1622,7 @@ def bfiMenu():
 
     elif choice == "2":
         clear()
-        bfi.startApp('D')
+        bfi.startApp('V')
 
     elif choice == "3":
         clear()
@@ -1798,7 +1802,7 @@ def optionsMenu():
             choice = choiceCheck(choice)
 
             if choice == f"{YAML['Settings']['Prefix']}reset":
-                resetYAML(YAML)
+                resetDATA(YAML)
                 clear()
                 output.success(f"All done, good as new.")
                 back()
@@ -1823,7 +1827,7 @@ def optionsMenu():
             choice = choiceCheck(choice)
 
             if choice == f"{YAML['Settings']['Prefix']}reset":
-                resetYAML()
+                resetDATA()
                 resetPICKLE()
                 clear()
                 output.success(f"All done, good as new. {C0.END}")
