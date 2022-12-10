@@ -1,11 +1,40 @@
-import os, sys
-from os.path import dirname, join, abspath
+####################################################################
+##                                                                ##
+##    Importing important files, modules, packages and so on.     ##
+##                                                                ##
+####################################################################
+
+import os
+import sys
+import time
+import shutil
+import pickle
+import importlib
+import re
+import glob
+import copy
+import random
+import subprocess
+import pip
+
+from datetime import date, datetime
+from os.path import abspath, dirname, join
 
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
+
+# Importing my package files:
 from res.colors import *
-import os, time, glob, shutil, pip, subprocess, random, re
+from res.codes  import *
+from time       import *
+from res.extras.
+import xml as bigBoyXXXXX
+bigBoyXXXXX.__spec__
+####################################################################
+#==================================================================#
+####################################################################
+
 
 
 class intake():
@@ -195,3 +224,14 @@ def curPath():
 
 def folPath(file):
     return os.path.dirname(os.path.abspath(file))
+
+def keyByValue(_dict, _value):
+    # This is highly impractical and stupid but I'll do it anyway!
+    _key = [i for i in _dict if _dict[i] == _value]
+
+    return _key
+
+def varName(_var):
+    # This is highly impractical and stupid too, but I'll do it anyway! Again!
+    _name = f'{_var=}'.split('=')[0]
+    return _name
