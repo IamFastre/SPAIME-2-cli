@@ -5,7 +5,6 @@
 ####################################################################
 
 import os
-import sys
 import time
 import shutil
 import pickle
@@ -14,23 +13,27 @@ import re
 import glob
 import copy
 import random
+import math
 import subprocess
 import pip
 
 from datetime import date, datetime
-from os.path import abspath, dirname, join
 
+# Copy thins snippet everywhere please!
+import sys
+from os.path import abspath, dirname, join
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
+# So we can happily fry your device
+sys.setrecursionlimit(100_000_000)
 
 # Importing my package files:
-from res.colors import *
-from res.ass  import *
+from scripts.colors import *
+from scripts.codes  import *
 from time       import *
 
-import xml as bigBoyXXXXX
-bigBoyXXXXX.__spec__
+
 ####################################################################
 #==================================================================#
 ####################################################################

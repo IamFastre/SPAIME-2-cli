@@ -1,18 +1,13 @@
-import os, sys
-from os.path import dirname, join, abspath
-from time import sleep
+import sys
+from os.path import abspath, dirname, join
 
+# Sets path to the app's main folder
 if __name__ == "__main__":
-    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+    sys.path.insert(0, abspath(join(dirname(__file__), '../..')))
 
-import random, math, re
+from scripts.libs import *
 
-# Importing my modules
-from res.colors import *
-from res.libs import *
 
-# So we can happily fry your device
-sys.setrecursionlimit(100000)
 
 TapeL   = [0]
 TapeS   ='[ ]'
@@ -280,15 +275,18 @@ def viewBF():
 
 def startApp(Which:str = 'R'):
     '''
-    R: Read the .bf files
-    C: Command line
+    Modes:
+    ------
+    - R: Run the .bf files
+    - C: Command line
+    - V: View files
     '''
 
     try:
         clear()
-        if   Which == 'R': readBF() # Read addons/BrainFuck files
+        if   Which == 'R': readBF() # Run addons/BrainFuck files
         elif Which == 'C': clliBF() # Command Line Language Interpreter
-        elif Which == 'D': viewBF() # View addons/BrainFuck files
+        elif Which == 'V': viewBF() # View addons/BrainFuck files
     except IndexError:
         print()
         output.notify('Memory:')
@@ -303,4 +301,4 @@ def startApp(Which:str = 'R'):
         output.error("Oops, I think you might've went out of memory.")
 
 if __name__ == '__main__':
-    startApp('D')
+    startApp('R')
