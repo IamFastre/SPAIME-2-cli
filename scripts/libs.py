@@ -26,9 +26,9 @@ if __name__ == "__main__":
 
 # Importing my package files:
 from res.colors import *
-from res.codes  import *
+from res.ass  import *
 from time       import *
-from res.extras.
+
 import xml as bigBoyXXXXX
 bigBoyXXXXX.__spec__
 ####################################################################

@@ -1,28 +1,16 @@
-####################################################################
-##                                                                ##
-##    Importing important files, modules, packages and so on.     ##
-##                                                                ##
-####################################################################
-
-import os, sys, random, shutil, subprocess, time, pickle, re
-from datetime import datetime, date
-
 # Importing the other py files.
-from res.colors import *
-from res.codes import *
-from res.libs import *
-from time import *
+from scripts.libs import *
 
 #==================================================================#
 
 # Importing the applets
-import scripts.TicTacToe            as ttt
-import scripts.RockPaperScissors    as rps
-import scripts.Randomeur            as rnd
-import scripts.Minesweeper          as msp
-import scripts.Blackjack            as bjk
-import scripts.Sudoku               as sdk
-import scripts.BrainfuckInterpreter as bfi
+import scripts.content.TicTacToe            as ttt
+import scripts.content.RockPaperScissors    as rps
+import scripts.content.Randomeur            as rnd
+import scripts.content.Minesweeper          as msp
+import scripts.content.Blackjack            as bjk
+import scripts.content.Sudoku               as sdk
+import scripts.content.BrainfuckInterpreter as bfi
 
 #==================================================================#
 
@@ -48,9 +36,34 @@ finally:
 #==================================================================#
 
 
-DATA_DIR = "./data/"
+DATA_DIR   = "./data/"
+DATA_DIR   = "./data/"
+YAML_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
+BIN_REGEX  = r'(?i).*?\.bin(?!.)'
 
 
+def Update():
+    global DATA_LIST
+
+    DATA_LIST  = os.listdir(DATA_DIR)
+    try:
+        readYAML()
+        readBINARY()
+    except BaseException as error:
+        error = str(error).replace('[Errno 13] ', '')
+        output.error("I think an error happened...")
+        output.error(error)
+        if confirm(output.error(f"Wanna continue?", 0)):
+            clear()
+            output.error("Ok whatever...")
+            sleep(2)
+        else:
+            try:
+                exitF()
+            except NameError:
+                clear()
+                output.notify("Welp, bye!")
+                sys.exit(0)
 
 ####################################################################
 ##                                                                ##
@@ -58,26 +71,37 @@ DATA_DIR = "./data/"
 ##                                                                ##
 ####################################################################
 
-
 YAML:dict = {}
+BIN :dict = {}
+FILE:list = [YAML, BIN]
+
+def dataFileDub(file):
+    output.error(f"There might be a data file name duplicate: {file}.")
+    output.error(f"I recommend you consider renaming.")
+    output.note( f"The latter will overwrite the former.")
+
+    enterContinue()
 
 
 def readYAML():
     """I hate this function so much."""
 
-    DATA_LIST  = os.listdir(DATA_DIR)
-    FILE_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
     YAML_FILES = list(
         filter(
-            re.compile(FILE_REGEX).match,
+            re.compile(YAML_REGEX).match,
             DATA_LIST
             )
         )
 
     # That's very human-readable:
+    FILE_COUNT:list = []
     for file in YAML_FILES:
+        index = re.sub(YAML_REGEX.replace('.*?', ''),'', file)
+
+        if index not in FILE_COUNT: FILE_COUNT.append(index)
+        else: dataFileDub(file)
+
         with open(DATA_DIR + file, 'r') as yamlFile:
-            index        = re.sub(FILE_REGEX.replace('.*?', ''),'', file)
             YAML[index]  = yaml.safe_load(yamlFile)
 
 #==================================================================#
@@ -85,11 +109,9 @@ def readYAML():
 def writeYAML():
     """I hate this function so much."""
 
-    DATA_LIST  = os.listdir(DATA_DIR)
-    FILE_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
     YAML_FILES = list(
         filter(
-            re.compile(FILE_REGEX).match,
+            re.compile(YAML_REGEX).match,
             DATA_LIST
             )
         )
@@ -97,17 +119,70 @@ def writeYAML():
     # That's very human-readable:
     for file in YAML_FILES:
         with open(DATA_DIR + file, 'w') as yamlFile:
-            index        = re.sub(FILE_REGEX.replace('.*?', ''),'', file)
+            index = re.sub(YAML_REGEX.replace('.*?', ''),'', file)
             yaml.safe_dump(YAML[index], yamlFile)
+
+#==================================================================#
+
+def readBINARY():
+    """I do too hate this function."""
+
+    BIN_FILES = list(
+        filter(
+            re.compile(BIN_REGEX).match,
+            DATA_LIST
+            )
+        )
+
+    # That's very human-readable:
+    FILE_COUNT:list = []
+    for file in BIN_FILES:
+        index = re.sub(BIN_REGEX.replace('.*?', ''),'', file)
+
+        if index not in FILE_COUNT: FILE_COUNT.append(index)
+        else: dataFileDub(file)
+
+        with open(DATA_DIR + file, 'rb') as binFile:
+            BIN[index]  = pickle.load(binFile)
+
+#==================================================================#
+
+def writeBINARY():
+    """I do too hate this function."""
+
+    BIN_FILES = list(
+        filter(
+            re.compile(BIN_REGEX).match,
+            DATA_LIST
+            )
+        )
+
+    # That's very human-readable:
+    for file in BIN_FILES:
+        with open(DATA_DIR + file, 'wb') as binFile:
+            index = re.sub(BIN_REGEX.replace('.*?', ''),'', file)
+            pickle.dump(BIN[index], binFile)
+
+#==================================================================#
+
+def resetYAML(_dict:dict, _key:str = 'Settings'):
+    if _dict == BIN : REGEX = BIN_REGEX
+    if _dict == YAML: REGEX = YAML_REGEX
+
+    Update()
+    DATA_LIST
+
+    shutil.copy()
 
 #==================================================================#
 
 clear()
 
-
+Update()
+Update()
+print()
 
 exit()
-readPICKLE()
 
 #==================================================================#
 
@@ -128,7 +203,7 @@ windowHistory = [window]
 bricks = "{}"
 
 today   = datetime.now().strftime("%y%m%d")
-settings['last-date'] = today
+YAML['Settings']['LastDate'] = today
 
 admins = (f"fastre", "neria", "mahmoud")
 passes = (576957, None)
@@ -186,7 +261,7 @@ writeYAML()
 #==================================================================#
 
 def isAdmin():
-    return (user['name'].casefold() in admins and user['age'] in passes and user['sex'] == "Male")
+    return (YAML['Settings']['Name'].casefold() in admins and YAML['Settings']['Age'] in passes and YAML['Settings']['Sex'] == "Male")
 
 #==================================================================#
 
@@ -194,24 +269,24 @@ def isCommand(thing):
     global commands
 
     commands = [
-        settings['prefix'] + "help",
-        settings['prefix'] + "help math",
-        settings['prefix'] + "help rnd",
-        settings['prefix'] + "help rps",
-        settings['prefix'] + "help ttt",
-        settings['prefix'] + "help msp",
-        settings['prefix'] + "help bjk",
-        settings['prefix'] + "help sdk",
+        YAML['Settings']['Prefix'] + "help",
+        YAML['Settings']['Prefix'] + "help math",
+        YAML['Settings']['Prefix'] + "help rnd",
+        YAML['Settings']['Prefix'] + "help rps",
+        YAML['Settings']['Prefix'] + "help ttt",
+        YAML['Settings']['Prefix'] + "help msp",
+        YAML['Settings']['Prefix'] + "help bjk",
+        YAML['Settings']['Prefix'] + "help sdk",
 
-        settings['prefix'] + "back",
-        settings['prefix'] + "home",
-        settings['prefix'] + "exit",
-        settings['prefix'] + "refr",
+        YAML['Settings']['Prefix'] + "back",
+        YAML['Settings']['Prefix'] + "home",
+        YAML['Settings']['Prefix'] + "exit",
+        YAML['Settings']['Prefix'] + "refr",
 
-        settings['prefix'] + "dev1",
-        settings['prefix'] + "dev2",
+        YAML['Settings']['Prefix'] + "dev1",
+        YAML['Settings']['Prefix'] + "dev2",
 
-        settings['prefix'] + "reset",
+        YAML['Settings']['Prefix'] + "reset",
     ]
 
     if thing in commands:
@@ -228,15 +303,15 @@ class decoded():
     def f69():
 
         if random.randint(0,1) == 1:
-            if user['name'] == '':
+            if YAML['Settings']['Name'] == '':
                 print(f"\n{X0.YELLOW}>> {X0.VIOLETBG}{C0.WHITE}{decoded.n69}{C0.END}")
             else:
-                print(f"\n{X0.YELLOW}>>{X0.GREEN} {user['name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n69}{C0.END}")
+                print(f"\n{X0.YELLOW}>>{X0.GREEN} {YAML['Settings']['Name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n69}{C0.END}")
         else:
-            if user['name'] == '':
+            if YAML['Settings']['Name'] == '':
                 print(f"\n{X0.YELLOW}>> {X0.VIOLETBG}{C0.WHITE}{decoded.n70}{C0.END}")
             else:
-                print(f"\n{X0.YELLOW}>>{X0.GREEN} {user['name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n70}{C0.END}")
+                print(f"\n{X0.YELLOW}>>{X0.GREEN} {YAML['Settings']['Name']}{C0.END}, {X0.VIOLETBG}{C0.WHITE}{decoded.n70}{C0.END}")
         sleep(0.2)
         clear()
 
@@ -244,11 +319,6 @@ class decoded():
         if True or force:
             pass
 
-#==================================================================#
-
-def update():
-    readYAML()
-    readPICKLE()
 
 #==================================================================#
 
@@ -256,7 +326,7 @@ def back(num = -1):
     WN = windowHistory[num]
     func = f"{WN}Menu()"
 
-    update()
+    Update()
 
     try:
         exec(func)
@@ -282,7 +352,7 @@ def updateWindow(string):
     else:
         windowHistory.append(string)
     
-    update()
+    Update()
 
 #==================================================================#
 
@@ -298,57 +368,57 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['br'], "\n" + output.notify(f"", Print = False) + X0.GRAY)
 
         if placeholders['name'] in thing:
-            thing = thing.replace(placeholders['name'], str(user['name']))
+            thing = thing.replace(placeholders['name'], str(YAML['Settings']['Name']))
         if placeholders['age'] in thing:
-            thing = thing.replace(placeholders['age'], str(user['age']))
+            thing = thing.replace(placeholders['age'], str(YAML['Settings']['Age']))
 
         if placeholders['prefix'] in thing:
-            thing = thing.replace(placeholders['prefix'], str(settings['prefix']))
+            thing = thing.replace(placeholders['prefix'], str(YAML['Settings']['Prefix']))
 
         if placeholders['lastTTTWinner'] in thing:
-            thing = thing.replace(placeholders['lastTTTWinner'], str(apps['ttt']['last-winner']) + X0.GRAY) 
+            thing = thing.replace(placeholders['lastTTTWinner'], str(YAML['TicTacToe']['LastWinner']) + X0.GRAY) 
         if placeholders['xWins'] in thing:
-            thing = thing.replace(placeholders['xWins'], str(apps['ttt']['x-wins']) + X0.GRAY)
+            thing = thing.replace(placeholders['xWins'], str(YAML['TicTacToe']['xWins']) + X0.GRAY)
         if placeholders['oWins'] in thing:
-            thing = thing.replace(placeholders['oWins'], str(apps['ttt']['o-wins']) + X0.GRAY)
+            thing = thing.replace(placeholders['oWins'], str(YAML['TicTacToe']['oWins']) + X0.GRAY)
         if placeholders['tttTies'] in thing:
-            thing = thing.replace(placeholders['tttTies'], str(apps['ttt']['ties']) + X0.GRAY)
+            thing = thing.replace(placeholders['tttTies'], str(YAML['TicTacToe']['Ties']) + X0.GRAY)
         if placeholders['lastTTTBoard'] in thing:
-            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(apps['ttt']['last-board'], True, left=f'{X0.VIOLET}>>{C0.END} ')}{X0.VIOLET}>>{X0.GRAY} ")
+            thing = thing.replace(placeholders['lastTTTBoard'], f"\n{ttt.displayBoard(YAML['TicTacToe']['LastBoard'], True, left=f'{X0.VIOLET}>>{C0.END} ')}{X0.VIOLET}>>{X0.GRAY} ")
 
         if placeholders['p1Last'] in thing:
-            thing = thing.replace(placeholders['p1Last'], str(apps['rps']['p1']['last-choice']) + X0.GRAY)
+            thing = thing.replace(placeholders['p1Last'], str(YAML['RockPaperScissors']['P1']['LastChoice']) + X0.GRAY)
         if placeholders['p2Last'] in thing:
-            thing = thing.replace(placeholders['p2Last'], str(apps['rps']['p2']['last-choice']) + X0.GRAY)
+            thing = thing.replace(placeholders['p2Last'], str(YAML['RockPaperScissors']['P2']['LastChoice']) + X0.GRAY)
         if placeholders['cpuLast'] in thing:
-            thing = thing.replace(placeholders['cpuLast'], str(apps['rps']['cpu']['last-choice']) + X0.GRAY)
+            thing = thing.replace(placeholders['cpuLast'], str(YAML['RockPaperScissors']['CPU']['LastChoice']) + X0.GRAY)
         if placeholders['p1Wins'] in thing:
-            thing = thing.replace(placeholders['p1Wins'], str(apps['rps']['p1']['wins']) + X0.GRAY)
+            thing = thing.replace(placeholders['p1Wins'], str(YAML['RockPaperScissors']['P1']['Wins']) + X0.GRAY)
         if placeholders['p2Wins'] in thing:
-            thing = thing.replace(placeholders['p2Wins'], str(apps['rps']['p2']['wins']) + X0.GRAY)
+            thing = thing.replace(placeholders['p2Wins'], str(YAML['RockPaperScissors']['P2']['Wins']) + X0.GRAY)
         if placeholders['cpuWins'] in thing:
-            thing = thing.replace(placeholders['cpuWins'], str(apps['rps']['cpu']['wins']) + X0.GRAY)
+            thing = thing.replace(placeholders['cpuWins'], str(YAML['RockPaperScissors']['CPU']['Wins']) + X0.GRAY)
         if placeholders['rpsTies'] in thing:
-            thing = thing.replace(placeholders['rpsTies'], str(apps['rps']['ties']) + X0.GRAY)
+            thing = thing.replace(placeholders['rpsTies'], str(YAML['RockPaperScissors']['Ties']) + X0.GRAY)
         if placeholders['lastRPSWinner'] in thing:
-            thing = thing.replace(placeholders['lastRPSWinner'], str(apps['rps']['last-winner']) + X0.GRAY)
+            thing = thing.replace(placeholders['lastRPSWinner'], str(YAML['RockPaperScissors']['LastWinner']) + X0.GRAY)
 
         if placeholders['heads'] in thing:
-            thing = thing.replace(placeholders['heads'], str(apps['rnd']['heads']) + X0.GRAY)
+            thing = thing.replace(placeholders['heads'], str(YAML['Randomeur']['Heads']) + X0.GRAY)
         if placeholders['tails'] in thing:
-            thing = thing.replace(placeholders['tails'], str(apps['rnd']['tails']) + X0.GRAY)
+            thing = thing.replace(placeholders['tails'], str(YAML['Randomeur']['Tails']) + X0.GRAY)
         if placeholders['flips'] in thing:
-            thing = thing.replace(placeholders['flips'], str(apps['rnd']['flips']) + X0.GRAY)
+            thing = thing.replace(placeholders['flips'], str(YAML['Randomeur']['Flips']) + X0.GRAY)
         if placeholders['rndTies'] in thing:
-            thing = thing.replace(placeholders['rndTies'], str(apps['rnd']['ties']) + X0.GRAY)
+            thing = thing.replace(placeholders['rndTies'], str(YAML['Randomeur']['Ties']) + X0.GRAY)
         if placeholders['lastHeads'] in thing:
-            thing = thing.replace(placeholders['lastHeads'], str(apps['rnd']['last-heads']) + X0.GRAY)
+            thing = thing.replace(placeholders['lastHeads'], str(YAML['Randomeur']['LastHeads']) + X0.GRAY)
         if placeholders['lastTails'] in thing:
-            thing = thing.replace(placeholders['lastTails'], str(apps['rnd']['last-tails']) + X0.GRAY)
+            thing = thing.replace(placeholders['lastTails'], str(YAML['Randomeur']['LastTails']) + X0.GRAY)
         if placeholders['lastFlips'] in thing:
-            thing = thing.replace(placeholders['lastFlips'], str(apps['rnd']['last-flips']) + X0.GRAY)
+            thing = thing.replace(placeholders['lastFlips'], str(YAML['Randomeur']['LastFlips']) + X0.GRAY)
         if placeholders['lastRNDWinner'] in thing:
-            thing = thing.replace(placeholders['lastRNDWinner'], str(apps['rnd']['last-winner']) + X0.GRAY)
+            thing = thing.replace(placeholders['lastRNDWinner'], str(YAML['Randomeur']['LastWinner']) + X0.GRAY)
 
         if placeholders['g'] in thing:
             thing = thing.replace(placeholders['g'], "9.8")
@@ -362,15 +432,15 @@ def choiceCheck(thing:str):
             thing = thing.replace(placeholders['phi'], "1.618")
 
         if placeholders['mspWins'] in thing:
-            thing = thing.replace(placeholders['mspWins'], str(apps['msp']['wins']))
+            thing = thing.replace(placeholders['mspWins'], str(YAML['Minesweeper']['Wins']))
         if placeholders['mspDefeats'] in thing:
-            thing = thing.replace(placeholders['mspDefeats'], str(apps['msp']['defeats']))
+            thing = thing.replace(placeholders['mspDefeats'], str(YAML['Minesweeper']['Defeats']))
         if placeholders['mspDug'] in thing:
-            thing = thing.replace(placeholders['mspDug'], str(apps['msp']['spots-dug']))
+            thing = thing.replace(placeholders['mspDug'], str(YAML['Minesweeper']['SpotsDug']))
         if placeholders['mspBombs'] in thing:
-            thing = thing.replace(placeholders['mspBombs'], str(apps['msp']['bombC']))
+            thing = thing.replace(placeholders['mspBombs'], str(YAML['Minesweeper']['BombCount']))
         if placeholders['mspSize'] in thing:
-            thing = thing.replace(placeholders['mspSize'], str(apps['msp']['dim']))
+            thing = thing.replace(placeholders['mspSize'], str(YAML['Minesweeper']['Dimension']))
 
         if placeholders[''] in thing:
             thing = thing.replace(placeholders[''], "")
@@ -395,8 +465,8 @@ def choiceCheck(thing:str):
     #==============================================================#
 
     # Commands:
-    if thing.startswith(settings['prefix']):
-        cmd = thing.replace(settings['prefix'], "")
+    if thing.startswith(YAML['Settings']['Prefix']):
+        cmd = thing.replace(YAML['Settings']['Prefix'], "")
 
         if not isCommand(thing):
             clear()
@@ -463,16 +533,16 @@ def choiceCheck(thing:str):
                         print(eval(dev))
                         print("")
                     except NameError:
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         enterContinue()
                         clear()
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         back()
                     except SyntaxError:
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         enterContinue()
                         clear()
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         back()
                     else:
                         debug1()
@@ -498,16 +568,16 @@ def choiceCheck(thing:str):
                         print(exec(dev))
                         print("")
                     except NameError:
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         enterContinue()
                         clear()
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         back()
                     except SyntaxError:
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         enterContinue()
                         clear()
-                        output.error(f"IDK WTF You did, maybe {settings['prefix']}dev again.")
+                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
                         back()
                     else:
                         debug1()
@@ -545,11 +615,11 @@ def mainMenu():
     updateWindow(f"main")
 
     print()
-    if user['name'] in ('', None):
+    if YAML['Settings']['Name'] in ('', None):
         output.stamp(f"Hey there! Whatcha wanna do?!")
     else:
-        output.stamp(f"Hey there, {X0.GREEN}{user['name']}{X0.VIOLET}! Whatcha wanna do?!")
-    output.note(1, settings['prefix'])
+        output.stamp(f"Hey there, {X0.GREEN}{YAML['Settings']['Name']}{X0.VIOLET}! Whatcha wanna do?!")
+    output.note(1, YAML['Settings']['Prefix'])
     print()
 
     output.option("R", f"{X0.GRAY}[{X0.LETTUCE}↑↓{X0.GRAY}] {C0.URL}R{C0.END}{X0.GRAY}epeat")
@@ -638,7 +708,7 @@ def repeatMenu():
 
     print()
     output.stamp(f"What do you want me to repeat?")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -666,7 +736,7 @@ def mathMenu():
 
     print()
     output.stamp(f"Oh wanna do some math'ing?")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
 
     choice = intake.prompt()
     choice = choiceCheck(choice)
@@ -707,15 +777,15 @@ def rndMenu():
     def statsMenu():
         print()
         output.stamp(f"Randomeur Statistics:\n")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.headsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['heads']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tailsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['tails']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.flipsStyle}{C0.END}: {X0.GRAY}{apps['rnd']['flips']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tieStyle}{X0.RED}s{C0.END}:  {X0.GRAY}{apps['rnd']['ties']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.headsStyle}{C0.END}: {X0.GRAY}{YAML['Randomeur']['Heads']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tailsStyle}{C0.END}: {X0.GRAY}{YAML['Randomeur']['Tails']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.flipsStyle}{C0.END}: {X0.GRAY}{YAML['Randomeur']['Flips']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.tieStyle}{X0.RED}s{C0.END}:  {X0.GRAY}{YAML['Randomeur']['Ties']}{C0.END}")
         print(f"")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.headsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-heads']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.tailsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-tails']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.flipsStyle}{C0.END}:  {X0.GRAY}{apps['rnd']['last-flips']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner{C0.END}: {X0.GRAY}{apps['rnd']['last-winner']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.headsStyle}{C0.END}:  {X0.GRAY}{YAML['Randomeur']['LastHeads']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.tailsStyle}{C0.END}:  {X0.GRAY}{YAML['Randomeur']['LastTails']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last {rnd.flipsStyle}{C0.END}:  {X0.GRAY}{YAML['Randomeur']['LastFlips']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner{C0.END}: {X0.GRAY}{YAML['Randomeur']['LastWinner']}{C0.END}")
         enterContinue()
 
     def statsReset():
@@ -731,7 +801,7 @@ def rndMenu():
 
     print()
     output.stamp(f"Welcome to Randomeur!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Flipeur")
     output.option(2, "Game Statistics")
@@ -746,19 +816,19 @@ def rndMenu():
         clear()
         rnd.flipeur()
 
-        apps['rnd']['heads']    += rnd.heads
-        apps['rnd']['tails']    += rnd.tails
-        apps['rnd']['flips']    += rnd.flips
+        YAML['Randomeur']['Heads']    += rnd.heads
+        YAML['Randomeur']['Tails']    += rnd.tails
+        YAML['Randomeur']['Flips']    += rnd.flips
         if rnd.heads == rnd.tails:
-            apps['rnd']['ties'] += 1
+            YAML['Randomeur']['Ties'] += 1
         writeYAML()
 
-        apps['rnd']['last-heads']       = rnd.heads
-        apps['rnd']['last-tails']       = rnd.tails
-        apps['rnd']['last-flips']       = rnd.flips
+        YAML['Randomeur']['LastHeads']       = rnd.heads
+        YAML['Randomeur']['LastTails']       = rnd.tails
+        YAML['Randomeur']['LastFlips']       = rnd.flips
         writeYAML()
 
-        apps['rnd']['last-winner']      = rnd.winner
+        YAML['Randomeur']['LastWinner']      = rnd.winner
         writeYAML()
 
         back()
@@ -790,7 +860,7 @@ def rpsMenu():
 
     def whosBest():
 
-        wins = [apps['rps']['cpu']['wins'], apps['rps']['p1']['wins'], apps['rps']['p2']['wins']]
+        wins = [YAML['RockPaperScissors']['CPU']['Wins'], YAML['RockPaperScissors']['P1']['Wins'], YAML['RockPaperScissors']['P2']['Wins']]
         name = [rps.cpu['name'], rps.p1['name'], rps.p2['name']]
 
         best = max(wins)
@@ -810,16 +880,16 @@ def rpsMenu():
     def statsMenu():
         print()
         output.stamp(f"RockPaperScissors Statistics:\n")
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Wins        : {X0.GRAY}{apps['rps']['p1']['wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Last Choice : {X0.GRAY}{apps['rps']['p1']['last-choice']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Wins        : {X0.GRAY}{YAML['RockPaperScissors']['P1']['Wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Last Choice : {X0.GRAY}{YAML['RockPaperScissors']['P1']['LastChoice']}{C0.END}")
         print()
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Wins        : {X0.GRAY}{apps['rps']['p2']['wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Last Choice : {X0.GRAY}{apps['rps']['p2']['last-choice']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Wins        : {X0.GRAY}{YAML['RockPaperScissors']['P2']['Wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p2['name']} Last Choice : {X0.GRAY}{YAML['RockPaperScissors']['P2']['LastChoice']}{C0.END}")
         print()
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Wins        : {X0.GRAY}{apps['rps']['cpu']['wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Last Choice : {X0.GRAY}{apps['rps']['cpu']['last-choice']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Wins        : {X0.GRAY}{YAML['RockPaperScissors']['CPU']['Wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"{rps.cpu['name']} Last Choice : {X0.GRAY}{YAML['RockPaperScissors']['CPU']['LastChoice']}{C0.END}")
         print()
-        print(f" {X0.YELLOW}-{C0.END} " + f"Ties : {X0.GRAY}{apps['rps']['ties']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Ties : {X0.GRAY}{YAML['RockPaperScissors']['Ties']}{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"Best : {X0.GRAY}{whosBest()}{C0.END}")
         enterContinue()
 
@@ -836,7 +906,7 @@ def rpsMenu():
 
     print()
     output.stamp(f"Welcome to RockPaperScissors!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Solo")
     output.option(2, "Duo")
@@ -856,17 +926,17 @@ def rpsMenu():
         cpu = rps.cpu
         winner = rps.winner
 
-        apps['rps']['p1']['last-choice']  = p1['input']
-        apps['rps']['cpu']['last-choice'] = cpu['input']
-        apps['rps']['last-winner']        = winner['name']
+        YAML['RockPaperScissors']['P1']['LastChoice']  = p1['input']
+        YAML['RockPaperScissors']['CPU']['LastChoice'] = cpu['input']
+        YAML['RockPaperScissors']['LastWinner']        = winner['name']
         writeYAML()
 
         if winner == p1:
-            apps['rps']['p1']['wins'] += 1
+            YAML['RockPaperScissors']['P1']['Wins'] += 1
         if winner == cpu:
-            apps['rps']['cpu']['wins'] += 1
+            YAML['RockPaperScissors']['CPU']['Wins'] += 1
         if winner == pN:
-            apps['rps']['ties'] += 1
+            YAML['RockPaperScissors']['Ties'] += 1
         writeYAML()
 
         back()
@@ -879,17 +949,17 @@ def rpsMenu():
         p2 = rps.p2
         winner = rps.winner
 
-        apps['rps']['p1']['last-choice'] = p1['input']
-        apps['rps']['p2']['last-choice'] = p2['input']
-        apps['rps']['last-winner']       = winner['name']
+        YAML['RockPaperScissors']['P1']['LastChoice'] = p1['input']
+        YAML['RockPaperScissors']['P2']['LastChoice'] = p2['input']
+        YAML['RockPaperScissors']['LastWinner']       = winner['name']
         writeYAML()
 
         if winner == p1:
-            apps['rps']['p1']['wins'] += 1
+            YAML['RockPaperScissors']['P1']['Wins'] += 1
         if winner == p2:
-            apps['rps']['p2']['wins'] += 1
+            YAML['RockPaperScissors']['P2']['Wins'] += 1
         if winner == pN:
-            apps['rps']['ties'] += 1
+            YAML['RockPaperScissors']['Ties'] += 1
         writeYAML()
 
         back()
@@ -927,10 +997,10 @@ def tttMenu():
 
         print()
         output.stamp("Game Menu:")
-        output.note(1, settings['prefix'])
+        output.note(1, YAML['Settings']['Prefix'])
         print()
         output.option(1, "Start Game")
-        output.option(2, "Difficulty: " + X0.LETTUCE + apps['ttt']['diff'])
+        output.option(2, "Difficulty: " + X0.LETTUCE + YAML['TicTacToe']['Difficulty'])
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -942,7 +1012,7 @@ def tttMenu():
             clear()
             print()
             output.notify("Game mode...")
-            output.note(1, settings['prefix'])
+            output.note(1, YAML['Settings']['Prefix'])
             print()
             output.option(1, "Solo")
             output.option(2, "Duo")
@@ -950,7 +1020,7 @@ def tttMenu():
             choice = intake.prompt()
             choice = choiceCheck(choice)
             if choice == "1":
-                result = ttt.soloMode(apps['ttt']['diff'])
+                result = ttt.soloMode(YAML['TicTacToe']['Difficulty'])
                 if not result:
                     back(-2)
             if choice == "2":
@@ -965,8 +1035,8 @@ def tttMenu():
             clear()
             print()
             output.stamp(f"What do you want the difficulty to be? {X0.LETTUCE}(H,M,E)")
-            output.note(1, settings['prefix'])
-            output.note(f"Current is {X0.LETTUCE}{apps['ttt']['diff']}{C0.END}")
+            output.note(1, YAML['Settings']['Prefix'])
+            output.note(f"Current is {X0.LETTUCE}{YAML['TicTacToe']['Difficulty']}{C0.END}")
             print()
             allowed = "HME123"
             choice = intake.prompt()
@@ -975,7 +1045,7 @@ def tttMenu():
                 if choice == "1": choice = "H"
                 if choice == "2": choice = "M"
                 if choice == "3": choice = "E"
-                apps['ttt']['diff'] = choice.upper()
+                YAML['TicTacToe']['Difficulty'] = choice.upper()
                 writeYAML()
                 clear()
                 output.success("Changes saved.")
@@ -991,12 +1061,12 @@ def tttMenu():
     def statsMenu():
         print()
         output.stamp(f"TicTacToe Statistics:\n{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"X Wins     : {X0.GRAY}{apps['ttt']['x-wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"O Wins     : {X0.GRAY}{apps['ttt']['o-wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Ties       : {X0.GRAY}{apps['ttt']['ties']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner: {X0.GRAY}{apps['ttt']['last-winner']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"X Wins     : {X0.GRAY}{YAML['TicTacToe']['xWins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"O Wins     : {X0.GRAY}{YAML['TicTacToe']['oWins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Ties       : {X0.GRAY}{YAML['TicTacToe']['Ties']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Last Winner: {X0.GRAY}{YAML['TicTacToe']['LastWinner']}{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"Last Board :-\n")
-        print(ttt.displayBoard(apps['ttt']['last-board'], True, left=f' {X0.YELLOW}-{C0.END} '))
+        print(ttt.displayBoard(YAML['TicTacToe']['LastBoard'], True, left=f' {X0.YELLOW}-{C0.END} '))
         enterContinue()
 
     def statsReset():
@@ -1012,7 +1082,7 @@ def tttMenu():
 
     print()
     output.stamp(f"Welcome to TicTacToe!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Game Menu")
     output.option(2, "Game Statistics")
@@ -1031,15 +1101,15 @@ def tttMenu():
             winner = result[0]
             board = result[1]
 
-            apps['ttt']['last-winner'] = winner['name']
-            apps['ttt']['last-board'] = board
+            YAML['TicTacToe']['LastWinner'] = winner['name']
+            YAML['TicTacToe']['LastBoard'] = board
 
             if winner == ttt.s.x:
-                apps['ttt']['x-wins'] = int(apps['ttt']['x-wins']) + 1
+                YAML['TicTacToe']['xWins'] = int(YAML['TicTacToe']['xWins']) + 1
             if winner == ttt.s.o:
-                apps['ttt']['o-wins'] = int(apps['ttt']['o-wins']) + 1
+                YAML['TicTacToe']['oWins'] = int(YAML['TicTacToe']['oWins']) + 1
             if winner == ttt.tied:
-                apps['ttt']['ties'] = int(apps['ttt']['ties']) + 1
+                YAML['TicTacToe']['Ties'] = int(YAML['TicTacToe']['Ties']) + 1
             writeYAML()
 
         back()
@@ -1078,10 +1148,10 @@ def mspMenu():
 
         print()
         output.stamp("Minesweeper Config:")
-        output.note(1, settings['prefix'])
+        output.note(1, YAML['Settings']['Prefix'])
         print()
-        output.option(1, "Map Size: " + X0.LETTUCE + str(apps['msp']['dim']) + C0.END)
-        output.option(2, "Bomb Count: " + X0.LETTUCE + str(apps['msp']['bombC']) + C0.END)
+        output.option(1, "Map Size: " + X0.LETTUCE + str(YAML['Minesweeper']['Dimension']) + C0.END)
+        output.option(2, "Bomb Count: " + X0.LETTUCE + str(YAML['Minesweeper']['BombCount']) + C0.END)
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1091,10 +1161,10 @@ def mspMenu():
             clear()
             print()
             output.stamp("What do you want the map size to be?")
-            output.note(1, settings['prefix'])
+            output.note(1, YAML['Settings']['Prefix'])
             output.note(f"Map size ranges from {X0.YELLOW}1:99{C0.END}")
             output.note(f"I don't recommend anything above 25 for your machine's health, also I do not recommend anything above 10 for the looks of it.")
-            output.note(f"Current is {X0.LETTUCE}{apps['msp']['dim']}{C0.END}")
+            output.note(f"Current is {X0.LETTUCE}{YAML['Minesweeper']['Dimension']}{C0.END}")
             print()
 
             choice = intake.prompt()
@@ -1104,7 +1174,7 @@ def mspMenu():
             if goThro(choice, allowed):
                 choice = int(choice)
                 if 99 >= choice > 0:
-                    apps['msp']['dim'] = choice
+                    YAML['Minesweeper']['Dimension'] = choice
                     writeYAML()
                     clear()
                     output.success("Changes saved.")
@@ -1114,9 +1184,9 @@ def mspMenu():
             clear()
             print()
             output.stamp("How many bombs do you want there to be?")
-            output.note(1, settings['prefix'])
-            output.note(f"Bombs count ranges from {X0.YELLOW}1:{apps['msp']['dim']**2}{X0.END}")
-            output.note(f"Current is {X0.LETTUCE}{apps['msp']['bombC']}{C0.END}")
+            output.note(1, YAML['Settings']['Prefix'])
+            output.note(f"Bombs count ranges from {X0.YELLOW}1:{YAML['Minesweeper']['Dimension']**2}{X0.END}")
+            output.note(f"Current is {X0.LETTUCE}{YAML['Minesweeper']['BombCount']}{C0.END}")
             print()
 
             choice = intake.prompt()
@@ -1125,8 +1195,8 @@ def mspMenu():
             allowed = "0123456789"
             if goThro(choice, allowed):
                 choice = int(choice)
-                if (apps['msp']['dim']**2) >= choice > 0:
-                    apps['msp']['bombC'] = choice
+                if (YAML['Minesweeper']['Dimension']**2) >= choice > 0:
+                    YAML['Minesweeper']['BombCount'] = choice
                     writeYAML()
                     clear()
                     output.success("Changes saved.")
@@ -1141,9 +1211,9 @@ def mspMenu():
     def statsMenu():
         print()
         output.stamp(f"Minesweeper Statistics:\n")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{apps['msp']['wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total Loses:     {X0.GRAY}{apps['msp']['defeats']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total Dug Spots: {X0.GRAY}{apps['msp']['spots-dug']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{YAML['Minesweeper']['Wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Loses:     {X0.GRAY}{YAML['Minesweeper']['Defeats']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Dug Spots: {X0.GRAY}{YAML['Minesweeper']['SpotsDug']}{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
 
@@ -1164,7 +1234,7 @@ def mspMenu():
 
     print()
     output.stamp(f"Welcome to Minesweeper!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Start a Game")
     output.option(2, "Config")
@@ -1178,16 +1248,16 @@ def mspMenu():
 
     if choice == "1":
         clear()
-        dim   = apps['msp']['dim']
-        bombC = apps['msp']['bombC']
+        dim   = YAML['Minesweeper']['Dimension']
+        bombC = YAML['Minesweeper']['BombCount']
         msp.startGame( SIZE = dim, BOMBS = bombC )
 
         if msp.gameWon:
-            apps['msp']['wins']  += 1
+            YAML['Minesweeper']['Wins']  += 1
         else:
-            apps['msp']['defeats'] += 1
+            YAML['Minesweeper']['Defeats'] += 1
 
-        apps['msp']['spots-dug'] += len(msp.BD.playerDug)
+        YAML['Minesweeper']['SpotsDug'] += len(msp.BD.playerDug)
         mspBD = msp.BD
 
         writeYAML()
@@ -1231,9 +1301,9 @@ def bjkMenu():
 
         print()
         output.stamp("BlackJack Config:")
-        output.note(1, settings['prefix'])
+        output.note(1, YAML['Settings']['Prefix'])
         print()
-        output.option(1, "Hit on Soft 17: " + (f"{X0.LETTUCE}Yes" if apps['bjk']['soft-17'] else f"{X0.RED}No") + C0.END)
+        output.option(1, "Hit on Soft 17: " + (f"{X0.LETTUCE}Yes" if YAML['Blackjack']['Soft17'] else f"{X0.RED}No") + C0.END)
         output.option(0, "Back")
 
         choice = intake.prompt()
@@ -1242,19 +1312,19 @@ def bjkMenu():
         if choice == "1":
             clear()
             output.stamp("Hit on Soft 17? " + f"{X0.GRAY}({X0.LETTUCE}Y{X0.GRAY},{X0.RED}N{X0.GRAY})")
-            output.note(1, settings['prefix'])
+            output.note(1, YAML['Settings']['Prefix'])
             output.note(f"To explain, this option is to either make the dealer hit on 17 or not.")
             output.note(f"")
-            output.note(f"Current is {(f'{X0.LETTUCE}Yes' if apps['bjk']['soft-17'] else f'{X0.RED}No')}")
+            output.note(f"Current is {(f'{X0.LETTUCE}Yes' if YAML['Blackjack']['Soft17'] else f'{X0.RED}No')}")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
 
             if goThro(choice, "YNyn12"):
                 if choice.upper() in ("Y", "1"):
-                    apps['bjk']['soft-17'] = True
+                    YAML['Blackjack']['Soft17'] = True
                 if choice.upper() in ("N", "2"):
-                    apps['bjk']['soft-17'] = False
+                    YAML['Blackjack']['Soft17'] = False
                 writeYAML()
                 clear()
                 output.success("Changes saved.")
@@ -1280,8 +1350,8 @@ def bjkMenu():
 
     print()
     output.stamp("Welcome to BlackJack!")
-    output.note(1, settings['prefix'])
-    output.note(f"Current Balance is {X0.LETTUCE}{apps['bjk']['balance']}C")
+    output.note(1, YAML['Settings']['Prefix'])
+    output.note(f"Current Balance is {X0.LETTUCE}{YAML['Blackjack']['Balance']}C")
     print()
     output.option(1, "Start a Game")
     output.option(2, "la Banque")
@@ -1296,10 +1366,10 @@ def bjkMenu():
     if choice == "1":
 
         clear()
-        result    = bjk.startGame(apps['bjk']['balance'], 1, apps['bjk']['soft-17'])
+        result    = bjk.startGame(YAML['Blackjack']['Balance'], 1, YAML['Blackjack']['Soft17'])
 
-        apps['bjk']['balance']  = result[0]
-        apps['bjk']['last-bet'] = result[1]
+        YAML['Blackjack']['Balance']  = result[0]
+        YAML['Blackjack']['LastBet'] = result[1]
 
         writeYAML()
 
@@ -1307,12 +1377,12 @@ def bjkMenu():
 
     elif choice == "2":
 
-        available = apps['bjk']['reward'] != today
+        available = YAML['Blackjack']['Reward'] != today
         clear()
 
         print()
         output.stamp(f"Bienvenue à la Banque de {X0.LETTUCE}SPAIME²{X0.VIOLET}!")
-        output.note(1, settings['prefix'])
+        output.note(1, YAML['Settings']['Prefix'])
         output.note("Reward " + ((f"{X0.LETTUCE}available") if available else (f"{X0.RED}not available")) + f"{X0.GRAY}.")
         print()
         output.option(1, (C0.STRIKE if not available else "") + "Claim Daily")
@@ -1325,7 +1395,7 @@ def bjkMenu():
         if choice == "1" and available:
             clear() 
 
-            apps['bjk']['reward'] = today
+            YAML['Blackjack']['Reward'] = today
             luck = random.randint(1,10)
             h1,h2,h3,h4 = ("",)*4
 
@@ -1349,7 +1419,7 @@ def bjkMenu():
                 + f"{h3}{X0.GRAY}[{X0.LETTUCE}2000C{X0.GRAY}]{C0.END} "
                 + f"{h4}{X0.GRAY}[{X0.LETTUCE}5000C{X0.GRAY}]{C0.END} <")
             if available:
-                apps['bjk']['balance'] += reward
+                YAML['Blackjack']['Balance'] += reward
             writeYAML()
             enterContinue()
         elif choice == "1":
@@ -1402,9 +1472,9 @@ def sdkMenu():
 
         print()
         output.stamp("Sudoku Config:")
-        output.note(1, settings['prefix'])
+        output.note(1, YAML['Settings']['Prefix'])
         print()
-        output.option(1, f"Empty Spots: {X0.LETTUCE}{apps['sdk']['empty']}{C0.END}")
+        output.option(1, f"Empty Spots: {X0.LETTUCE}{YAML['Sudoku']['Empty']}{C0.END}")
         output.option(0, f"Back")
 
         choice = intake.prompt()
@@ -1413,8 +1483,8 @@ def sdkMenu():
         if choice == "1":
             clear()
             output.stamp("How many empty spots do you want?!")
-            output.note(1, settings['prefix'])
-            output.note(f"Current is {X0.LETTUCE}{apps['sdk']['empty']}")
+            output.note(1, YAML['Settings']['Prefix'])
+            output.note(f"Current is {X0.LETTUCE}{YAML['Sudoku']['Empty']}")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
@@ -1423,7 +1493,7 @@ def sdkMenu():
                 choice = int(choice)
 
                 if 81 >= choice > 0:
-                    apps['sdk']['empty'] = choice
+                    YAML['Sudoku']['Empty'] = choice
 
                     writeYAML()
                     clear()
@@ -1444,8 +1514,8 @@ def sdkMenu():
     def statsMenu():
         print()
         output.stamp(f"Sudoku Statistics:\n")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{apps['sdk']['wins']}{C0.END}")
-        print(f" {X0.YELLOW}-{C0.END} " + f"Total Validations: {X0.GRAY}{apps['sdk']['validated']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{YAML['Sudoku']['Wins']}{C0.END}")
+        print(f" {X0.YELLOW}-{C0.END} " + f"Total Validations: {X0.GRAY}{YAML['Sudoku']['Validated']}{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"Last Puzzle:-")
 
         sdkBD.print(D=False)
@@ -1465,7 +1535,7 @@ def sdkMenu():
 
     print()
     output.stamp("Welcome to Sudoku!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Continue")
     output.option(2, "New Game")
@@ -1480,22 +1550,22 @@ def sdkMenu():
 
     if   choice == "1":
         clear()
-        sdk.startGame(apps['sdk']['empty'], settings['prefix'], sdkBD)
+        sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'], sdkBD)
 
         sdkBD                    = sdk.sudoku
-        apps['sdk']['wins']     += 1 if sdk.gameWon else 0
-        apps['sdk']['validated'] = sdk.sudoku.timesVal
+        YAML['Sudoku']['Wins']     += 1 if sdk.gameWon else 0
+        YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 
         writeYAML()
         writePICKLE()
         back()
     elif choice == "2":
         clear()
-        sdk.startGame(apps['sdk']['empty'], settings['prefix'])
+        sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'])
 
         sdkBD                    = sdk.sudoku
-        apps['sdk']['wins']     += 1 if sdk.gameWon else 0
-        apps['sdk']['validated'] = sdk.sudoku.timesVal
+        YAML['Sudoku']['Wins']     += 1 if sdk.gameWon else 0
+        YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 
         writeYAML()
         writePICKLE()
@@ -1532,7 +1602,7 @@ def bfiMenu():
     updateWindow(f"bfi")
 
     output.stamp("Welcome to BrainFuck Interpreter!")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
     output.option(1, "Run a File")
     output.option(2, "View Files")
@@ -1570,7 +1640,7 @@ def optionsMenu():
     updateWindow(f"options")
 
     def nameChange(name):
-        user['name'] = str(name)
+        YAML['Settings']['Name'] = str(name)
         try:
             writeYAML()
         except:
@@ -1592,7 +1662,7 @@ def optionsMenu():
             if sex.upper() == "N":
                 sex = "Non-Binary"
 
-            user['sex'] = sex
+            YAML['Settings']['Sex'] = sex
 
             try:
                 writeYAML()
@@ -1613,18 +1683,18 @@ def optionsMenu():
             output.error(f"What gender is that?! Available Options: male, female, non-binary")
 
     def ageChange(age):
-        age_old = user['age']
+        age_old = YAML['Settings']['Age']
         try:
-            user['age'] = int(age)
+            YAML['Settings']['Age'] = int(age)
         except:
             clear()
             output.error(f"Please input numbers only.")
         else:
-            if (user['age'] >= 100 or user['age'] < 0) and not (isAdmin()):
+            if (YAML['Settings']['Age'] >= 100 or YAML['Settings']['Age'] < 0) and not (isAdmin()):
                 clear()
-                output.error(f"How tf can you be {user['age']} years-old?")
+                output.error(f"How tf can you be {YAML['Settings']['Age']} years-old?")
                 output.error(f"I'll return it to {age_old}.")
-                user['age'] = age_old
+                YAML['Settings']['Age'] = age_old
                 return
             try:
                 writeYAML()
@@ -1634,24 +1704,24 @@ def optionsMenu():
             else:
                 writeYAML()
                 clear()
-                if user['age'] == 69:
+                if YAML['Settings']['Age'] == 69:
                     output.success(f"Nice.")
                 else:
                     output.success(f"Changes saved.")
 
     def prefix_change(thing):
         clear()
-        settings['prefix'] = thing
+        YAML['Settings']['Prefix'] = thing
         writeYAML()
 
     print()
     output.stamp(f"Options:")
-    output.note(1, settings['prefix'])
+    output.note(1, YAML['Settings']['Prefix'])
     print()
-    output.option(1, f"Name: {X0.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
-    output.option(2, f"Gender: {X0.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
-    output.option(3, f"Age: {X0.GREEN}{user['age']}")
-    output.option(4, f"Prefix: {X0.GREEN}{settings['prefix']}")
+    output.option(1, f"Name: {X0.GREEN}{YAML['Settings']['Name'] if YAML['Settings']['Name'] != '' else 'N/A'}")
+    output.option(2, f"Gender: {X0.GREEN}{YAML['Settings']['Sex'] if YAML['Settings']['Sex'] != None else 'N/A'}")
+    output.option(3, f"Age: {X0.GREEN}{YAML['Settings']['Age']}")
+    output.option(4, f"Prefix: {X0.GREEN}{YAML['Settings']['Prefix']}")
     output.option(8, f"Rest Games' Stats")
     output.option(9, f"Rest Application")
     output.option(0, f"Home")
@@ -1664,8 +1734,8 @@ def optionsMenu():
         clear()
         print()
         output.stamp(f"What do you wanna be called?")
-        output.note(1, settings['prefix'])
-        output.note(f"Current is {X0.GREEN}{user['name'] if user['name'] != '' else 'N/A'}")
+        output.note(1, YAML['Settings']['Prefix'])
+        output.note(f"Current is {X0.GREEN}{YAML['Settings']['Name'] if YAML['Settings']['Name'] != '' else 'N/A'}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1679,8 +1749,8 @@ def optionsMenu():
         clear()
         print()
         output.stamp(f"How old are you?")
-        output.note(1, settings['prefix'])
-        output.note(f"Current is {X0.GREEN}{user['age']}")
+        output.note(1, YAML['Settings']['Prefix'])
+        output.note(f"Current is {X0.GREEN}{YAML['Settings']['Age']}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1693,8 +1763,8 @@ def optionsMenu():
         clear()
         print()
         output.stamp(f"Cation, Anion or Zwitterion? {X0.LETTUCE}(M,F,N)")
-        output.note(1, settings['prefix'])
-        output.note(f"Current is {X0.GREEN}{user['sex'] if user['sex'] != None else 'N/A'}")
+        output.note(1, YAML['Settings']['Prefix'])
+        output.note(f"Current is {X0.GREEN}{YAML['Settings']['Sex'] if YAML['Settings']['Sex'] != None else 'N/A'}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1707,8 +1777,8 @@ def optionsMenu():
         clear()
         print()
         output.stamp(f"Set prefix to what?")
-        output.note(1, settings['prefix'])
-        output.note(f"Current is {X0.GREEN}{settings['prefix']}")
+        output.note(1, YAML['Settings']['Prefix'])
+        output.note(f"Current is {X0.GREEN}{YAML['Settings']['Prefix']}")
 
         choice = intake.prompt()
         choice = choiceCheck(choice)
@@ -1722,13 +1792,13 @@ def optionsMenu():
         output.notify(f"Continuing would mean you want to reset statistics to default.")
         if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{settings['prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
+            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{YAML['Settings']['Prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
 
-            if choice == f"{settings['prefix']}reset":
-                resetYAML(apps)
+            if choice == f"{YAML['Settings']['Prefix']}reset":
+                resetYAML(YAML)
                 clear()
                 output.success(f"All done, good as new.")
                 back()
@@ -1747,12 +1817,12 @@ def optionsMenu():
         output.notify(f"Continuing would mean you want to reset statistics to default.")
         if confirm(output.notify(f"Are you sure?", Print=False)):
             print()
-            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{settings['prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
+            output.notify(f"Please type {X0.GRAY}{C0.ITALIC}\"{X0.LETTUCE}{YAML['Settings']['Prefix']}reset{X0.GRAY}\"{C0.END}{X0.GRAY} to further confirm.")
 
             choice = intake.prompt()
             choice = choiceCheck(choice)
 
-            if choice == f"{settings['prefix']}reset":
+            if choice == f"{YAML['Settings']['Prefix']}reset":
                 resetYAML()
                 resetPICKLE()
                 clear()
@@ -1795,19 +1865,19 @@ def helpF():
     print()
     output.stamp(f"Commands:")
     # The available SPAIME commands.
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"help [┬]   : {X0.GRAY}Shows this menu.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"help [┬]   : {X0.GRAY}Shows this menu.{C0.END}")
     print(                                          f"          ├math: {X0.GRAY}Shows help about Math & Logic.{C0.END}")
     print(                                          f"          ├rnd : {X0.GRAY}Shows help about Randomeur.{C0.END}")
     print(                                          f"          ├rps : {X0.GRAY}Shows help about RockPaperScissors.{C0.END}")
     print(                                          f"          ├ttt : {X0.GRAY}Shows help about TicTacToe.{C0.END}")
     print(                                          f"          ├msp : {X0.GRAY}Shows help about Minesweeper.{C0.END}")
     print(                                          f"          └bjk : {X0.GRAY}Shows help about BlackJack.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"back:        {X0.GRAY}Returns you a page back.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"home:        {X0.GRAY}Returns you to home page.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"refr:        {X0.GRAY}Refreshes current page.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"exit:        {X0.GRAY}To safely exit the app.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"dev1:        {X0.GRAY}Enters eval() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {settings['prefix']}" + f"dev2:        {X0.GRAY}Enters exec() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"back:        {X0.GRAY}Returns you a page back.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"home:        {X0.GRAY}Returns you to home page.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"refr:        {X0.GRAY}Refreshes current page.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"exit:        {X0.GRAY}To safely exit the app.{C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"dev1:        {X0.GRAY}Enters eval() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"dev2:        {X0.GRAY}Enters exec() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
     print("\n")
     output.stamp(f"Placeholders:")
     # The available placeholders.
@@ -1966,7 +2036,7 @@ def infoF():
     """App and author info and shit you know."""
 
     # Reading the logo.txt file and separating it into its pieces.
-    with open('./res/extras/logo.txt', 'r') as file:
+    with open('./extras/logo.txt', 'r') as file:
         logo = file.read().split(f"-sex-is-cool-")
         logo_art = logo[0]
         logo_text = logo[1]
@@ -2019,10 +2089,10 @@ def exitF():
     clear()
 
     # Telling you sweet goodbyes.
-    if user['name'] == '':
+    if YAML['Settings']['Name'] == '':
         output.notify(f"Bye-bye{X0.VIOLET}!")
     else:
-        output.notify(f"Bye-bye, {X0.GREEN}{user['name']}{X0.VIOLET}!")
+        output.notify(f"Bye-bye, {X0.GREEN}{YAML['Settings']['Name']}{X0.VIOLET}!")
 
     # Deleting pycache, it makes the app run faster but screw it, am I right?
     delCache()
@@ -2048,8 +2118,8 @@ if __name__ == "__main__":
 
     clear()
 
-    if settings['first-time']:
-        settings['first-time'] = False
+    if YAML['Settings']['FirstTime']:
+        YAML['Settings']['FirstTime'] = False
         writeYAML()
         infoF()
 
