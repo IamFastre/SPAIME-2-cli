@@ -281,5 +281,5 @@ def startGame(SIZE: int, BOMBS: int):
 
 
 if __name__ == "__main__":
-    startGame(10, 1)
+    startGame(10, 100)
     print(gameWon, BD.playerDug)

@@ -311,36 +311,41 @@ def cpuDecide(diff="H"):
     d1 = [board[0],board[4],board[8]]
     d2 = [board[2],board[4],board[6]]
 
-    lines = [r1,r2,r3,c1,c2,c3,d1,d2]
+    lines   = [r1 , r2 , r3, c1 , c2 , c3, d1 , d2]
+    corners = [board[0],board[2],board[6],board[8]]
 
     if diff == "H":
-        coin = 0.5
+        wght = 0.5
         mess = f"This is so easy!"
         dur  = 0.5
     if diff == "M":
-        coin = random.random()
+        wght = random.random()
         mess = f"Oh, lemme think..."
         dur  = 0.75
     if diff == "E":
-        coin = 0
+        wght = 0
         mess = f"I love pancakes! Huh, what's TicTacToe?"
         dur  = 1
 
     output.note(mess, sign=cpu['name']+":")
     sleep(dur)
+    doCorner = True
 
-    if coin >= 0.5 and coin:
+    if wght >= 0.5 and wght:
         # Aggressive behavior.
         for line in lines:
             Dup = dup(line)
+            # Win if 2 tiles are the cpu's mark
             if Dup == cpu['mark'] and goThro(line, ns+[cpu['mark']]):
                 for i in range(2):
                     line.remove(Dup)
                 choice = ns.index(line[0])
                 board[choice] = cpu["mark"]
                 return
+                
 
-    if coin <= 0.5 and coin:
+
+    if wght <= 0.5 and wght:
         # Defensive behavior.
         for line in lines:
             Dup = dup(line)
@@ -351,9 +356,24 @@ def cpuDecide(diff="H"):
                 board[choice] = cpu["mark"]
                 return
 
+            if Dup == user1["mark"] and goThro(line, [s.x, s.o]):
+                doCorner = False
+
     if diff == "H" or diff == "M":
+        # Catch middle behavior: 
         if board[4] == ns[4]:
             choice = 4
+            board[choice] = cpu["mark"]
+            return
+
+        # Catching corners behavior:
+        if doCorner:
+            availableCorners = []
+            for corner in corners:
+                if corner in ns:
+                    availableCorners.append(corner)
+            randm  = random.choice(availableCorners)
+            choice = ns.index(randm)
             board[choice] = cpu["mark"]
             return
 
@@ -473,7 +493,7 @@ def chooseMode():
     choice = intake.prompt()
 
     if choice in ("1", "solo"):
-        soloMode("E")
+        soloMode("H")
         return
     if choice in ("2", "2p"):
         duoMode()

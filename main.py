@@ -52,11 +52,11 @@ def Update():
     try:
         readYAML()
         readBINARY()
-    except BaseException as error:
-        error = str(error).replace('[Errno 13] ', '')
-        output.error("I think an error happened...")
-        output.error(error)
-        if confirm(output.error(f"Wanna continue?", 0)):
+    except Exception as error:
+        errorSTR = re.sub(r"\[Errno\W\d+\]\W", '', str(error))
+        output.error("I think an error have occurred...")
+        output.error(errorSTR)
+        if confirm(output.error(f"Wanna continue? (I don't recommend)", 0)):
             clear()
             output.error("Ok whatever...")
             sleep(2)
@@ -67,6 +67,9 @@ def Update():
                 clear()
                 output.notify("Welp, bye!")
                 sys.exit(0)
+    
+    return True
+    
 
 ####################################################################
 ##                                                                ##
@@ -153,24 +156,22 @@ def readBINARY():
 def writeBINARY():
     """I do too hate this function."""
 
-    BIN_FILES = list(
-        filter(
-            re.compile(BIN_REGEX).match,
-            DATA_LIST
-            )
-        )
-
+    BIN_FILES = list(*[BIN] if len(BIN) > 1 else [BIN])
     # That's very human-readable:
     for file in BIN_FILES:
-        with open(DATA_DIR + file, 'wb') as binFile:
-            index = re.sub(BIN_REGEX.replace('.*?', ''),'', file)
-            pickle.dump(BIN[index], binFile)
+        with open(DATA_DIR + file + '.bin', 'wb') as binFile:
+            pickle.dump(BIN[file], binFile)
 
 #==================================================================#
 
-def resetDATA(_dict:dict, _key:str):
+def resetDATA(_dict:dict = None, _key:str = None):
     if _dict == BIN : _regex = BIN_REGEX
     if _dict == YAML: _regex = YAML_REGEX
+
+    if _dict == None:
+        for file in DATA_LIST:
+            shutil.copy(DEFAULTS + file, DATA_DIR + file)
+        return
 
     _files = list(
         filter(
@@ -178,6 +179,11 @@ def resetDATA(_dict:dict, _key:str):
             DATA_LIST
             )
         )
+
+    if _key  == None:
+        pass
+
+
     for file in _files:
         shutil.copy(DEFAULTS + file, DATA_DIR + file)
 
@@ -185,7 +191,7 @@ def resetDATA(_dict:dict, _key:str):
 
 clear()
 Update()
-
+resetDATA(BIN, 'Minesweeper')
 exit()
 
 #==================================================================#
@@ -794,7 +800,7 @@ def rndMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetRND()
+            resetDATA(YAML, 'Randomeur')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -899,7 +905,7 @@ def rpsMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetRPS()
+            resetDATA(YAML, 'RockPaperScissors')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -1075,7 +1081,7 @@ def tttMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetTTT()
+            resetDATA(YAML, 'TicTacToe')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -1227,7 +1233,8 @@ def mspMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetMSP()
+            resetDATA(YAML, 'Minesweeper')
+            resetDATA(BIN,  'Minesweeper')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -1265,7 +1272,7 @@ def mspMenu():
         mspBD = msp.BD
 
         writeYAML()
-        writePICKLE()
+        writeBINARY()
         back()
 
     elif choice == "2" or choice.casefold() == "config":
@@ -1343,7 +1350,7 @@ def bjkMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetBJK()
+            resetDATA(YAML, 'Blackjack')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -1528,7 +1535,8 @@ def sdkMenu():
 
     def statsReset():
         if confirm(output.notify(f"Are you sure?", Print= False)):
-            resetSDK()
+            resetDATA(YAML, 'Sudoku')
+            resetDATA(BIN,  'Sudoku')
             clear()
             output.success(f"All done, good as new.")
             back()
@@ -1561,7 +1569,7 @@ def sdkMenu():
         YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 
         writeYAML()
-        writePICKLE()
+        writeBINARY()
         back()
     elif choice == "2":
         clear()
@@ -1572,7 +1580,7 @@ def sdkMenu():
         YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 
         writeYAML()
-        writePICKLE()
+        writeBINARY()
         back()
     elif choice == "3":
         clear()
@@ -1828,7 +1836,6 @@ def optionsMenu():
 
             if choice == f"{YAML['Settings']['Prefix']}reset":
                 resetDATA()
-                resetPICKLE()
                 clear()
                 output.success(f"All done, good as new. {C0.END}")
                 back()
