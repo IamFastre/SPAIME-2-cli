@@ -201,6 +201,8 @@ def writeDATA(_name:str, _data:dict):
 
 if __name__ == '__main__': Update()
 BIN['Sudoku'] = sdk.Sudoku(0)
+BIN["Sudoku"].playable = 0
+BIN["Sudoku"].default  = 1
 writeDATA('Sudoku', BIN)
 
 #==================================================================#
@@ -539,29 +541,27 @@ def choiceCheck(thing:str):
 
 
         if cmd == "dev1":
+            clear()
+            output.error(f"Please do {YAML['Settings']['Prefix']}dev2 instead.")
+            back()
+
+        if cmd == "dev2":
 
             if isAdmin():
                 clear()
+                print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
 
                 def debug1():
-                    print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
-                    dev = input(f"\n{X0.ORANGE}1 >{X0.LETTUCE} ")
-                    print(C0.END)
+                    dev = input(
+                        output.arrow("", X0.ORANGE + '1>', 1, Print=0)
+                    )
 
                     try:
-                        print(eval(dev))
-                        print("")
-                    except NameError:
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        enterContinue()
-                        clear()
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        back()
-                    except SyntaxError:
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        enterContinue()
-                        clear()
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
+                        exec(dev)
+                        output.notify(eval(dev))
+                    except BaseException as Error:
+                        print(Error)
+                        debug1()
                         back()
                     else:
                         debug1()
@@ -572,40 +572,6 @@ def choiceCheck(thing:str):
                 clear()
                 output.error("It's a dev-only commands, buddy.")
                 back()
-
-        if cmd == "dev2":
-
-            if isAdmin():
-                clear()
-
-                def debug1():
-                    print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
-                    dev = input(f"\n{X0.ORANGE}2 >{X0.LETTUCE} ")
-                    print(C0.END)
-
-                    try:
-                        print(exec(dev))
-                        print("")
-                    except NameError:
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        enterContinue()
-                        clear()
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        back()
-                    except SyntaxError:
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        enterContinue()
-                        clear()
-                        output.error(f"IDK WTF You did, maybe {YAML['Settings']['Prefix']}dev again.")
-                        back()
-                    else:
-                        debug1()
-
-                debug1()
-
-            else:
-                clear()
-                output.error("It's a dev-only commands, buddy.")
 
     return thing
 

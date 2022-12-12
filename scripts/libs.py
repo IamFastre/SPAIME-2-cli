@@ -64,6 +64,14 @@ class intake():
 class output():
     """A way of decorating the texts!"""
 
+    def arrow(string, arrow = X0.RED + '>', N = 2,  text = X0.GRAY, Print = True):
+        out = f"{arrow * N} {text}{string}{C0.END}"
+
+        if Print:
+            print(out)
+        else:
+            return out
+
     def stamp(string, Print = True):
         """Prints violet text with yellow arrows."""
         out = f"{C0.BOLD}{X0.YELLOW}>>>{X0.VIOLET} {string}{C0.END}"
