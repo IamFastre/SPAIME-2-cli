@@ -175,7 +175,7 @@ def resetDATA(_dict:dict = None, _key:str = None):
 
     _files = list(
         filter(
-            re.compile(_regex).match,
+            re.compile(_key + _regex).match,
             DATA_LIST
             )
         )
