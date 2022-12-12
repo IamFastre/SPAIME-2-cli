@@ -39,7 +39,8 @@ finally:
 DATA_DIR   = "./data/"
 DEFAULTS   = "./data/.default/"
 
-DATA_LIST  = os.listdir(DATA_DIR)
+DATA_LIST     = os.listdir(DATA_DIR)
+DEFAULT_LIST  = os.listdir(DEFAULTS)
 
 YAML_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
 BIN_REGEX  = r'(?i).*?\.bin(?!.)'
@@ -79,7 +80,7 @@ def Update():
 
 YAML:dict = {}
 BIN :dict = {}
-FILE:list = [YAML, BIN]
+FILES:list = [YAML, BIN]
 
 def dataFileDub(file):
     output.error(f"There might be a data file name duplicate: {file}.")
@@ -164,24 +165,21 @@ def writeBINARY():
 
 #==================================================================#
 
-def resetDATA(_dict:dict = None, _key:str = None):
-    if _dict == BIN : _regex = BIN_REGEX
-    if _dict == YAML: _regex = YAML_REGEX
+def resetDATA(_dict:dict = None, _key:str = r'.*?'):
+    if _dict == YAML: _regex = r'\.y(a?)ml(?!.)'
+    if _dict == BIN : _regex = r'\.bin(?!.)'
 
     if _dict == None:
-        for file in DATA_LIST:
+        for file in DEFAULT_LIST:
             shutil.copy(DEFAULTS + file, DATA_DIR + file)
         return
 
     _files = list(
         filter(
-            re.compile(_regex).match,
-            DATA_LIST
+            re.compile(r'(?i)'+_key+_regex).match,
+            DEFAULT_LIST
             )
         )
-
-    if _key  == None:
-        pass
 
 
     for file in _files:
@@ -189,10 +187,21 @@ def resetDATA(_dict:dict = None, _key:str = None):
 
 #==================================================================#
 
-clear()
-Update()
-resetDATA(BIN, 'Minesweeper')
-exit()
+def writeDATA(_name:str, _data:dict):
+    if _data not in FILES: raise TypeError("Unsupported DATA file type.")
+    if _data == YAML: _extension = 'yaml'; _mode = 'w'
+    if _data == BIN : _extension = 'bin'; _mode = 'wb'
+
+    _extension = '.' + _extension
+    with open(DATA_DIR + _name + _extension, _mode) as _file:
+        if _mode == 'w':  yaml.safe_dump(_data[_name], _file)
+        if _mode == 'wb': pickle.dump(_data[_name], _file)
+
+#==================================================================#
+
+if __name__ == '__main__': Update()
+BIN['Sudoku'] = sdk.Sudoku(0)
+writeDATA('Sudoku', BIN)
 
 #==================================================================#
 
@@ -1148,7 +1157,6 @@ def tttMenu():
 #==================================================================#
 
 def mspMenu():
-    global mspBD
     updateWindow(f"msp")
 
     def mspConfMenu():
@@ -1227,7 +1235,7 @@ def mspMenu():
         print(f" {X0.YELLOW}-{C0.END} " + f"Last Map:-")
         #print(f" {x.YELLOW}-{c.END} " + f": {x.GRAY}{apps['msp']['']}{c.END}")
 
-        mspBD.print(True)
+        BIN['Minesweeper'].print(True)
 
         enterContinue()
 
@@ -1269,7 +1277,7 @@ def mspMenu():
             YAML['Minesweeper']['Defeats'] += 1
 
         YAML['Minesweeper']['SpotsDug'] += len(msp.BD.playerDug)
-        mspBD = msp.BD
+        BIN['Minesweeper'] = msp.BD
 
         writeYAML()
         writeBINARY()
@@ -1473,7 +1481,6 @@ def bjkMenu():
 #==================================================================#
 
 def sdkMenu():
-    global sdkBD
     updateWindow(f"sdk")
 
     def sdkConfMenu():
@@ -1529,7 +1536,7 @@ def sdkMenu():
         print(f" {X0.YELLOW}-{C0.END} " + f"Total Validations: {X0.GRAY}{YAML['Sudoku']['Validated']}{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"Last Puzzle:-")
 
-        sdkBD.print(D=False)
+        BIN['Sudoku'].print(D=False)
 
         enterContinue()
 
@@ -1562,9 +1569,9 @@ def sdkMenu():
 
     if   choice == "1":
         clear()
-        sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'], sdkBD)
+        sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'], BIN['Sudoku'])
 
-        sdkBD                    = sdk.sudoku
+        BIN['Sudoku']                    = sdk.sudoku
         YAML['Sudoku']['Wins']     += 1 if sdk.gameWon else 0
         YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 
@@ -1575,7 +1582,7 @@ def sdkMenu():
         clear()
         sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'])
 
-        sdkBD                    = sdk.sudoku
+        BIN['Sudoku']                    = sdk.sudoku
         YAML['Sudoku']['Wins']     += 1 if sdk.gameWon else 0
         YAML['Sudoku']['Validated'] = sdk.sudoku.timesVal
 

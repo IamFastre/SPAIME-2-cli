@@ -69,6 +69,7 @@ class Sudoku():
         this.table    = this.makeTable()
         this.byPlayer = set()
         this.pinched  = set()
+        this.playable = 1
         this.timesVal = 0
         this.mistakes = 0
         this.pinchTable(amnt)
@@ -269,6 +270,13 @@ class Sudoku():
 
 
     def play(this, pref):
+
+        if not this.playable:
+            print()
+            output.warn("This board is unplayable, start a new one.")
+            enterContinue()
+            clear()
+            return 'exit'
 
         choice = intake.prompt()
         choice = choice.replace("[", "").replace("]", "").replace("(", "").replace(")", "").replace("{", "").replace("}", "")

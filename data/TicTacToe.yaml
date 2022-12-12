@@ -1,5 +1,4 @@
-Difficulty: 'M'
-
+Difficulty: M
 LastBoard:
 - \u2014
 - \u2014
@@ -10,10 +9,7 @@ LastBoard:
 - \u2014
 - \u2014
 - \u2014
-
 LastWinner: \u2014
-
-Ties:   0
-
-xWins: 0
+Ties: 0
 oWins: 0
+xWins: 0
