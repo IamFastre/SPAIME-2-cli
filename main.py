@@ -200,10 +200,6 @@ def writeDATA(_name:str, _data:dict):
 #==================================================================#
 
 if __name__ == '__main__': Update()
-BIN['Sudoku'] = sdk.Sudoku(0)
-BIN["Sudoku"].playable = 0
-BIN["Sudoku"].default  = 1
-writeDATA('Sudoku', BIN)
 
 #==================================================================#
 

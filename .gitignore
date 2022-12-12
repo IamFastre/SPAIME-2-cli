@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/windows,vs,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,vs,python
+### Fastre ###
+.old/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
