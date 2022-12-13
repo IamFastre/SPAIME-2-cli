@@ -78,9 +78,13 @@ def Update():
 ##                                                                ##
 ####################################################################
 
-YAML:dict = {}
-BIN :dict = {}
+ADMINS = (f"fastre", "neria", "mahmoud")
+PASSES = (576957, None)
+
+YAML:dict  = {}
+BIN :dict  = {}
 FILES:list = [YAML, BIN]
+
 
 def dataFileDub(file):
     output.error(f"There might be a data file name duplicate: {file}.")
@@ -221,9 +225,8 @@ bricks = "{}"
 
 today   = datetime.now().strftime("%y%m%d")
 YAML['Settings']['LastDate'] = today
+writeYAML() 
 
-admins = (f"fastre", "neria", "mahmoud")
-passes = (576957, None)
 
 placeholders = {
     'nl'            : '{' + 'nl' + '}',
@@ -273,12 +276,12 @@ placeholders = {
     ''   : '{' + '' + '}',
 }
 
-writeYAML()
 
 #==================================================================#
 
 def isAdmin():
-    return (YAML['Settings']['Name'].casefold() in admins and YAML['Settings']['Age'] in passes and YAML['Settings']['Sex'] == "Male")
+    admin = (YAML['Settings']['Name'].casefold() in ADMINS and YAML['Settings']['Age'] in PASSES and YAML['Settings']['Sex'] == "Male") or YAML["Settings"]["Dev"]
+    return admin
 
 #==================================================================#
 
@@ -1634,17 +1637,7 @@ def optionsMenu():
 
     def sexChange(sex:str):
 
-        if sex.capitalize() in ("M", "F", "N"):
-
-            if sex.upper() == "M":
-                sex = "Male"
-            if sex.upper() == "F":
-                sex = "Female"
-            if sex.upper() == "N":
-                sex = "Non-Binary"
-
-            YAML['Settings']['Sex'] = sex
-
+        def success():
             try:
                 writeYAML()
             except:
@@ -1655,9 +1648,25 @@ def optionsMenu():
                 clear()
                 output.success(f"Changes saved.")
 
+        if sex.upper() in ("MALE", "FEMALE", "NON-BINARY"):
+            YAML['Settings']['Sex'] = sex.capitalize()
+            success()
+
+        elif sex.capitalize() in ("M", "F", "N"):
+
+            if sex.upper() == "M":
+                sex = "Male"
+            if sex.upper() == "F":
+                sex = "Female"
+            if sex.upper() == "N":
+                sex = "Non-binary"
+
+            YAML['Settings']['Sex'] = sex
+            success()
+
         elif sex.upper() == "MF":
             clear()
-            output.warn("Are you calling me a mf...?")
+            output.warn("Uhh, you're not quite getting it buddy...")
 
         else:
             clear()
@@ -2043,7 +2052,7 @@ def infoF():
     choice = enterContinue()
 
     # An easter egg!
-    if choice.casefold() in admins:
+    if choice.casefold() in ADMINS:
         output.success(f"Yes, {X0.RED}♥{X0.GRAY}.{C0.END}")
     back()
 
