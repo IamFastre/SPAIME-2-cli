@@ -30,8 +30,7 @@ sys.setrecursionlimit(100_000_000)
 
 # Importing my package files:
 from scripts.colors import *
-from scripts.codes  import *
-from time       import *
+from time           import *
 
 
 ####################################################################
