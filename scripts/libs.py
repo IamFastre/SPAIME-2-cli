@@ -16,6 +16,7 @@ import random
 import math
 import subprocess
 import pip
+import pynput
 
 from datetime import date, datetime
 
@@ -146,6 +147,9 @@ class output():
 def delCache():
 
     for file in glob.glob('./*/__pycache__'):
+        if os.path.exists(file):
+            shutil.rmtree(file)
+    for file in glob.glob('./*/*/__pycache__'):
         if os.path.exists(file):
             shutil.rmtree(file)
 
