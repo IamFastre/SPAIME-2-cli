@@ -1,5 +1,5 @@
 # Importing the other py files.
-from scripts.libs import *
+from scripts import *
 
 #==================================================================#
 
@@ -2064,7 +2064,7 @@ def refreshF():
     # It's just to clear notifications or print faults.
     clear()
     output.notify(f"Refreshing!")
-    sleep(0.5)
+    sleep(0.5) 
     clear()
     back()
 
