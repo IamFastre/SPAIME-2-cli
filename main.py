@@ -3,17 +3,6 @@ from scripts import *
 
 #==================================================================#
 
-# Importing the applets
-import scripts.content.TicTacToe            as ttt
-import scripts.content.RockPaperScissors    as rps
-import scripts.content.Randomeur            as rnd
-import scripts.content.Minesweeper          as msp
-import scripts.content.Blackjack            as bjk
-import scripts.content.Sudoku               as sdk
-import scripts.content.BrainfuckInterpreter as bfi
-
-#==================================================================#
-
 # Other python modules that will need pip'ing
 try:
     import yaml
@@ -38,6 +27,7 @@ finally:
 
 DATA_DIR   = "./data/"
 DEFAULTS   = "./data/.default/"
+BRICKS     = "{}"
 
 DATA_LIST     = os.listdir(DATA_DIR)
 DEFAULT_LIST  = os.listdir(DEFAULTS)
@@ -45,11 +35,18 @@ DEFAULT_LIST  = os.listdir(DEFAULTS)
 YAML_REGEX = r'(?i).*?\.y(a?)ml(?!.)'
 BIN_REGEX  = r'(?i).*?\.bin(?!.)'
 
+WINDOW = None
+WINDOW_HISTORY = [WINDOW]
+
+FUNC_NAME = lambda: inspect.stack()[1][3]
 
 def Update():
     global DATA_LIST
+    global DEFAULT_LIST
 
     DATA_LIST  = os.listdir(DATA_DIR)
+    DEFAULT_LIST  = os.listdir(DEFAULTS)
+
     try:
         readYAML()
         readBINARY()
@@ -71,6 +68,40 @@ def Update():
     
     return True
     
+#==================================================================#
+
+def Back(num = -1):
+    WN = WINDOW_HISTORY[num]
+    func = f"{WN}()"
+
+    Update()
+
+    try:
+        exec(func)
+    except ValueError:
+        clear()
+        output.error("I guess there's nothing to go back to.")
+        mainMenu()
+    except NameError:
+        clear()
+        output.notify("Hello, Hello!!")
+        mainMenu()
+
+#==================================================================#
+
+def UpdateWindow(string):
+    """Tell the app to change the window for the Back() function."""
+    global WINDOW
+    global WINDOW_HISTORY
+
+    WINDOW = string
+    if WINDOW == WINDOW_HISTORY[-1]:
+        pass
+    else:
+        WINDOW_HISTORY.append(string)
+    
+    Update()
+
 
 ####################################################################
 ##                                                                ##
@@ -218,11 +249,6 @@ if __name__ == '__main__': Update()
 ##                                                                ##
 ####################################################################
 
-window = None
-windowHistory = [window]
-
-bricks = "{}"
-
 today   = datetime.now().strftime("%y%m%d")
 YAML['Settings']['LastDate'] = today
 writeYAML() 
@@ -303,8 +329,7 @@ def isCommand(thing):
         YAML['Settings']['Prefix'] + "exit",
         YAML['Settings']['Prefix'] + "refr",
 
-        YAML['Settings']['Prefix'] + "dev1",
-        YAML['Settings']['Prefix'] + "dev2",
+        YAML['Settings']['Prefix'] + "dev",
 
         YAML['Settings']['Prefix'] + "reset",
     ]
@@ -339,40 +364,6 @@ class decoded():
         if True or force:
             pass
 
-
-#==================================================================#
-
-def back(num = -1):
-    WN = windowHistory[num]
-    func = f"{WN}Menu()"
-
-    Update()
-
-    try:
-        exec(func)
-    except ValueError:
-        clear()
-        output.error("I guess there's nothing to go back to.")
-        back()
-    except NameError:
-        clear()
-        output.notify("Hello, Hello!!")
-        mainMenu()
-
-#==================================================================#
-
-def updateWindow(string):
-    """Tell the app to change the window for the back() function."""
-    global window
-    global windowHistory
-
-    window = string
-    if window == windowHistory[-1]:
-        pass
-    else:
-        windowHistory.append(string)
-    
-    Update()
 
 #==================================================================#
 
@@ -480,7 +471,7 @@ def choiceCheck(thing:str):
     if thing == "":
         clear()
         output.error(f"You gotta type something first, no?")
-        back()
+        Back()
 
     #==============================================================#
 
@@ -491,86 +482,59 @@ def choiceCheck(thing:str):
         if not isCommand(thing):
             clear()
             output.error(f"Invalid command.")
-            back()
+            Back()
 
         if cmd == "help":
             clear()
             helpF()
-            back()
+            Back()
         if cmd == "help math":
             clear()
             helpMathF()
-            back()
+            Back()
         if cmd == "help rnd":
             clear()
             helpRNDF()
-            back()
+            Back()
         if cmd == "help rps":
             clear()
             helpRPSF()
-            back()
+            Back()
         if cmd == "help ttt":
             clear()
             helpTTTF()
-            back()
+            Back()
         if cmd == "help msp":
             clear()
             helpMSPF()
-            back()
+            Back()
         if cmd == "help bjk":
             clear()
             helpBJKF()
-            back()
+            Back()
         if cmd == "help sdk":
             clear()
             helpSDKF()
-            back()
+            Back()
 
 
         if cmd == "back":
             clear()
-            back(-2)
+            Back(-2)
+
         if cmd == "home":
             clear()
+
             mainMenu()
         if cmd == "exit":
             exitF()
+
         if cmd == "refr":
             refreshF()
 
-
-        if cmd == "dev1":
+        if cmd == "dev":
             clear()
-            output.error(f"Please do {YAML['Settings']['Prefix']}dev2 instead.")
-            back()
-
-        if cmd == "dev2":
-
-            if isAdmin():
-                clear()
-                print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
-
-                def debug1():
-                    dev = input(
-                        output.arrow("", X0.ORANGE + '1>', 1, Print=0)
-                    )
-
-                    try:
-                        exec(dev)
-                        output.notify(eval(dev))
-                    except BaseException as Error:
-                        print(Error)
-                        debug1()
-                        back()
-                    else:
-                        debug1()
-
-                debug1()
-
-            else:
-                clear()
-                output.error("It's a dev-only commands, buddy.")
-                back()
+            devF()
 
     return thing
 
@@ -579,7 +543,7 @@ def choiceCheck(thing:str):
 def lastCheck(choice):
     if not isCommand(choice):
         output.error(f"Invalid input.")
-    back()
+    Back()
 
 #==================================================================#
 
@@ -596,7 +560,7 @@ def lastCheck(choice):
 
 
 def mainMenu():
-    updateWindow(f"main")
+    UpdateWindow(FUNC_NAME())
 
     print()
     if YAML['Settings']['Name'] in ('', None):
@@ -615,7 +579,7 @@ def mainMenu():
     output.option("B", f"{X0.GRAY}[{bjk.suitS['H']}{bjk.suitS['S']}{X0.GRAY}] {C0.URL}B{C0.END}{X0.GRAY}lackJack")
     output.option("S", f"{X0.GRAY}[{X0.YELLOW}✎{X0.VIOLET}#{X0.GRAY}] {C0.URL}S{C0.END}{X0.GRAY}udoku")
     output.option("F", f"{X0.GRAY}[{X0.LETTUCE}+{X0.ORANGE}.{X0.GRAY}] Brain{C0.URL}F{C0.END}{X0.GRAY}uck")
-    output.option("P", f"{X0.GRAY}[{X0.YELLOW}{bricks}{X0.GRAY}] O{C0.URL}p{C0.END}{X0.GRAY}tions")
+    output.option("P", f"{X0.GRAY}[{X0.YELLOW}{BRICKS}{X0.GRAY}] O{C0.URL}p{C0.END}{X0.GRAY}tions")
     output.option("C", f"{X0.GRAY}[{X0.VIOLET}>>{X0.GRAY}] {C0.URL}C{C0.END}{X0.GRAY}redits")
     output.option("E", f"{X0.GRAY}[{X0.RED}x{X0.GREEN}✓{X0.GRAY}] {C0.URL}R{C0.END}{X0.GRAY}efresh")
     output.option("X", f"{X0.GRAY}[{X0.RED}xx{X0.GRAY}] E{C0.URL}x{C0.END}{X0.GRAY}it")
@@ -667,11 +631,11 @@ def mainMenu():
     if not(isCommand(choice)):
         clear()
         output.error(f"Invalid input.")
-        back()
+        Back()
 
     clear()
     output.warn(f"Huh...")
-    back()
+    Back()
 
 #==================================================================#
 
@@ -688,7 +652,7 @@ def mainMenu():
 
 
 def repeatMenu():
-    updateWindow(f"repeat")
+    UpdateWindow(FUNC_NAME())
 
     print()
     output.stamp(f"What do you want me to repeat?")
@@ -711,12 +675,12 @@ def repeatMenu():
         clear()
         output.notify(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
 def mathMenu():
-    updateWindow(f"math")
+    UpdateWindow(FUNC_NAME())
 
     print()
     output.stamp(f"Oh wanna do some math'ing?")
@@ -751,14 +715,16 @@ def mathMenu():
         clear()
         output.error(f"That's not really math or logic...")
 
-    back()
+    Back()
 
 #==================================================================#
 
 def rndMenu():
-    updateWindow(f"rnd")
+    UpdateWindow(FUNC_NAME())
 
     def statsMenu():
+        Update()
+
         print()
         output.stamp(f"Randomeur Statistics:\n")
         print(f" {X0.YELLOW}-{C0.END} " + f"Total {rnd.headsStyle}{C0.END}: {X0.GRAY}{YAML['Randomeur']['Heads']}{C0.END}")
@@ -777,11 +743,11 @@ def rndMenu():
             resetDATA(YAML, 'Randomeur')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp(f"Welcome to Randomeur!")
@@ -815,19 +781,19 @@ def rndMenu():
         YAML['Randomeur']['LastWinner']      = rnd.winner
         writeYAML()
 
-        back()
+        Back()
     elif choice == "2" or choice.casefold() == "stats":
         clear()
         statsMenu()
-        back()
+        Back()
     elif choice == "8" or choice.casefold() == "help":
         clear()
         helpRNDF()
-        back()
+        Back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -835,12 +801,12 @@ def rndMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
 def rpsMenu():
-    updateWindow(f"rps")
+    UpdateWindow(FUNC_NAME())
 
     def whosBest():
 
@@ -862,6 +828,8 @@ def rpsMenu():
         return name[bestIndex]
 
     def statsMenu():
+        Update()
+
         print()
         output.stamp(f"RockPaperScissors Statistics:\n")
         print(f" {X0.YELLOW}-{C0.END} " + f"{rps.p1['name']} Wins        : {X0.GRAY}{YAML['RockPaperScissors']['P1']['Wins']}{C0.END}")
@@ -882,11 +850,11 @@ def rpsMenu():
             resetDATA(YAML, 'RockPaperScissors')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp(f"Welcome to RockPaperScissors!")
@@ -923,7 +891,7 @@ def rpsMenu():
             YAML['RockPaperScissors']['Ties'] += 1
         writeYAML()
 
-        back()
+        Back()
 
     elif choice == "2" or choice.casefold() == "duo":
         rps.duoMode()
@@ -946,20 +914,20 @@ def rpsMenu():
             YAML['RockPaperScissors']['Ties'] += 1
         writeYAML()
 
-        back()
+        Back()
 
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
-        back()
+        Back()
     elif choice == "8" or choice.casefold() == "help":
         clear()
         helpRPSF()
-        back()
+        Back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -967,17 +935,16 @@ def rpsMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
 def tttMenu():
-    updateWindow(f"ttt")
+    global tttGameSubMenu
+    UpdateWindow(FUNC_NAME())
 
-    def tttGameMenu():
-        global tttGameSubMenu
-        tttGameSubMenu = tttGameMenu
-        updateWindow("tttGameSub")
+    def tttGameSubMenu():
+        UpdateWindow(FUNC_NAME())
 
         print()
         output.stamp("Game Menu:")
@@ -1006,14 +973,14 @@ def tttMenu():
             if choice == "1":
                 result = ttt.soloMode(YAML['TicTacToe']['Difficulty'])
                 if not result:
-                    back(-2)
+                    Back(-2)
             if choice == "2":
                 result = ttt.duoMode()
                 if not result:
-                    back(-2)
+                    Back(-2)
             if choice == "0":
                 clear()
-                back()
+                Back()
             return result
         if choice == "2":
             clear()
@@ -1033,16 +1000,18 @@ def tttMenu():
                 writeYAML()
                 clear()
                 output.success("Changes saved.")
-                back()
+                Back()
             else:
                 clear()
                 output.error("No, no, no. Only: Hard, Medium, Easy")
-                back()
+                Back()
         if choice == "0":
             clear()
-            back(-2)
+            Back(-2)
 
     def statsMenu():
+        Update()
+
         print()
         output.stamp(f"TicTacToe Statistics:\n{C0.END}")
         print(f" {X0.YELLOW}-{C0.END} " + f"X Wins     : {X0.GRAY}{YAML['TicTacToe']['xWins']}{C0.END}")
@@ -1058,11 +1027,11 @@ def tttMenu():
             resetDATA(YAML, 'TicTacToe')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp(f"Welcome to TicTacToe!")
@@ -1079,7 +1048,7 @@ def tttMenu():
 
     if choice == "1" or choice.casefold() == "start":
         clear()
-        result = tttGameMenu()
+        result = tttGameSubMenu()
 
         if type(result) == type(["Oh", "hey there", "cutie!"]): 
             winner = result[0]
@@ -1096,20 +1065,20 @@ def tttMenu():
                 YAML['TicTacToe']['Ties'] = int(YAML['TicTacToe']['Ties']) + 1
             writeYAML()
 
-        back()
+        Back()
 
     elif choice == "2" or choice.casefold() == "stats":
         clear()
         statsMenu()
-        back()
+        Back()
     elif choice == "8" or choice.casefold() == "help":
         clear()
         helpTTTF()
-        back()
+        Back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1117,17 +1086,16 @@ def tttMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
 def mspMenu():
-    updateWindow(f"msp")
+    global mspConfMenu
+    UpdateWindow(FUNC_NAME())
 
     def mspConfMenu():
-        global mspConfSubMenu
-        mspConfSubMenu = mspConfMenu
-        updateWindow("mspConfSub")
+        UpdateWindow(FUNC_NAME())
 
         print()
         output.stamp("Minesweeper Config:")
@@ -1161,7 +1129,7 @@ def mspMenu():
                     writeYAML()
                     clear()
                     output.success("Changes saved.")
-                    back()
+                    Back()
 
         if choice == "2":
             clear()
@@ -1183,15 +1151,17 @@ def mspMenu():
                     writeYAML()
                     clear()
                     output.success("Changes saved.")
-                    back()
+                    Back()
         if choice == "0":
             clear()
-            back(-2)
+            Back(-2)
 
         clear()
         lastCheck(choice)
 
     def statsMenu():
+        Update()
+
         print()
         output.stamp(f"Minesweeper Statistics:\n")
         print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{YAML['Minesweeper']['Wins']}{C0.END}")
@@ -1210,11 +1180,11 @@ def mspMenu():
             resetDATA(BIN,  'Minesweeper')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp(f"Welcome to Minesweeper!")
@@ -1246,24 +1216,24 @@ def mspMenu():
 
         writeYAML()
         writeBINARY()
-        back()
+        Back()
 
     elif choice == "2" or choice.casefold() == "config":
         clear()
         mspConfMenu()
-        back(-2)
+        Back(-2)
     elif choice == "3" or choice.casefold() == "stats":
         clear()
         statsMenu()
-        back()
+        Back()
     elif choice == "8" or choice.casefold() == "help":
         clear()
         helpMSPF()
-        back()
+        Back()
     elif choice == "9" or choice.casefold() == "reset":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1271,17 +1241,16 @@ def mspMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
 def bjkMenu():
-    updateWindow(f"bjk")
+    global bjkConfMenu
+    UpdateWindow(FUNC_NAME())
 
     def bjkConfMenu():
-        global bjkConfSubMenu
-        bjkConfSubMenu = bjkConfMenu
-        updateWindow("bjkConfSub")
+        UpdateWindow(FUNC_NAME())
 
         print()
         output.stamp("BlackJack Config:")
@@ -1312,11 +1281,11 @@ def bjkMenu():
                 writeYAML()
                 clear()
                 output.success("Changes saved.")
-                back()
+                Back()
 
         if choice == "0":
             clear()
-            back(-2)
+            Back(-2)
 
         clear()
         lastCheck(choice)
@@ -1326,11 +1295,11 @@ def bjkMenu():
             resetDATA(YAML, 'Blackjack')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp("Welcome to BlackJack!")
@@ -1357,7 +1326,7 @@ def bjkMenu():
 
         writeYAML()
 
-        back()
+        Back()
 
     elif choice == "2":
 
@@ -1409,31 +1378,31 @@ def bjkMenu():
         elif choice == "1":
             clear()
             output.error("That's greedy.")
-            back()
+            Back()
         elif choice == "2":
             clear()
             output.notify("Coming soon!")
-            back()
+            Back()
         else:
             clear()
             output.error("Invalid input.")
-            back()
+            Back()
         clear()
-        back()
+        Back()
 
 
     elif choice == "3":
         clear()
         bjkConfMenu()
-        back(-2)
+        Back(-2)
     elif choice == "8":
         clear()
         helpBJKF()
-        back()
+        Back()
     elif choice == "9":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1446,12 +1415,11 @@ def bjkMenu():
 #==================================================================#
 
 def sdkMenu():
-    updateWindow(f"sdk")
+    global sdkConfMenu
+    UpdateWindow(FUNC_NAME())
 
     def sdkConfMenu():
-        global sdkConfSubMenu
-        sdkConfSubMenu = sdkConfMenu
-        updateWindow("sdkConfSub")
+        UpdateWindow(FUNC_NAME())
 
         print()
         output.stamp("Sudoku Config:")
@@ -1481,20 +1449,22 @@ def sdkMenu():
                     writeYAML()
                     clear()
                     output.success("Changes saved.")
-                    back()
+                    Back()
                 else:
                     clear()
                     output.error("Number needs to be between 0 and 81, 0 not included.")
-                    back()
+                    Back()
 
         if choice == "0":
             clear()
-            back(-2)
+            Back(-2)
 
         clear()
         lastCheck(choice)
 
     def statsMenu():
+        Update()
+
         print()
         output.stamp(f"Sudoku Statistics:\n")
         print(f" {X0.YELLOW}-{C0.END} " + f"Total Wins :     {X0.GRAY}{YAML['Sudoku']['Wins']}{C0.END}")
@@ -1511,11 +1481,11 @@ def sdkMenu():
             resetDATA(BIN,  'Sudoku')
             clear()
             output.success(f"All done, good as new.")
-            back()
+            Back()
         else:
             clear()
             output.error(f"Okay then.")
-            back()
+            Back()
 
     print()
     output.stamp("Welcome to Sudoku!")
@@ -1542,7 +1512,7 @@ def sdkMenu():
 
         writeYAML()
         writeBINARY()
-        back()
+        Back()
     elif choice == "2":
         clear()
         sdk.startGame(YAML['Sudoku']['Empty'], YAML['Settings']['Prefix'])
@@ -1553,23 +1523,23 @@ def sdkMenu():
 
         writeYAML()
         writeBINARY()
-        back()
+        Back()
     elif choice == "3":
         clear()
         sdkConfMenu()
-        back()
+        Back()
     elif choice == "4":
         clear()
         statsMenu()
-        back()
+        Back()
     elif choice == "8":
         clear()
         helpSDKF()
-        back()
+        Back()
     elif choice == "9":
         clear()
         statsReset()
-        back()
+        Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1583,7 +1553,7 @@ def sdkMenu():
 #==================================================================#
 
 def bfiMenu():
-    updateWindow(f"bfi")
+    UpdateWindow(FUNC_NAME())
 
     output.stamp("Welcome to BrainFuck Interpreter!")
     output.note(1, YAML['Settings']['Prefix'])
@@ -1616,12 +1586,12 @@ def bfiMenu():
         clear()
         lastCheck(choice)
 
-    back()
+    Back()
 
 #==================================================================#
 
 def optionsMenu():
-    updateWindow(f"options")
+    UpdateWindow(FUNC_NAME())
 
     def nameChange(name):
         YAML['Settings']['Name'] = str(name)
@@ -1732,7 +1702,7 @@ def optionsMenu():
 
         nameChange(choice)
 
-        back()
+        Back()
 
     elif choice == "3" or choice.casefold() == "age":
 
@@ -1747,7 +1717,7 @@ def optionsMenu():
 
         ageChange(choice)
 
-        back()
+        Back()
     elif choice == "2" or choice.casefold() == "gender":
 
         clear()
@@ -1761,7 +1731,7 @@ def optionsMenu():
 
         sexChange(choice)
 
-        back()
+        Back()
     elif choice == "4" or choice.casefold() == "prefix":
 
         clear()
@@ -1775,7 +1745,7 @@ def optionsMenu():
 
         prefix_change(choice)
 
-        back()
+        Back()
     elif choice == "8" or choice.casefold() == "reset stats":
 
         clear()
@@ -1791,15 +1761,15 @@ def optionsMenu():
                 resetDATA(YAML)
                 clear()
                 output.success(f"All done, good as new.")
-                back()
+                Back()
             else:
                 clear()
                 output.error(f"I'll take that as a \"no\".")
-                back()
+                Back()
         else:
             clear()
             output.error(f"Ready when you're are.")
-            back()
+            Back()
 
     elif choice == "9" or choice.casefold() == "reset all" or choice.casefold() == "reset app" or choice.casefold() == "reset application" :
 
@@ -1816,15 +1786,15 @@ def optionsMenu():
                 resetDATA()
                 clear()
                 output.success(f"All done, good as new. {C0.END}")
-                back()
+                Back()
             else:
                 clear()
                 output.error(f"I'll take that as a \"no\".")
-                back()
+                Back()
         else:
             clear()
             output.error(f"Ready when you're are.")
-            back()
+            Back()
     elif choice == "0":
         clear()
         mainMenu()
@@ -1832,7 +1802,7 @@ def optionsMenu():
         clear()
         lastCheck(choice)
 
-    back(-2)
+    Back(-2)
 
 #==================================================================#
 
@@ -1865,8 +1835,7 @@ def helpF():
     print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"home:        {X0.GRAY}Returns you to home page.{C0.END}")
     print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"refr:        {X0.GRAY}Refreshes current page.{C0.END}")
     print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"exit:        {X0.GRAY}To safely exit the app.{C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"dev1:        {X0.GRAY}Enters eval() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
-    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"dev2:        {X0.GRAY}Enters exec() mode. {X0.RED}{C0.DIM}(dev-only){C0.END}")
+    print(f" {X0.YELLOW}-{C0.END} {YAML['Settings']['Prefix']}" + f"dev :        {X0.GRAY}Enters debug mode. {C0.ITALIC}It's a security hazard! {X0.RED}{C0.DIM}(dev-only){C0.END}")
     print("\n")
     output.stamp(f"Placeholders:")
     # The available placeholders.
@@ -1985,7 +1954,7 @@ def helpMSPF():
     output.note(f"There you can choose the map size and the amount of bombs.", sign="D")
     output.note(f"To dig a spot just type {C0.ITALIC}'[{X0.LETTUCE}x,y{X0.GRAY}]'{C0.END}{X0.GRAY} of that spot.", sign="D")
     output.note(f"To flag a spot just type {C0.ITALIC}'[{X0.LETTUCE}x,y{X0.GRAY}]{msp.flagS}'{C0.END}{X0.GRAY} of that spot.", sign="D")
-    output.note(f"Any brackets like {X0.LETTUCE}(){X0.GRAY}, {X0.LETTUCE}[]{X0.GRAY} or {X0.LETTUCE}{bricks}{X0.GRAY}, and spaces are ignored.", sign="D")
+    output.note(f"Any brackets like {X0.LETTUCE}(){X0.GRAY}, {X0.LETTUCE}[]{X0.GRAY} or {X0.LETTUCE}{BRICKS}{X0.GRAY}, and spaces are ignored.", sign="D")
     output.note(f"{msp.emptyS} {X0.LETTUCE}->{X0.GRAY} Not Dug", sign="D")
     output.note(f"{msp.nS[ random.randint(0,len(msp.nS)) -1 ]} {X0.LETTUCE}->{X0.GRAY} Dug", sign="D")
     output.note(f"{msp.flagS} {X0.LETTUCE}->{X0.GRAY} Flagged", sign="D")
@@ -2054,7 +2023,7 @@ def infoF():
     # An easter egg!
     if choice.casefold() in ADMINS:
         output.success(f"Yes, {X0.RED}♥{X0.GRAY}.{C0.END}")
-    back()
+    Back()
 
 #==================================================================#
 
@@ -2066,7 +2035,7 @@ def refreshF():
     output.notify(f"Refreshing!")
     sleep(0.5) 
     clear()
-    back()
+    Back()
 
 #==================================================================#
 
@@ -2092,7 +2061,44 @@ def exitF():
 
 #==================================================================#
 
+def devF():
+    if isAdmin():
+        clear()
+        print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Hey boss! What do you wish to do?{C0.END}")
 
+        def debug1():
+            dev:str = input(
+                output.arrow("",
+                            X0.ORANGE + '/>',
+                            1, Print=0
+                            )
+                        )
+
+            if dev.lower().count('exit'):
+                clear()
+                print(f"\n{X0.ORANGE}>>>{X0.VIOLET} Bye boss!{C0.END}")
+                Back()
+
+            try:
+                if dev[0] == "$":
+                    os.system(dev[1:])
+                else:
+                    exec(dev)
+                    output.notify(eval(dev))
+                    
+            except BaseException as Error:
+                output.error(str(Error))
+                debug1()
+                Back()
+            else:
+                debug1()
+
+        debug1()
+
+    else:
+        clear()
+        output.error("It's a dev-only commands, buddy.")
+        Back()
 
 
 

@@ -1,14 +1,11 @@
-LastWinner: \u2014
-Ties: 0
-
-P1:
-  Wins: 0
-  LastChoice: \u2014
-
-P2:
-  Wins: 0
-  LastChoice: \u2014
-
 CPU:
+  LastChoice: "\u2014"
   Wins: 0
-  LastChoice: \u2014
+LastWinner: "\u2014"
+P1:
+  LastChoice: "\u2014"
+  Wins: 0
+P2:
+  LastChoice: "\u2014"
+  Wins: 0
+Ties: 0

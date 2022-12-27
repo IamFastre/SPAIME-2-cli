@@ -1,8 +1,4 @@
-import glob, shutil, os, sys, subprocess, random
-
-# Importing my package files:
-from scripts.colors import *
-from time           import *
+from scripts.__req__ import *
 
 ####################################################################
 #==================================================================#
@@ -154,6 +150,8 @@ def clear():
         _ = os.system('cls')
     else:
         _ = os.system('clear')
+
+    return 0
         
         
 def pause():

@@ -4,20 +4,6 @@
 ##                                                                ##
 ####################################################################
 
-import os
-import time
-import shutil
-import pickle
-import importlib
-import re
-import glob
-import copy
-import random
-import math
-import subprocess
-import pip
-
-from datetime import date, datetime
 
 # Copy thins snippet everywhere please!
 import sys
@@ -28,10 +14,12 @@ if __name__ == "__main__":
 # So we can happily fry your device
 sys.setrecursionlimit(100_000_000)
 
+# Importing required packages and my scripts
+from scripts.__req__     import *
+from scripts.content import *
+
 # Importing my package files:
 from scripts.libs   import *
 from scripts.colors import *
 from time           import *
 
-print('Test')
-sleep(0.5)
