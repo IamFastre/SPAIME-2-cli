@@ -1,3 +1,9 @@
+####################################################################
+##                                                                ##
+##    Importing important files, modules, packages and so on.     ##
+##                                                                ##
+####################################################################
+
 import scripts.content.TicTacToe            as ttt
 import scripts.content.RockPaperScissors    as rps
 import scripts.content.Randomeur            as rnd
