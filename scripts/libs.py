@@ -1,3 +1,10 @@
+import sys
+from os.path import abspath, dirname, join
+
+# Sets path to the app's main folder
+if __name__ == "__main__":
+    sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+
 from scripts.__req__ import *
 
 ####################################################################
@@ -175,7 +182,7 @@ def goThro(thing, allowed):
     return True
 
 
-def enterContinue(Space=True):
+def enterContinue(Space=True, Clear=True):
     if Space:
         print()
     print(f"{X0.YELLOW}>> {X0.GRAY}Press Enter to continue...{C0.END}")
@@ -194,8 +201,7 @@ def enterContinue(Space=True):
         delCache()
         enterContinue()
         sys.exit(0)
-    print(C0.END)
-    clear()
+    if Clear: print(C0.END); clear()
     return choice
 
 

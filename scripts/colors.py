@@ -1,8 +1,11 @@
-import os, sys
-from os.path import dirname, join, abspath
+import sys
+from os.path import abspath, dirname, join
 
+# Sets path to the app's main folder
 if __name__ == "__main__":
     sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+
+
 
 class C0():
 
