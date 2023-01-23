@@ -187,5 +187,5 @@ if __name__ == "__main__":
 
 # TODO:-
 #// • Set X to Y
-#* • Move X1,Y1 to X2,Y2
+#// • Move X1,Y1 to X2,Y2
 #  • Stack
