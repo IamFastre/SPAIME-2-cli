@@ -13,11 +13,11 @@
 ### Interface:
 <br/>
 
->  #### Hey {name}, Whatcha wanna do?!
+> **Hey {name}, Whatcha wanna do?!**
 
 That's what the app asks you, and then It goes on being the most boring thing to ever exist.
 
->  #### 1: Repeat
+> **1: Repeat**
 
 The f*ck?!
 People reached the moon in 1969 and you're here doing shit like this:
